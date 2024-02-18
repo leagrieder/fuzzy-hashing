@@ -1,0 +1,126 @@
+\documentclass[12pt, a4paper, openany]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\usepackage{chngcntr}
+
+% LANGUAGE
+\usepackage[french]{babel}
+    \selectlanguage{french}
+    \frenchsetup{StandardItemLabels=true}
+% \usepackage{enumitem}  % Enumerate improved
+\usepackage[shortlabels]{enumitem}
+
+% MATH / Others
+\usepackage{amsmath, amssymb}  % Math symbols
+\usepackage{physics}  % \norm and \abs
+\usepackage{esvect, cancel}  % Misc., vectors, strikethrough
+\usepackage{mhchem}  % Chemistry
+\usepackage{siunitx}  % Units SI
+
+% GEOMETRY
+\usepackage[
+    paper=a4paper,
+    top=2cm,
+    left=2cm,
+    bottom=2cm,
+    right=2cm,
+    headheight=15pt,
+    headsep=12pt,
+]{geometry}
+\usepackage{parskip}  % Reformat paragraphs, no indent first line
+\usepackage{enumitem}  % Enumerate improved
+\usepackage{scrextend}  % Indent text with addmargin environment
+\usepackage{graphicx}  % Include graphics
+\graphicspath{{latex-img}}
+\usepackage{caption}  % Caption without figures
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{multicol}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{shapes}
+\newcommand{\mymk}[1]{%
+  \tikz[baseline=(char.base)]\node[anchor=south west, draw,rectangle, rounded corners, inner sep=2pt, minimum size=7mm,
+    text height=2mm](char){\ensuremath{#1}} ;}
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+% HYPERLINKS
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    linkcolor=blue,
+}
+
+\setmonofont[Scale=0.9]{Fira Code}
+
+% HEADERS
+\usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \lhead{Bachelor - Project}
+    \rhead{L. Grieder / L. Sidjanski}
+    \renewcommand{\footrulewidth}{0.4pt}
+    \renewcommand{\headrulewidth}{0.4pt}
+\usepackage{etoolbox}  % Define chapter page style
+    \patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+
+% TITLE PAGE
+\title{Bachelor - Project}
+\author{Lea Grieder (328216)\\Leila Sidjanski (328216)}
+\date{EPFL BA6 - February 2024}
+
+% Capital autoref
+\AtBeginDocument{\def\chapterautorefname{Chapitre}}
+\AtBeginDocument{\def\sectionautorefname{Section}}
+\AtBeginDocument{\def\subsectionautorefname{Sous-Section}}
+\AtBeginDocument{\def\figureautorefname{Figure}}
+
+% Custom Commands
+\newcommand{\footlink}[2]{\href{#2}{#1}\footnote{#1: \url{#2}}}
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}}
+
+% Counters starts with section number
+\counterwithin{figure}{section}
+\counterwithin{equation}{section}
+
+\setcounter{tocdepth}{2}
+
+% Colors
+\definecolor{myblue}{HTML}{0000ff}
+\definecolor{myred}{HTML}{ff0000}
+\definecolor{myorange}{HTML}{ff8000}
+\definecolor{mygreen}{HTML}{00bf00}
+
+\newcommand{\blue}[1]{{\color{myblue} #1}}
+\newcommand{\red}[1]{{\color{myred} #1}}
+\newcommand{\orange}[1]{{\color{myorange} #1}}
+\newcommand{\green}[1]{{\color{mygreen} #1}}
+\newcommand{\black}[1]{{\color{black} #1}}
+
+\begin{document}
+
+% TITLE
+\pagestyle{fancy}
+\maketitle
+
+\par\noindent\rule{\textwidth}{0.4pt}
+\tableofcontents
+\thispagestyle{fancy}
+\pagenumbering{arabic}
+
+\newpage
+
+\input{parts/part1.tex}
+\input{parts/part2.tex}
+\input{parts/conclusion.tex}
+
+\newpage
+
+\appendix
+
+\end{document}
+

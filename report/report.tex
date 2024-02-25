@@ -5,9 +5,7 @@
 \usepackage{chngcntr}
 
 % LANGUAGE
-\usepackage[french]{babel}
-    \selectlanguage{french}
-    \frenchsetup{StandardItemLabels=true}
+\usepackage[english]{babel}
 % \usepackage{enumitem}  % Enumerate improved
 \usepackage[shortlabels]{enumitem}
 
@@ -61,17 +59,27 @@
 % HEADERS
 \usepackage{fancyhdr}
     \pagestyle{fancy}
-    \lhead{Bachelor - Project}
+    \lhead{Fuzzy Hashing}
     \rhead{L. Grieder / L. Sidjanski}
     \renewcommand{\footrulewidth}{0.4pt}
     \renewcommand{\headrulewidth}{0.4pt}
 \usepackage{etoolbox}  % Define chapter page style
     \patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
 
+
+% EPFL Logo
+\newcommand{\epfllogo}{%
+  \begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.4\linewidth]{latex-img/logo-epfl.png}
+  \end{figure}
+}
+
+
 % TITLE PAGE
-\title{Bachelor - Project}
+\title{Fuzzy Hashing}
 \author{Lea Grieder (328216)\\Leila Sidjanski (328216)}
-\date{EPFL BA6 - February 2024}
+\date{February 2024}
 
 % Capital autoref
 \AtBeginDocument{\def\chapterautorefname{Chapitre}}
@@ -106,7 +114,10 @@
 % TITLE
 \pagestyle{fancy}
 \maketitle
-
+\begin{figure}[h]
+\includegraphics[scale=0.1]{latex-img/logo-epfl.png}
+\centering
+\end{figure}
 \par\noindent\rule{\textwidth}{0.4pt}
 \tableofcontents
 \thispagestyle{fancy}
@@ -114,9 +125,13 @@
 
 \newpage
 
-\input{parts/part1.tex}
-\input{parts/part2.tex}
-\input{parts/conclusion.tex}
+\input{parts/Introduction.tex}
+\input{parts/Theoretical_Framework.tex}
+\input{parts/Implementation.tex}
+\input{parts/Experimental_Verifications.tex}
+\input{parts/Optimizations.tex}
+\input{parts/1_to_N_Matching.tex}
+\input{parts/Conclusion.tex}
 
 \newpage
 

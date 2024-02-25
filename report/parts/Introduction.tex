@@ -1,0 +1,35 @@
+\section{Introduction}
+%\section and \subsection are included in the table of contents
+
+\subsection{Presentation of the Project}
+\subsection{Objectives and Scope}
+\subsection{Structure of the Report}
+
+
+% Fuzzy Hashing: Fuzzy hashing is a technique used to generate a hash value that remains consistent even when the input data has minor variations. This is particularly useful in biometrix, when the data captured(like finger-vein patterns) may have slight differences each time due to changes in the environment or the way the biometric trait is presented.
+
+% Purpose of hashing: By storing a hash of the extracted biometric feature rather than the extracted feature itself, the privacy of the user is enhanced. Even if the hash data is compromised, it should not reveal any personal biometric information. Hashed values have fixed sizes which makes storage requirements predictable and efficient. 
+
+% Fuzzy Extractors: takes the concept of fuzzy hashing further by enabling secure error-tolerant biometric authentication. It consists of two main algorithms, Gen (generate) and Rep (reproduce). It enables the secure extraction and reproduction of a key from noisy input data, like biometric data. 
+
+% Registration (Enrollment) process: 
+
+% 1. **Initial Setup:**
+%   - Imagine a person named Alex wants to use a secure system that involves finger vein authentication.
+%   - Alex chooses a unique identifier, let's say "Alex123" (this is idU), and informs the authority (for example, a bank or a secure facility) about this identifier.
+
+%2. **Biometric Enrollment:**
+%   - The authority checks if "Alex123" is available and creates a pseudonym based on it for privacy.
+%   - Alex goes to the enrollment center where his finger vein pattern is scanned.
+%   - The authority encrypts this biometric data for security and sends it, along with the pseudonym, to a biometric server that stores this information securely.
+
+%3. **Chip Enrollment (when getting a JavaCard):**
+%   - For the next step, Alex needs to get a JavaCard that will use his finger vein for authentication.
+%   - Alex informs the authority again that he is proceeding with the chip enrollment using the same identifier "Alex123."
+%   - The authority captures Alex's finger vein pattern again for verification purposes.
+%   - The authority sends this new biometric capture, along with the pseudonym, to the biometric server to match it with the previously stored data.
+%   - Once the biometric server confirms the match, it updates its database with Alex's encrypted identifier.
+%   - The authority then prepares a JavaCard for Alex by programming it with a new chip identifier, encryption keys, and Alex's encrypted biometric identifier.
+%   - This JavaCard information is also sent to a chip server to create a new record linked to Alex.
+
+%In this example, Alex's unique identifier "Alex123" is crucial as it ties all elements of the process together — from biometric enrollment to chip enrollment. It ensures that Alex's biometric data is accurately linked to his JavaCard, allowing him to use finger vein authentication for secure access or transactions. The system maintains privacy by using pseudonyms and encryption, ensuring that Alex's biometric data is protected throughout the process.

@@ -1,11 +1,30 @@
 \section{Introduction}
 %\section and \subsection are included in the table of contents
 
+\subsection{Background}
+%\Need to explain multiple things:
+    %\Introduce the systems that are used nowadays for authentication and explain why it is preferrable to use biometric authentication systems and more precisely finger-vein authentication
+    %\Explain the state of the current project (where is it left, what has been achieved already, by both Burcu and Simon) and how the authentication system works (Simon has already explained this in his introduction, explain a bit differently)
+    %/Briefly introduce the concept of fuzzy hashing (security reasons and usability)
+%\
+
+The escalation of digital identity verification demands has led to a surge in biometric authentication systems, with finger-vein recognition emerging as a uniquely secure modality due to its internal and non-trace-leaving nature.
+
+This project extends the work on optimizing a finger-vein recognition pipeline that has demonstrated the lowest Equal Error Rate (EER) \hyperref[def:EER]{Equal Error Rate (EER)} by incorporating a novel hashing step to process the output. The purpose of integrating \hyperref[def:Hash_Function]{hash functions } within this context is twofold: to bolster the security of biometric data by converting it into a hash value, hence safeguarding against unauthorized reconstruction of the biometric template, and to enhance the system's efficiency by facilitating rapid comparison of hashed values in place of actual biometric data.
+
+
+Simon Sommerhalder and Burcu Yildiz have both made significant contributions to our system. Simon has innovated a method to align finger-vein images independently, enhancing security by eliminating the need to compare the model and probe images side by side. He organized the process into six clear steps: masking, pre-alignment, histogram equalization, feature extraction, post-alignment, and measuring distance. This organization allows each part of the process to be individually assessed and improved. Additionally, Simon has developed various functions to boost the system's efficiency and achieve the optimal balance between false acceptances and rejections. 
+
+
 \subsection{Presentation of the Project}
-\subsection{Objectives and Scope}
+%\Explain what we will be testing/implementing in this project without getting into too many details yet (we will get more in detail in the theoretical frmework where we explain what is in the fuzzy hash sections 1-5 and how we will test what is in there)
+%Explain how we will use the previous work done by Simon and Burcu (?) 
+
 \subsection{Structure of the Report}
+%Explain how our report will be structured -> Explain how we needed to start by understanding and retesting (as asked from Serge) what had been done before us (the software part as we have already covered what has been done on a high level in the introduction). We also needed to assess again the efficiency of the algorithms developped by Simon and Burcu. Then, explain that we will start by going through the theoretical concepts that we need to understand in order to implement everything (sections 1-5 from fuzzyhash). Then we will move onto the actual software implementation, 1:N matching (etc...) -> on doit update ceci à la fin et expliquer ce qu'on a actually réussi à faire
 
 
+%Additional comments and definitions (may or may not be useful)
 % Fuzzy Hashing: Fuzzy hashing is a technique used to generate a hash value that remains consistent even when the input data has minor variations. This is particularly useful in biometrix, when the data captured(like finger-vein patterns) may have slight differences each time due to changes in the environment or the way the biometric trait is presented.
 
 % Purpose of hashing: By storing a hash of the extracted biometric feature rather than the extracted feature itself, the privacy of the user is enhanced. Even if the hash data is compromised, it should not reveal any personal biometric information. Hashed values have fixed sizes which makes storage requirements predictable and efficient. 

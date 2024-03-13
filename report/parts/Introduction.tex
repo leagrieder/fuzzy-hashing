@@ -14,7 +14,11 @@ While advanced biometric systems typically rely on externally visible physical a
 
 %-> Si on a des question on peut contacter BioId!
 %This project focuses on authentication using finger-vein features, employing a scanner equipped with two infrared cameras to capture finger veins from distrinct angles. These cameras can perform local computations and communicate with a server infrastructure. Upon registration, the captured image referred to as the model image, is encrypted and transmitted to a secure database. During authentication, another image of the finger, known as the probe image, is acquired. Subsequently, either the model or the probe image is transmitted over the network and then realigned to enable computation of a similarity score between them. 
-In light of these considerations, this project is dedicated to authentication using finger-vein features. This involves utilizing a specialized scanner equipped with two infrared cameras to capture finger veins from different angles. The registration process involves capturing an image, termed the model image, while the authentication process involves capturing another image, known as the probe image. Subsequently, these images undergo processing through a pipeline designed to extract and align the finger-vein patterns. The output of tthishe pipeline is an image containing the extracted finger-veins, which is then input into a fuzzy hash function for further processing.\newline
+In light of these considerations, this project is dedicated to authentication using finger-vein features. This involves utilizing a specialized scanner equipped with two infrared cameras to capture finger veins from different angles. The registration process involves capturing an image, termed the model image, while the authentication process involves capturing another image, known as the probe image. Subsequently, these images undergo processing through a pipeline designed to extract and align the finger-vein patterns. Following this process, the system evaluates whether the feature vector extracted from the probe image sufficiently matches the feature vector of the model image associated with the individual attempting authentication. This assessment ultimately determines the authentication outcome.
+
+
+
+%The output of this pipeline is an image containing the extracted finger-veins, which is then input into a fuzzy hash function for further processing.\newline
 %should we talk about fuzzy extractor?.  
 
 

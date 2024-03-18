@@ -21,7 +21,7 @@ Following this process, the system evaluates whether the feature vector extracte
 %This project focuses on authentication using finger-vein features, employing a scanner equipped with two infrared cameras to capture finger veins from distrinct angles. These cameras can perform local computations and communicate with a server infrastructure. Upon registration, the captured image referred to as the model image, is encrypted and transmitted to a secure database. During authentication, another image of the finger, known as the probe image, is acquired. Subsequently, either the model or the probe image is transmitted over the network and then realigned to enable computation of a similarity score between them. 
 
 
-\subsection{Presentation of the Project}
+\subsection{Extraction Pipeline}
 
 This project extends the work on optimizing a finger-vein recognition pipeline that has demonstrated the lowest Equal Error Rate (EER) \hyperref[def:EER]{Equal Error Rate (EER)} by incorporating a novel hashing step to process the output of the pipeline. The purpose of integrating \hyperref[def:Hash_Function]{hash functions} within this context is multifold, but before delving into hash functions, which are central to our project, it's essential to outline the foundation upon which we have built our advancements. This initial context will provide a clearer understanding of the starting point from which our developments began.
 
@@ -56,6 +56,8 @@ Simon and Burcu explored a variety of function combinations at different stages 
 
 %insert figure showing the best pipeline combination with the EER values?
 
+\subsection{Project Overview}
+
 In the progression of our project, building upon the work of Simon and Burcu, we aim to address the inherent variability in biometric data, particularly with finger vein patterns, by considering hash functions. Our aim is to incorporate a hashing step at the end of the already developed pipeline, subsequent to the post-alignment phase. The integration of this hashing process at the current pipeline's conclusion is aimed at achieving several key objectives, enhancing the system's overall functionality and security. The purpose of employing a hashing process in this system is multifold:
 
 \begin{itemize}
@@ -74,7 +76,6 @@ Furthermore, the application of fuzzy hashing in our pipeline is instrumental in
 We will implement....
 
 
-\subsection{Structure of the Report}
 %Explain how our report will be structured -> Explain how we needed to start by understanding and retesting (as asked from Serge) what had been done before us (the software part as we have already covered what has been done on a high level in the introduction). We also needed to assess again the efficiency of the algorithms developped by Simon and Burcu. Then, explain that we will start by going through the theoretical concepts that we need to understand in order to implement everything (sections 1-5 from fuzzyhash). Then we will move onto the actual software implementation, 1:N matching (etc...) -> on doit update ceci à la fin et expliquer ce qu'on a actually réussi à faire
 
 

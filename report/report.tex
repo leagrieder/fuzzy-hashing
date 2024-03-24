@@ -1,6 +1,4 @@
 \documentclass[12pt, a4paper, openany]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
 \usepackage{fontspec}
 \usepackage{chngcntr}
 
@@ -68,20 +66,6 @@
     \patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
 
 
-% EPFL Logo
-\newcommand{\epfllogo}{%
-  \begin{figure}[!h]
-    \centering
-    \includegraphics[width=0.4\linewidth]{latex-img/logo-epfl.png}
-  \end{figure}
-}
-
-
-% TITLE PAGE
-\title{Fuzzy Hashing}
-\author{Lea Grieder (328216)\\Leila Sidjanski (330810)}
-\date{February 2024}
-
 % Capital autoref
 \AtBeginDocument{\def\chapterautorefname{Chapitre}}
 \AtBeginDocument{\def\sectionautorefname{Section}}
@@ -114,20 +98,36 @@
 
 \begin{document}
 
-% TITLE
-\pagestyle{fancy}
-\maketitle
-\begin{figure}[h]
-\includegraphics[scale=0.1]{latex-img/logo-epfl.png}
-\centering
-\end{figure}
-\par\noindent\rule{\textwidth}{0.4pt}
+% TITLE PAGE
+\begin{titlepage}
+  \centering
+  % EPFL logo
+  \includegraphics[width=0.3\linewidth]{latex-img/logo-epfl.png}\\[0.2cm]
+  \rule{\textwidth}{0.4pt}\\[2cm]
+  % TITLE
+  {\LARGE Fuzzy Hashing for Finger-Vein Matching}\\[2cm]
+  % AUTHORS
+  {\normalsize Lea Grieder (328216)\\[0.2cm]Leila Sidjanski (330810)}\\[2cm]
+  % BACHELOR PROJECT INFO
+  {\normalsize Computer Science / Communication Systems\\[0.2cm]EPFL}\\[2cm]
+  % DATE
+  {\normalsize March 2024}\\[2cm]
+
+  {\normalsize\bfseries Responsible}\\[0.2cm]
+  {\normalsize Prof. Serge Vaudenay}\\[2cm]
+  \rule{\textwidth}{0.3pt}\\[2cm]
+  \includegraphics[width=0.3\linewidth]{latex-img/lasec.jpg}\\[0.2cm]
+\end{titlepage}
+
+
+% TABLE OF CONTENTS
+\newpage
 \tableofcontents
 \thispagestyle{fancy}
 \pagenumbering{arabic}
 
+% REPORT
 \newpage
-
 \input{parts/Introduction.tex}
 \input{parts/Biometric_Setting.tex}
 \input{parts/Fuzzy_Hashing.tex}

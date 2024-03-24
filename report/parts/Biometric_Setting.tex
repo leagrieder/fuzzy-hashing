@@ -1,5 +1,44 @@
 \section{Biometric Setting}
+This section is dedicated to establishing the foundational framework for processing and analyzing biometric data derived from finger vein patterns. We explain how the extracted feature vectors from the pipeline are represented and...
 
-\subsection{Part 1}
+\subsection{Theoretical Foundations}
+We define \(n\) as the number of pixels that have been extracted from the images. \(n\) is constant for every image and is typically a \(96'500\) size bitstring. This bitstring simply represents a vector in a one dimensional space that we will work with for fuzzy hashing processes. We denote with \(p\) the probability of a random pixel \(X_i\) in a bitstring \(X\) representing some biometric finger vein data being a vein. We have that:
+\[
+    Pr[X_i = 1] = p \approx 3.6 \%
+\]
+
+
+
+
+
+% Start this subsection by introducing the mathematical and theoretical concepts that underpin fuzzy hashing. Discuss the relevance of these concepts in the context of biometric data, focusing on how they enable the creation of reliable and secure hashing mechanisms for inherently noisy data.
+
+%     Key Concepts to Cover:
+%         Definition and significance of fuzzy hashing
+%         Mathematical principles governing the construction of fuzzy hashes
+%         Overview of the biometric setting, including the importance of parameters such as pixel dimensions, vein extraction, and the role of random permutations in hashing
+
+% Subsection 2: Experimental Approach
+
+% In the second subsection, outline the methodology of your experiments designed to test the theoretical underpinnings discussed earlier. Describe the setup, the specific objectives of each experiment, and how these experiments are structured to validate the theoretical models of fuzzy hashing.
+
+%     Key Components to Include:
+%         Description of the experimental setup and the data used
+%         Explanation of how the experiments are designed to reflect the theoretical aspects of fuzzy hashing
+%         Details on the implementation of preHash and postHash functions, and the criteria for their evaluation
+
+% Subsection 3: Verifying Theoretical Predictions
+
+% The final subsection is dedicated to comparing the outcomes of your experiments with the theoretical expectations. This involves analyzing the results, discussing any deviations or confirmations, and what these mean for the validity and reliability of fuzzy hashing in biometric data security.
+
+%     Important Aspects to Discuss:
+%         Analysis of experimental results against theoretical predictions
+%         Discussion on the accuracy of the fuzzy hashing process, including the matching scores and error rates
+%         Implications of the findings for biometric data security and future research directions
+
+% Conclusion of Section 1
+
+% Conclude with a summary of the insights gained from bridging theoretical concepts with empirical evidence. Highlight the importance of this integration for advancing the field of biometric security through fuzzy hashing. Reflect on the potential for future developments and applications stemming from your findings.
+
 \subsection{Part 2}
 \subsection{Part 3}

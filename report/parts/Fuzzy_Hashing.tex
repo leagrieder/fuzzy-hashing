@@ -16,9 +16,18 @@ After processing within the pipeline and application of the preHash algorithm to
 
 
 In the case where the parameters are m = 1 and key is random, we have: 
-BORDEL JE NARRIVE PAS A ECRIRE EN LATEX MATH I GIVE UP
-%$Pr[preHash_{key}^1(\bar{X}) = preHash_{key}^1(\bar{Y})] =  \sum_{i > 0} Pr[preHash_{key}^1(\bar{X}) = preHash_{key}^1(\bar{Y})] = \sum_{i > 0} Pr[X_k = Y_k = 0]^{i - 1} Pr[X_k = Y_k = 1] = \frac{Pr[X_k = Y_k = 1]}{1 - Pr[X_k = Y_k = 0]} = \frac{HW(X \land Y)}$
 
+\begin{equation}
+    \begin{aligned}
+        Pr[preHash_{key}^1(X) &= preHash_{key}^1(Y)]\\
+        &= \sum_{i > 0} Pr[preHash_{key}^1(X)\\
+        &= preHash_{key}^1(Y)]\\
+        &= \sum_{i > 0} Pr[X_k = Y_k = 0]^{i - 1} Pr[X_k = Y_k = 1]\\
+        &= \frac{Pr[X_k = Y_k = 1]}{1 - Pr[X_k = Y_k = 0]}\\
+        &= \frac{HW(X \land Y)}{HW(X) + HW(Y) + - HW(X \land Y)}\\
+        &= \frac{1}{\frac{1}{Score(X, Y)} - 1}
+    \end{aligned}
+\end{equation}
 
 
 

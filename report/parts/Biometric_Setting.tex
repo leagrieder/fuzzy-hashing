@@ -1,11 +1,38 @@
 \section{Biometric Setting}
-This section is dedicated to establishing the foundational framework for processing and analyzing biometric data derived from finger vein patterns. We explain how the extracted feature vectors from the pipeline are represented and...
+%This section is dedicated to establishing the foundational framework for processing and analyzing biometric data derived from finger vein patterns. We explain how the extracted feature vectors from the pipeline are represented and...
 
-\subsection{Theoretical Foundations}
-We define \(n\) as the number of pixels that have been extracted from the images. \(n\) is constant for every image and is typically a \(96'500\) size bitstring. This bitstring simply represents a vector in a one dimensional space that we will work with for fuzzy hashing processes. We denote with \(p\) the probability of a random pixel \(X_i\) in a bitstring \(X\) representing some biometric finger vein data being a vein. We have that:
-\[
-    Pr[X_i = 1] = p \approx 3.6 \%
-\]
+This section provides a comprehensive overview of the mathematical and technical aspects involved in fingervein matching, which is essential for comprehending the subsequent discussions in this paper. We will commence by deriving mathematical equations and statements pertinent to our research objectives. Subsequently, we will provide insight into the process of obtaining these equations and statements, evaluating their relevance and implications within the context of our research. 
+
+
+\subsection{Theoretical Foundations and Concepts}
+%biometric template = is the reference model obtained from the finger images, represented as a vector
+%Biometric capture = actual data obtained from the finger image during enrollement or authentication, represented as a bitstring X of length n
+
+We begin by delving into the fundamental concepts of biometric data representation. Finger images, designated as biometric templates and formated as \(250\)x\(386\), result in n = \(96'500\) pixels per image. To enhance processing efficiency, these templates are converted into vectors, departing from their original 2-dimension image structure. 
+
+In the biometric context, each finger serves as a biometric subject, with a corresponding biometric capture represented as a bitstring \(X\) of length \(n\). This capture encapsulates the specific vein pixel information extracted from the finger image, while the biometric template serves as a reference mode derived from these images. 
+
+Each of the \(n\) bits of the biometric capture is designated as \(X_1\),..., \(X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. In the case where \(i\) and \(X\) are randomly chosen, we define 
+
+\begin{equation} \label{eq:p}
+    Pr[X_i = 1] = p \approx 3.6 \% 
+\end{equation}
+
+Moving forwards, in biometric authentication and identification, the scoring mechansim plays a crucial role in quantatively determining the similarity between biometric captures. This similarity score holds significance in verifying the identity of an individual (authentication) or identifying potential matches in a database (identification). A higher score indicates a greater ressemblance between captures, while a lower score suggests less similarity. This scoring mechanism is indispensable for ensuring the accuracy and reliability of biometric systems. 
+
+The score of (\(X\), \(Y\)) is computed as
+
+\begin{equation} \label{eq:score}
+    \begin{aligned}
+        Score(X, Y) &= \frac{HW(X \land Y)}{HW(X) + HW(Y)}\\
+        &= \frac{1}{2}-\frac{1}{2}\frac{d_H(X, Y)}{HW(X) + HW(Y)}
+    \end{aligned}
+\end{equation}
+
+where \(HW\) denotes the Hamming weight and \(d_H\) the Hamming distance. 
+
+In conjunction with the scoring mechanism, Miura matching emerges as a specialized technique for comparing biometric samples. This method entails determining an optimal offset translation, denoted as \(offset * X\) and \(offset * Y\), between two biometric samples to align their features for comparison, thereby compensating for differences in positioning or orientation. The offsets is that maximize the similarity score \(Score(offset_X * X, offset_Y * Y)\) are termed as optimal offsets. Furhtermore, we designate \(\bar{X}\) = \(offset_X * X\) and \(\bar{Y}\) = \(offset_Y * Y\) as the two biometric captures after applying the optimal offset translations \(offset * X\) and \(offset * Y\).
+Thus Miura matching and the scoring mechanism are interconnected components, where Miura matching facilitates the computation of the score, thereby offering insights into the similarity between biometric captures and enhancing the reliability of matching algorithms. 
 
 
 

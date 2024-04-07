@@ -14,8 +14,8 @@ In the biometric context, each finger serves as a biometric subject, with a corr
 
 Each of the \(n\) bits of the biometric capture is designated as \(X_1\),..., \(X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. In the case where \(i\) and \(X\) are randomly chosen, we define the probability of pixel \(X_i\) being a vein 
 
-\begin{equation} \label{eq:p}
-    Pr[X_i = 1] = p \approx 3.6 \% 
+\begin{equation} \label{eq:proba}
+    Pr[X_i = 1] = p \approx 3.3 \% 
 \end{equation}
 
 In biometric authentication and identification, the uniqueness of each biometric capture is encoded in its bits. The objective revolves around discerning the similarity between two biometric captures to verify or identify two individuals. Therefore, the scoring mechansim plays a crucial role in quantatively determining the similarity between biometric captures. This similarity score holds significance in verifying the identity of an individual (authentication) or identifying potential matches in a database (identification). A higher score indicates a greater ressemblance between captures, while a lower score suggests less similarity. This scoring mechanism is indispensable for ensuring the accuracy and reliability of biometric systems. The score of (\(X\), \(Y\)) is computed as
@@ -55,7 +55,7 @@ It is crucial to distinguish between the types of distributions associated with 
 \caption{Comparison of Distributions: $\delta_{same}$, $\delta_{diff}$, and $\delta_{indep}$}
 \end{table}
 
-Utilizing \hyperref[eq:p]{\(p\)} and \hyperref[eq:delta]{\(\delta\)}, we derive the joint distribution for (\(\bar{X}_j\), \(\bar{Y}_j\)) across \(j\) random instances:
+Utilizing $p$ (\ref{eq:proba}) and $\delta$ (\ref{eq:delta}), we derive the joint distribution for (\(\bar{X}_j\), \(\bar{Y}_j\)) across \(j\) random instances:
 
 \begin{table}[H]
     \centering
@@ -104,8 +104,8 @@ Utilizing \hyperref[eq:p]{\(p\)} and \hyperref[eq:delta]{\(\delta\)}, we derive 
 % Conclude with a summary of the insights gained from bridging theoretical concepts with empirical evidence. Highlight the importance of this integration for advancing the field of biometric security through fuzzy hashing. Reflect on the potential for future developments and applications stemming from your findings.
 
 \subsection{Equation Derivation and Research Relevance}
-In order to derive the probability that a pixel is a vein, \(p\) (\ref{eq:p}), the \(\textit{analyze_single_image}\) algorithm processes the set of images captured by two cameras. The algorithm iterates through \(20\) people, left and right, five trials, processing each combination for each camera. For each combination of person, side, finger, and trial for camera \(i\), the algorithm increments an array, \textit{veins[i]}, which accumulates vein detections for each pixel position across all processed images for that camera. It also increments a counter, \textit{image_count[i]}, keeping track of the number of images processed for each camera. 
-After processing all images, the algorithm calculates the probability of each pixel being a vein by dividing the sum of vein detections across both cameras by the sum of the image counts for both cameras (\textit{vein[0]} + \textit{vein[1]})/(\textit{image_count[0]} + \textit{image_count[1]}).
+In order to derive the probability that a random pixel is a vein, $p$ (\ref{eq:proba}), the \textit{analyze\_single\_image} algorithm processes the set of images captured by two cameras. The algorithm iterates through \(20\) people, left and right, five trials, processing each combination for each camera. For each combination of person, side, finger, and trial for camera \(i\), the algorithm increments an array, \textit{veins[i]}, which accumulates vein detections for each pixel position across all processed images for that camera. It also increments a counter, \textit{image\_count[i]}, keeping track of the number of images processed for each camera. 
+After processing all images, the algorithm calculates the probability of each pixel being a vein by dividing the sum of vein detections across both cameras by the sum of the image counts for both cameras.
 
 
 \subsection{Part 3}

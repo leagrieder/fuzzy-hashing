@@ -4,24 +4,27 @@ Fuzzy hashing produces consistent cryptographic keys for similar but not identic
 In this section, we will delve into the fuzzy hashing algorithm, its corresponding mathematical aspects, conduct experiments, and discuss the results obtained.
 \subsection{Algorithm Implementation}
 
-The fuzzy hashing algorithm, known as preHash, operates on three inputs: a parameter \(m\), a key \(key\), and an image of finger veins \(X\). It produces a \(m\)-tuple containing the \(m\) smallest indices \(i_j\) such that \(1 <= i_1 < ... < i_m\), and the corresponding pixels in \(X\) are identified as vein pixels.
+The fuzzy hashing algorithm, known as \textit{preHash}, operates on three inputs: a parameter \(m\), a key \(key\), and an image of finger veins \(X\). It produces a \(m\)-tuple containing the \(m\) smallest indices \(i_j\) such that \(1 <= i_1 < ... < i_m\), and the corresponding pixel \(PRNG_{key}(i_j)\) in \(X\) is identified as vein pixel.
 
-In order to generate the tuple of indices, understanding the mechanics behind its creation is crucial. At the core of this system lies the pseudo-random number generator (PRNG), which relies on the AES (Advanced Encryption Standard) block cipher operating in counter (CTR) mode. AES processes data in fixed-size \(128\)-bit blocks. Leveraging AES' crpytographic properties, CTR mode combines a nonce (number only used once) with a counter, encrypting them with a secret key to generate a stream of seemingly random numbers. 
+In order to generate the tuple of indices, understanding the mechanics behind its creation is crucial. At the core of this system lies the pseudo-random number generator (PRNG), which operates by producing numbers uniformly and independently. This PRNG mechanism relies on the AES (Advanced Encryption Standard) block cipher functioning in counter (CTR) mode. AES processes data in fixed-size \(128\)-bit blocks. Leveraging AES' crpytographic properties, CTR mode combines a nonce (number only used once) with a counter, encrypting them with a secret key to generate a stream of seemingly random numbers. 
 The predictability of this sequence is entirely dictated by the chosen key and nonce. In essence, employing the same key and nonce combination will consistently yield an identical sequence of numbers. 
 
 To generate the nonce, we compute the SHA-256 hash of the key, resulting in a \(256\)-bit hash value. From this hash, we extract a \(128\)-bit value by slicing the first \(16\) bytes. Should a nonce already exist for a given instance, the system seamlessly preserves and reuses it. 
 
-Upon receiving the parameters —key, nonce, and counter— CTR mode produces a \(128\)-bit pseudo-random number. However, to tailor the output to our requirements, we must mask it to \(17\) bits. This adjustment is essential because we aim to generate pseudo-random numbers within the range suitable for an image size, specifically \(96'500\) pixels, which necessitates \(17\) bits for representation. (Faudrait-il écrire cela de manière plus générale? P.ex: produces a 128-bit prng which is then masked to an n bit key...)
+Upon receiving the parameters —key, nonce, and counter— CTR mode produces a \(128\)-bit pseudo-random number. However, to tailor the output to our requirements, we must mask it to \(17\) bits. This adjustment is essential because we aim to generate pseudo-random numbers within the range suitable for an image size, specifically \(96'500\) pixels, which necessitates \(17\) bits for representation. \textcolor{red}{(Faudrait-il écrire cela de manière plus générale? P.ex: produces a 128-bit prng which is then masked to an n bits...?)}
 
-The algorithm, preHash, generates \(m\) smallest indices, denoted by \(i_j\), such that \(j\in{[1, m]} \) and \(1 <= i_1 < ... < i_m\), where each \(i_j\) correponds to an index such that \(X_{PRNG_{key}(i_j)} = 1\). It achieves this by tracking visited indices to maintain uniqueness and avoid infinite loops, and by rigorously verifying that the PRNG stays within the specified bounds (\(< 96'500\)).   
+The algorithm, preHash, generates \(m\) smallest indices, denoted by \(i_j\), such that \(j\in{[1, m]} \) and \(1 <= i_1 < ... < i_m\), where each \(i_j\) correponds to an index such that \(X_{PRNG_{key}(i_j)} = 1\). It achieves this by tracking visited indices to maintain uniqueness and avoid infinite loops, and by rigorously verifying that the PRNG stays within the specified bounds (\(< 96'500\) \textcolor{red}{n??}).   
+
+\textcolor{red}{mettre le pseudocode?}
 
 \subsection{Mathematical Concepts}
+\textcolor{red}{Not sure how to explain the math, its relevance et comment faire des liens pour passer d'une équations à une autre}
 
-After processing within the pipeline and application of the preHash algorithm to the finger vein data, the resulting output consists of indices. 
+After processing within the pipeline and application of the \textit{preHash} algorithm to the finger vein data, the resulting output consists of indices. 
 
-In the case where the parameters are m = 1 and key is random, we have: 
+In the case where the parameters are m = 1, key is random, and k is uniformly distributed random index, we have: 
 
-\begin{equation}
+\begin{equation} \label{eq:preHash1}
     \begin{aligned}
         Pr[preHash_{key}^1(X) = preHash_{key}^1(Y)] &= \sum_{i > 0} Pr[preHash_{key}^1(X)\\
         &= preHash_{key}^1(Y)]\\
@@ -32,7 +35,9 @@ In the case where the parameters are m = 1 and key is random, we have:
     \end{aligned}
 \end{equation}
 
-\begin{equation}
+We notice that there is a direct link with the Miura matching score that we are interested in. The above computation can also be expressed as follows:
+
+\begin{equation} \label{eq:preHash2}
     \begin{aligned}
         Pr[preHash_{key}^1(\bar{X}) = preHash_{key}^1(\bar{Y})] &= \frac{Pr[\bar{X}_k = \bar{Y}_k = 1]}{1 - Pr[\bar{X}_k = \bar{Y}_k = 0]}\\
         &= \frac{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} - \frac{1}{2}Pr[\bar{X}_l \neq \bar{Y}_k]}{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} + \frac{1}{2}Pr[\bar{X}_l \neq \bar{Y}_k]}\\
@@ -40,7 +45,47 @@ In the case where the parameters are m = 1 and key is random, we have:
 \end{equation}
 
 
-\ref{eq:p}
+Inspired by equations \ref{eq:proba} and \ref{eq:delta}, we make the following approximations:
+
+\begin{equation}
+    E\left(\frac{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} - \frac{1}{2}Pr[\bar{X}_l \neq \bar{Y}_k]}{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} + \frac{1}{2}Pr[\bar{X}_l \neq \bar{Y}_k]}\right) \approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}}
+\end{equation}
+
+Hence for (\(X\), \(Y\)) random,
+
+\begin{equation}
+    Pr[preHash_{key}^1(offset_X * X) = preHash_{key}^1(offset_Y * Y)] \leq \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}}
+\end{equation}
+
+where equality is reached for the optimal offset translations. 
+
+Depending on the distribution of (\(X\), \(Y\)), we denote
+
+\begin{equation} \label{eq:mu}
+    \mu = \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}}
+\end{equation}
+
+We have the following figures:
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.25}\begin{tabular}{|c|c|c|}
+        \hline
+        $\mu_{same}$ & $\mu_{diff}$ & $\mu_{indep}$\\
+        \hline
+        $24\%$ & $8.3\%$ & $1.8\%$\\
+        \hline
+    \end{tabular}
+\caption{Comparison of Distributions: $\delta_{same}$, $\delta_{diff}$, and $\delta_{indep}$}
+\end{table}
+
+Finally, we have
+
+\begin{equation}
+    Pr[preHash_{key}^m(offset_X * X) = preHash_{key}^m(offset_Y * Y)] \leq \mu^m
+\end{equation}
+
+where equality is reached for the optimal offset translations.
 
 %This includes determining the upper limits for the probabilities of similarity between different finger veins processed through the same fuzzy hashing parameters. 
 \subsection{Part 3}

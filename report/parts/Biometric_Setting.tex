@@ -12,7 +12,7 @@ We begin by delving into the representation of the biometric data. Finger images
 
 In the biometric context, each finger serves as a biometric subject, with a corresponding biometric capture represented as a bitstring \(X\) of length \(n\). This capture encapsulates the specific vein pixel information extracted from the finger image, while the biometric template serves as a reference mode derived from these images. 
 
-Each of the \(n\) bits of the biometric capture is designated as \(X_1\),..., \(X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. In the case where \(i\) and \(X\) are randomly chosen, we define the probability of pixel \(X_i\) being a vein 
+Each of the \(n\) bits of the biometric capture is designated as \(X_1\),..., \(X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. In the case where \(i\) is a uniformly distributed random index and \(X\) is randomly chosen, we define the probability of pixel \(X_i\) being a vein 
 
 \begin{equation} \label{eq:proba}
     Pr[X_i = 1] = p \approx 3.3 \% 
@@ -101,11 +101,13 @@ Utilizing $p$ (\ref{eq:proba}) and $\delta$ (\ref{eq:delta}), we derive the join
 
 % Conclusion of Section 1
 
-% Conclude with a summary of the insights gained from bridging theoretical concepts with empirical evidence. Highlight the importance of this integration for advancing the field of biometric security through fuzzy hashing. Reflect on the potential for future developments and applications stemming from your findings.
+% Conclude with a summary of the insights gained from bridging theoretical concepts with empirical evidence. Highlight the importance of this integration for advancing the field of biometric security through fuzzy hashing. Reflect on the potential for future developments and applications stemming from your findings. --> Avons nous vraiment besoin de ça dans cette partie?
 
 \subsection{Equation Derivation and Research Relevance}
-In order to derive the probability that a random pixel is a vein, $p$ (\ref{eq:proba}), the \textit{analyze\_single\_image} algorithm processes the set of images captured by two cameras. The algorithm iterates through \(20\) people, left and right, five trials, processing each combination for each camera. For each combination of person, side, finger, and trial for camera \(i\), the algorithm increments an array, \textit{veins[i]}, which accumulates vein detections for each pixel position across all processed images for that camera. It also increments a counter, \textit{image\_count[i]}, keeping track of the number of images processed for each camera. 
-After processing all images, the algorithm calculates the probability of each pixel being a vein by dividing the sum of vein detections across both cameras by the sum of the image counts for both cameras.
+\textcolor{red}{Write about: Description of the experimental setup and the data used? }
+
+In order to derive the probability that a uniformly distributed random pixel is a vein, $p$ (\ref{eq:proba}), the \textit{analyze\_single\_image} algorithm processes the set of images captured by two cameras. The algorithm iterates through \(20\) people, left and right, \(5\) trials, processing each combination for each camera. For each combination of person, side, finger, and trial for camera \(i\), the algorithm increments an array, \textit{veins[i]}, which accumulates vein detections for each pixel position across all processed images for that camera. It also increments a counter, \textit{image\_count[i]}, keeping track of the number of images processed for each camera. 
+After processing all images, the algorithm calculates the probability of each pixel being a vein by dividing the sum of vein detections across both cameras by the sum of the image counts for both cameras. Through this process, we have determined the probability that a randomly selected pixel represents a vein to be \(3.3\%\).
 
 
 \subsection{Part 3}

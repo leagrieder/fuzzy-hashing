@@ -30,7 +30,7 @@ In the case where the parameters are m = 1, key is random, and k is uniformly di
         &= preHash_{key}^1(Y)]\\
         &= \sum_{i > 0} Pr[X_k = Y_k = 0]^{i - 1} Pr[X_k = Y_k = 1]\\
         &= \frac{Pr[X_k = Y_k = 1]}{1 - Pr[X_k = Y_k = 0]}\\
-        &= \frac{HW(X \land Y)}{HW(X) + HW(Y) + - HW(X \land Y)}\\
+        &= \frac{HW(X \land Y)}{HW(X) + HW(Y) - HW(X \land Y)}\\
         &= \frac{1}{\frac{1}{Score(X, Y)} - 1}
     \end{aligned}
 \end{equation}

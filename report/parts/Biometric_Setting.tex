@@ -1,15 +1,13 @@
 \include{Introduction.tex}
 \section{Biometric Setting}
-This section provides a comprehensive overview of the mathematical and technical aspects involved in fingervein matching, which is essential for comprehending the subsequent discussions in this paper. Additionally, we will provide insight into the process of obtaining these equations and statements, evaluating their relevance and implications within the context of our research. 
+This section provides a comprehensive overview of the mathematical and technical aspects involved in fingervein matching, which is essential for comprehending the subsequent discussions in this paper. Additionally, insights into the process of obtaining these equations and statements will be provided, evaluating their relevance and implications within the context of the research. 
 
 \subsection{Biometric Data and Similarity Scores}
-%biometric template = is the reference model obtained from the finger images, represented as a vector
-%Biometric capture = actual data obtained from the finger image during enrollement or authentication, represented as a bitstring X of length n
 We begin by delving into the representation of the biometric data. Finger images, designated as biometric templates and formated as \(250\)x\(386\), result in n = \(96'500\) pixels per image. To enhance processing efficiency, these templates are converted into vectors, departing from their original 2-dimension image structure. 
 
 In the biometric context, each finger serves as a biometric subject, with a corresponding biometric capture represented as a bitstring \(X\) of length \(n\). This capture encapsulates the specific vein pixel information extracted from the finger image, while the biometric template serves as a reference mode derived from these images. 
 
-Each of the \(n\) bits of the biometric capture is designated as \(X_1\),..., \(X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. In the case where \(i\) is a \hyperref[def:Uniform Distribution]{uniformly distributed} random index and \(X\) is randomly chosen, we define the probability of pixel \(X_i\) being a vein 
+Each of the \(n\) bits of the biometric capture is designated as \(X_1\),..., \(X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. In the case where \(i\) is a \hyperref[def:Uniform Distribution]{uniformly distributed} random index and \(X\) is randomly chosen, the probability of pixel \(X_i\) being a vein is defined as follows:
 
 \begin{equation} \label{eq:proba}
     Pr[X_i = 1] = p \approx 3.3 \% 
@@ -26,7 +24,7 @@ In biometric authentication and identification, the uniqueness of each biometric
 
 where \(HW\) denotes the \hyperref[def:Hamming Weight]{Hamming Weight} and \(d_H\) the \hyperref[def:Hamming Distance]{Hamming Distance}. 
 
-In conjunction with the scoring mechanism, Miura matching emerges as a specialized technique for comparing biometric samples. This method entails determining an optimal offset translation, denoted as \(d_X\) and \(d_Y\), between two biometric samples to align their features for comparison, thereby compensating for differences in positioning or orientation. The alignment process is maximizes the similarity score, defined as:
+In conjunction with the scoring mechanism, Miura matching emerges as a specialized technique for comparing biometric samples. This method entails determining an optimal offset translation, denoted as \(d_X\) and \(d_Y\), between two biometric samples to align their features for comparison, thereby compensating for differences in positioning or orientation. The alignment process maximizes the similarity score, defined as:
 
 \[Score = \text{Score}(d_X \cdot X, d_Y \cdot Y)\]
 
@@ -46,7 +44,7 @@ The probability of the \(i\)-th pixel of two captures not being the same after a
     \end{aligned}
 \end{equation}
 
-It is crucial to distinguish between the types of distributions associated with the two captures. When both captures originate from the same biometric subject, we refer to it as the $\delta_{same}$. Conversely, if the captures are from different subjects, we label it as $\delta_{diff}$. Additionally, when \(X\) and \(Y\) consist of \(2n\) independent random bits with an expected value of \(p\) and no optimal offset is applied, we classify it as $\delta_{indep}$ In this scenario, \(\delta_{indep}\) = \(2p(1-p)\). These distinctions produce the following figures: 
+Distinguishing between the types of distributions associated with the two captures is crucial. When both captures originate from the same biometric subject, it is referred to as the $\delta_{same}$. Conversely, if the captures are from different subjects, it is labeled as $\delta_{diff}$. Additionally, when \(X\) and \(Y\) consist of \(2n\) independent random bits with an expected value of \(p\) and no optimal offset is applied, it is classified as $\delta_{indep}$ In this scenario, \(\delta_{indep}\) = \(2p(1-p)\). These distinctions produce the following figures: 
 
 \begin{table}[H]
     \centering
@@ -60,7 +58,7 @@ It is crucial to distinguish between the types of distributions associated with 
 \caption{Comparison of Distributions: $\delta_{same}$, $\delta_{diff}$, and $\delta_{indep}$}
 \end{table}
 
-Utilizing $p$ (\ref{eq:proba}) and $\delta$ (\ref{eq:delta}), we derive the joint distribution for (\(\bar{X}_j\), \(\bar{Y}_j\)) across \(j\) random instances:
+Utilizing $p$ (\ref{eq:proba}) and $\delta$ (\ref{eq:delta}), the joint distribution for (\(\bar{X}_j\), \(\bar{Y}_j\)) across \(j\) random instances is derived:
 
 \begin{table}[H]
     \centering
@@ -79,7 +77,7 @@ Utilizing $p$ (\ref{eq:proba}) and $\delta$ (\ref{eq:delta}), we derive the join
 
 \subsection{Experimental Derivation of the Probability \(p\)}
 
-In order to derive the probability that a uniformly distributed random pixel is a vein, $p$ (\ref{eq:proba}), we utilized a dataset comprising 20 unique individuals. Each individual contributed images of both right and left index/middle fingers, with 5 trials per finger, captured using 2 different cameras. This methodology resulted in a comprehensive dataset of 800 images. As described in Section~\ref{sec:extraction-pipeline}, we implemented Simon's optimal pipeline to extract the feature vectors from each image in the dataset (refer to Figure~\ref{pipeline_simon}). Building on preliminary work by Burcu, we further analyzed these feature vectors to gain statistical insights into vein patterns.
+In order to derive the probability that a uniformly distributed random pixel is a vein, $p$ (\ref{eq:proba}), a dataset of 20 unique individuals was utilized. Each individual contributed images of both right and left index/middle fingers, with 5 trials per finger, captured using 2 different cameras. This methodology resulted in a comprehensive dataset of 800 images. Following the approach in Section~\ref{sec:extraction-pipeline}, Simon's optimal pipeline was implemented to extract the feature vectors from each image in the dataset (refer to Figure~\ref{pipeline_simon}). Subsequently, statistical analysis was performed on these feature vectors to gain insights into vein patterns, building on the preliminary work by Burcu. 
 
 This analysis is carried out by the \textit{analyze\_single\_image} algorithm, located in the \textit{Fuzzy\_Hashing/experiment\_p\_value/verify\_p\_parameter.ipynb} notebook. The algorithm processes the dataset's feature vectors, performing two main functions:
 \begin{enumerate}
@@ -87,7 +85,7 @@ This analysis is carried out by the \textit{analyze\_single\_image} algorithm, l
     \item It maintains a count of the number of images analyzed per camera \(i={1,2}\) in the \textit{image\_count[i]} array.
 \end{enumerate}
 
-Following the processing of all feature vectors, the algorithm computes the probability of a pixel being part of a vein by dividing the aggregated vein detections by the total number of images analyzed, across both cameras. We generated visual representations depicting the distribution of detected vein pixels for each camera individually and for the combined data from both cameras.
+Following the processing of all feature vectors, the algorithm computes the probability of a pixel being part of a vein by dividing the aggregated vein detections by the total number of images analyzed, across both cameras. Visual representations were generated to illustrate the distribution of detected vein pixels for each camera individually and for the combined data from both cameras.
 
 \begin{enumerate}
     \item \textbf{Camera 1 and Camera 2 distribution}: The following histograms showcase the frequency distribution of vein pixels detected in images captured by Camera 1 and 2 individually, with a Gaussian fit overlaid to highlight the data's normal distribution trend.
@@ -107,7 +105,7 @@ Following the processing of all feature vectors, the algorithm computes the prob
     \end{figure}
 
 
-    \item \textbf{Combined Cameras Distribution}: To understand the aggregate behavior of vein detection across both cameras, we merged the data, generating a comprehensive histogram with a Gaussian fit.
+    \item \textbf{Combined Cameras Distribution}: To understand the aggregate behavior of vein detection across both cameras, the data was merged, generating a comprehensive histogram with a Gaussian fit.
 
     \begin{figure}[H]
         \centering
@@ -118,7 +116,7 @@ Following the processing of all feature vectors, the algorithm computes the prob
 
 \end{enumerate}
 
-Concluding our analysis of the vein pixel distribution across different camera captures and their aggregate dataset, we computed the average probability \(p\) that a given pixel corresponds to a vein. The process involved summing up all vein-identifying pixels within the datasets for Camera 1, Camera 2, and the combined dataset. We then divided this sum by the total number of pixels processed, multiplying the count of images by the total pixels per image, to ascertain the average likelihood \(p\) that any randomly selected pixel is part of a vein pattern.
+Concluding the analysis of the vein pixel distribution across different camera captures and their aggregate dataset, the average probability \(p\) that a given pixel corresponds to a vein was computed. This involved summing up all vein-identifying pixels within the datasets for Camera 1, Camera 2, and the combined dataset. Subsequently, this sumwas divided by the total number of pixels processed, multiplying the count of images by the total pixels per image, to ascertain the average likelihood \(p\) that any randomly selected pixel is part of a vein pattern.
 
 The findings from this analysis revealed the following probabilities:
 \begin{enumerate}

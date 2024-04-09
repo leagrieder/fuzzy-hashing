@@ -16,4 +16,8 @@
 
     \item[Hamming Weight] \label{def:Hamming Weight} The number of 1's in a biometric string, indicating the presence of veins.
 
+    \item[AES in CTR mode] \label{def:AES CTR mode} AES in Counter (CTR) mode is an encryption method that transforms a block cipher into a stream cipher. It achieves this by encrypting sequential counter values using AES. Each counter value is unique for each block of data, typically starting from an initial nonce (number used once) and incremented for subsequent blocks. This encryption method is traditionally used to encrypt data by generating a sequence of encrypted counters, which are then XORed with plaintext to produce ciphertext, allowing for encryption of arbitrary-sized data without padding. However, in the context of fuzzy hashing for biometric matching, AES-CTR is repurposed to generate a pseudorandom sequence, not for encrypting data but for selecting specific indices from a biometric template. This application leverages AES-CTR's cryptographic strength to ensure unpredictability and determinism in the selection process.
+
+    \item[SHA-256 Hash] \label{def:SHA-256} SHA-256 is a cryptographic hash function in the SHA-2 family that produces a fixed-size 256-bit (32-byte) hash value from an input of arbitrary length. It has three fundamental properties: pre-image resistance, making it computationally infeasible to reverse the hash to find the original input; second pre-image resistance, preventing the discovery of a different input producing the same hash as a given input; and collision resistance, making it highly unlikely to find two different inputs that yield the same hash output. These properties ensure data integrity and security across various digital applications.
+
 \end{description}

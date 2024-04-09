@@ -1,28 +1,53 @@
+\include{Introduction.tex}
+
 \section{Fuzzy Hashing}
 \label{sec:Fuzzy Hashing}
-Fuzzy hashing produces consistent cryptographic keys for similar but not identical inputs, enabling recognition of the same biometric trait across different instances despite slight variations. This approach ensures legitimate users are not incorrectly denied access due to minor discrepancies and protects user privacy by storing and using hashed values instead of raw biometric data, making it difficult to reverse-engineer the original data even if unauthorized access occurs. 
-In this section, we will delve into the fuzzy hashing algorithm, its corresponding mathematical aspects, conduct experiments, and discuss the results obtained.
-\subsection{Algorithm Implementation}
+Fuzzy hashing, as opposed to traditional hashing, produces consistent cryptographic keys for similar but not identical inputs, enabling recognition of the same biometric trait across different instances despite slight variations. This approach ensures legitimate users are not incorrectly denied access due to minor discrepancies and protects user privacy by storing and using hashed values instead of raw biometric data, making it difficult to reverse-engineer the original data even if unauthorized access occurs. 
+In this section, we will delve into the implementation of the fuzzy hashing algorithm, its corresponding mathematical aspects, conduct experiments, and discuss the results obtained.
 
-The fuzzy hashing algorithm, known as \textit{preHash}, operates on three inputs: a parameter \(m\), a key \(key\), and an image of finger veins \(X\). It produces a \(m\)-tuple containing the \(m\) smallest indices \(i_j\) such that \(1 <= i_1 < ... < i_m\), and the corresponding pixel \(PRNG_{key}(i_j)\) in \(X\) is identified as vein pixel.
+\subsection{PreHashing Algorithm}
 
-In order to generate the tuple of indices, understanding the mechanics behind its creation is crucial. At the core of this system lies the pseudo-random number generator (PRNG), which operates by producing numbers uniformly and independently. This PRNG mechanism relies on the AES (Advanced Encryption Standard) block cipher functioning in counter (CTR) mode. AES processes data in fixed-size \(128\)-bit blocks. Leveraging AES' crpytographic properties, CTR mode combines a nonce (number only used once) with a counter, encrypting them with a secret key to generate a stream of seemingly random numbers. 
-The predictability of this sequence is entirely dictated by the chosen key and nonce. In essence, employing the same key and nonce combination will consistently yield an identical sequence of numbers. 
+The \textit{PreHash} algorithm is the first step in the fuzzy hashing process, designed to manipulate biometric templates extracted from finger vein patterns. It operates on a bitstring \(X\), representing the presence (1) or absence (0) of vein pixels across \(n\) pixels, where \(n=96'500\).
 
-To generate the nonce, we compute the SHA-256 hash of the key, resulting in a \(256\)-bit hash value. From this hash, we extract a \(128\)-bit value by slicing the first \(16\) bytes. Should a nonce already exist for a given instance, the system seamlessly preserves and reuses it. 
+Algorithm Inputs and Outputs:
+\begin{enumerate}
+    \item \textbf{Inputs}: The algorithm takes three main inputs:
+    \begin{itemize}
+        \item \textbf{A parameter m}: the number of indices to find
+        \item \textbf{A bitstring X}: the feature-extracted vein patterms of a biometric capture
+        \item \textbf{A key}: used to initialize a Pseudorandom Number Generator (PRNG)
+    \end{itemize}
+    \item \textbf{Output}: The algorithm outputs a tuple \((i1,...,im)\) consisting of the \(m\) smallest indices \(i_j\)​ such that \(1≤i1<...<im1≤i1​<...<im\)​ and the pixel at \(PRNGkey(ij)\) in \(X\) is identified as a vein pixel. 
+\end{enumerate}
 
-Upon receiving the parameters —key, nonce, and counter— CTR mode produces a \(128\)-bit pseudo-random number. However, to tailor the output to our requirements, we must mask it to \(17\) bits. This adjustment is essential because we aim to generate pseudo-random numbers within the range suitable for an image size, specifically \(96'500\) pixels, which necessitates \(17\) bits for representation. \textcolor{red}{(Faudrait-il écrire cela de manière plus générale? P.ex: produces a 128-bit prng which is then masked to an n bits...?)}
+Detailed Process of \textit{PreHash}:
+\begin{itemize}
+    \item \textbf{Initiallization}: Utilizing the provided key, the algorithm initializes a PRNG. This PRNG is based on the \hyperref[def:AES CTR mode]{Advanced Encryption Standard (AES) in Counter (CTR) mode}, ensuring the generation of uniform and independent pseudorandom sequences.
 
-The algorithm, preHash, generates \(m\) smallest indices, denoted by \(i_j\), such that \(j\in{[1, m]} \) and \(1 <= i_1 < ... < i_m\), where each \(i_j\) correponds to an index such that \(X_{PRNG_{key}(i_j)} = 1\). It achieves this by tracking visited indices to maintain uniqueness and avoid infinite loops, and by rigorously verifying that the PRNG stays within the specified bounds (\(< 96'500\) \textcolor{red}{n??}).   
+    \item \textbf{Nonce Generation}: A nonce, critical for the CTR mode's operation, is derived from the key using \hyperref[def:SHA-256]{SHA-256 hashing}, ensuring that each sequence produced by the PRNG is unique to the key-nonce pair. As the SHA-256 hash of the key results in a \(256\)-bit hash value, we extract from this hash a \(128\)-bit value by slicing the first \(16\) bytes.
 
-\textcolor{red}{mettre le pseudocode?}
+    \item \textbf{Pseudorandom Sequence Generation}: Upon receiving the parameters —key, nonce, and counter— the PRNG utilizes CTR mode to produce a \(128\)-bit pseudo-random number. However, to tailor the output to our requirements, we must mask it to \(17\) bits. This adjustment is essential because we aim to generate pseudo-random numbers within the range suitable for an image size, specifically \(96'500\) pixels, which necessitates \(17\) bits for representation\footnote{\(\lceil \log_2(96'500) \rceil = 17\)}. The predictability of this sequence is entirely dictated by the chosen key. In essence, employing the same key will consistently yield an identical nonce and hence an identical sequence of numbers.
 
-\subsection{Mathematical Concepts}
-\textcolor{red}{Not sure how to explain the math, its relevance et comment faire des liens pour passer d'une équations à une autre}
+    \item \textbf{Selection of Indices}: The algorithm iterates through the generated pseudorandom sequence, selecting the first \(m\) indices corresponding to vein pixels in the biometric template \(X\). This selection process involves a careful mechanism to ensure the uniqueness and proper ordering of indices.
 
-After processing within the pipeline and application of the \textit{preHash} algorithm to the finger vein data, the resulting output consists of indices. 
+    \item \textbf{Handling of Non-Vein Pixels}: In scenarios where the specified number of vein pixels \(m\) cannot be found due to the absence of sufficient vein pixels within the biometric template, the algorithm has a built-in mechanism to handle such situations, ensuring robustness and adaptability to varying biometric inputs.
 
-In the case where the parameters are m = 1, key is random, and k is uniformly distributed random index, we have: 
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{latex-img/pseudocode_preHash.png}
+    \caption{\textit{preHash} Algorithm}
+    \label{preHash Algorithm}
+\end{figure}
+
+The algorithm, preHash, illustrated in Figure~\ref{preHash Algorithm} generates \(m\) smallest indices, denoted by \(i_j\), such that \(j\in{[1, m]} \) and \(1 <= i_1 < ... < i_m\), where each \(i_j\) correponds to an index such that \(X_{PRNG_{key}(i_j)} = 1\). It achieves this by tracking visited indices to maintain uniqueness and avoid infinite loops, and by rigorously verifying that the numbers produced by PRNG (PRNG[i]) stay within the specified bounds \(0 < \text{PRNG}[i] \leq n\) for \(0 \leq i \leq m\). We have implemented this algorithm in the \textit{Fuzzy\_Hashing/resources/fuzzy\_hashing/fuzzy\_hash.py} script of our project. 
+
+\subsection{Assessing Similarity of Biometric Inputs After PreHash Application}
+
+After the finger images are processed through the pipeline described in Pipeline~\ref{pipeline_simon} to extract their feature vectors, and the \textit{preHash} algorithm is applied, the outcome is a set of indices that fall within the inclusive range \(1 \leq \text{PRNG}[i] \leq n\) for each \(i\), where \(i\) ranges from \(0\) up to \(m\), effectively mapping each selected feature to a unique index within the feature vector's length.
+
+In the context of a simplified scenario where the hash length parameter (\(m\)) is set to 1, implying the generation of a single-index hash, and assuming a randomly chosen key for the \textit{preHash} algorithm, along with \(k\) representing a uniformly distributed random index, the probability that the preHash operation yields the same index for two different inputs \(X\) and \(Y\) can be mathematically delineated as follows:
 
 \begin{equation} \label{eq:preHash1}
     \begin{aligned}
@@ -35,7 +60,9 @@ In the case where the parameters are m = 1, key is random, and k is uniformly di
     \end{aligned}
 \end{equation}
 
-We notice that there is a direct link with the Miura matching score that we are interested in. The above computation can also be expressed as follows:
+This equation encapsulates the likelihood of 2 images, \(X\) and \(Y\), having their singular hash index coincide, based on the presence of matching features identified by the algorithm. The final form of the equation relates the probability to the scoring function between \(X\) and \(Y\), inversely proportional to the score minus one. The score here reflects the normalized measure of similarity between the two images, based on their feature overlap.
+
+We notice that there is a direct link with the Miura matching score that we are interested in. The direct link between the preHash algorithm's outcomes and the Miura matching score lies in their shared foundation of evaluating biometric similarities. Specifically, both methodologies utilize Hamming weight and bitwise operations to assess the overlap between biometric samples, such as finger vein patterns. The preHash algorithm, through its probabilistic formula, quantifies the likelihood of matching indices based on feature presence, closely paralleling the Miura score's approach of comparing binary patterns to derive a similarity score. The above computation can also be expressed as follows:
 
 \begin{equation} \label{eq:preHash2}
     \begin{aligned}
@@ -44,12 +71,13 @@ We notice that there is a direct link with the Miura matching score that we are 
     \end{aligned}
 \end{equation}
 
-
 Inspired by equations \ref{eq:proba} and \ref{eq:delta}, we make the following approximations:
 
 \begin{equation}
     E\left(\frac{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} - \frac{1}{2}Pr[\bar{X}_l \neq \bar{Y}_k]}{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} + \frac{1}{2}Pr[\bar{X}_l \neq \bar{Y}_k]}\right) \approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}}
 \end{equation}
+
+The core of this approximation revolves around the expectation formula, which integrates probabilities of feature presence \(Pr[Xk=1]+Pr[Yk=1]\) and the likelihood of discrepancies between \(X\) and \(Y\), \(Pr[\bar{X}_l \neq \bar{Y}_k]\). This formula essentially aims to quantify the similarity between two biometric samples by considering both the concurrence of features and the instances where they diverge.
 
 Hence for (\(X\), \(Y\)) random,
 
@@ -88,7 +116,7 @@ Finally, we have
 where equality is reached for the optimal offset translations.
 
 %This includes determining the upper limits for the probabilities of similarity between different finger veins processed through the same fuzzy hashing parameters. 
-\subsection{Part 3}
+\subsection{Experimental Derivation of the Probabilities \(\mu_{\text{same}}, \mu_{\text{diff}}, \mu_{\text{indep}}\)}
 
 % Start this subsection by introducing the mathematical and theoretical concepts that underpin fuzzy hashing. Discuss the relevance of these concepts in the context of biometric data, focusing on how they enable the creation of reliable and secure hashing mechanisms for inherently noisy data.
 

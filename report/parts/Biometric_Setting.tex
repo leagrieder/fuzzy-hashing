@@ -26,11 +26,11 @@ In biometric authentication and identification, the uniqueness of each biometric
 
 where \(HW\) denotes the \hyperref[def:Hamming Weight]{Hamming Weight} and \(d_H\) the \hyperref[def:Hamming Distance]{Hamming Distance}. 
 
-In conjunction with the scoring mechanism, Miura matching emerges as a specialized technique for comparing biometric samples. This method entails determining an optimal offset translation, denoted as \(d_X\) and \(d_Y\), between two biometric samples to align their features for comparison, thereby compensating for differences in positioning or orientation. The similarity score, which guides the alignment, is maximized by adjusting these offsets and is defined as:
+In conjunction with the scoring mechanism, Miura matching emerges as a specialized technique for comparing biometric samples. This method entails determining an optimal offset translation, denoted as \(d_X\) and \(d_Y\), between two biometric samples to align their features for comparison, thereby compensating for differences in positioning or orientation. The alignment process is maximizes the similarity score, defined as:
 
 \[Score = \text{Score}(d_X \cdot X, d_Y \cdot Y)\]
 
-Upon determining the optimal offsets, \(d_X\) and \(d_Y\), we apply these to the original samples to achieve alignment. The resulting aligned positions are represented as \(\bar{X}\) and \(\bar{Y}\), calculated as follows:
+Once the optimal offsets, \(d_X\) and \(d_Y\), are determined, they are applied to the original samples for alignment. This results in the calculated aligned positions, denoted as \(\bar{X}\) and \(\bar{Y}\), such that:
 
 \[\bar{X} = d_X \cdot X\]
 \[\bar{Y} = d_Y \cdot Y\]

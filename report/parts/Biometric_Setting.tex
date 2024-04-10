@@ -3,6 +3,7 @@
 This section provides a comprehensive overview of the mathematical and technical aspects involved in fingervein matching, which is essential for comprehending the subsequent discussions in this paper. Additionally, insights into the process of obtaining these equations and statements will be provided, evaluating their relevance and implications within the context of the research. 
 
 \subsection{Biometric Data and Similarity Scores}
+\label{Bio_data_sim_scores}
 We begin by delving into the representation of the biometric data. Finger images, designated as biometric templates and formated as \(250\)x\(386\), result in n = \(96'500\) pixels per image. To enhance processing efficiency, these templates are converted into vectors, departing from their original 2-dimension image structure. 
 
 In the biometric context, each finger serves as a biometric subject, with a corresponding biometric capture represented as a bitstring \(X\) of length \(n\). This capture encapsulates the specific vein pixel information extracted from the finger image, while the biometric template serves as a reference mode derived from these images. 
@@ -77,7 +78,7 @@ Utilizing $p$ (\ref{eq:proba}) and $\delta$ (\ref{eq:delta}), the joint distribu
 
 \subsection{Experimental Derivation of the Probability \(p\)}
 
-In order to derive the probability that a uniformly distributed random pixel is a vein, $p$ (\ref{eq:proba}), a dataset of 20 unique individuals was utilized. Each individual contributed images of both right and left index/middle fingers, with 5 trials per finger, captured using 2 different cameras. This methodology resulted in a comprehensive dataset of 800 images. Following the approach in Section~\ref{sec:extraction-pipeline}, Simon's optimal pipeline was implemented to extract the feature vectors from each image in the dataset (refer to Figure~\ref{pipeline_simon}). Subsequently, statistical analysis was performed on these feature vectors to gain insights into vein patterns, building on the preliminary work by Burcu. 
+In order to derive the probability that a uniformly distributed random pixel is a vein, $p$ (\ref{eq:proba}), a dataset of 20 unique individuals was utilized. Each individual contributed images of both right and left index/middle fingers, with 5 trials per finger, captured using 2 different cameras. This methodology resulted in a comprehensive dataset of 800 images. Following the approach in Section~\ref{sec:extraction-pipeline}, Simon's optimal pipeline was implemented to extract the feature vectors from each image in the dataset (refer to Figure~\ref{pipeline_simon}). Subsequently, statistical analysis was performed on these feature vectors to gain insights into vein patterns, building on the preliminary work by Burcu. It's important to note that the calculation of the probability \(p\) does not take into account any postalignment method, like Miura Matching, even though the code might seem like it does.
 
 This analysis is carried out by the \textit{analyze\_single\_image} algorithm, located in the \textit{Fuzzy\_Hashing/experiment\_p\_value/verify\_p\_parameter.ipynb} notebook. The algorithm processes the dataset's feature vectors, performing two main functions:
 \begin{enumerate}
@@ -128,8 +129,31 @@ The findings from this analysis revealed the following probabilities:
     
 \end{enumerate}
 
-These results underscore the subtle variances in vein detection probabilities between the two cameras, while also offering a comprehensive view when the datasets are merged. The close proximity of these probabilities across the datasets underscores the consistency in vein pattern detection capabilities of the imaging setups, as well as the robustness of the methodology applied for analyzing vein patterns in biometric data.
-
 \subsection{Experimental Derivation of the Probabilities \(\delta_{\text{same}}, \delta_{\text{diff}}, \delta_{\text{indep}}\)}
 
-% A voir si cela nous semble nécessaire de faire un dernier chapitre de conclusion sur nos résultats trouvés experimentalement ou bien si on intègre direct dans les 2 dernières subsections ci dessus
+To assess the probability that the i-th pixel of two captures diverges after applying the optimal offset translations \( d_X \) and \( d_Y \) (Equation (\ref{eq:delta})), we undertake additional experimental analysis located in the \textit{experiment\_delta\_value} directory within our \textit{Fuzzy\_Hashing} framework. This investigation continues to utilize the same dataset comprising 20 distinct individuals. Here, the post-alignment process, specifically Miura Matching, is included in our examination as the calculation formula integrates this step. As detailed in Section~\ref{Bio_data_sim_scores}, our objective is to evaluate three distinct delta values: \(\delta_{\text{same}}, \delta_{\text{diff}}, \delta_{\text{indep}}\). The computation of \( \delta_{\text{indep}} \) is relatively straightforward, having determined the value of \( p \). The formula for \( \delta_{\text{indep}} \) relies solely on \( p \), allowing us to express it as:
+
+\[ \delta_{\text{indep}} = 2p(1 - p) = 2 \times 0.0329 \times (1 - 0.0329) \approx 0.064 \]
+
+This result provides an estimated 6.4\% independent delta value.
+
+To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \), a meticulous procedure was executed on our dataset, which involves 20 unique individuals, each having multiple biometric captures. Below is an outline of the methodology applied:
+
+\begin{enumerate}
+    \item \textbf{Pairwise Comparison}: For each individual, we compared every biometric capture to every other capture within the dataset, applying the Hamming distance metric to compute the normalized distances.
+    \item \textbf{Statistical Analysis}: We organized the resulting distances into two distinct categories:
+    \begin{itemize}
+        \item Intra-individual distances, where captures from the same individual (same finger images) were compared, forming the first group.
+        \item Inter-individual distances, comprising comparisons between biometric captures from different individuals, forming the second group.
+    \end{itemize}
+    \item \textbf{Probability Computation}:
+    \begin{itemize}
+        \item For \( \delta_{\text{same}} \), we averaged the normalized distances of the intra-individual comparisons, which furnished us with the probability of observing a difference between captures from the same individual after alignment.
+        \item For \( \delta_{\text{diff}} \), we performed a similar averaging of the normalized distances from the inter-individual comparisons, thereby obtaining the probability that captures from different individuals would differ.
+    \end{itemize}
+\end{enumerate}
+
+
+
+
+

@@ -34,6 +34,12 @@
 \usepackage{multirow}
 \usepackage{multicol}
 
+% For references
+\usepackage[backend=biber, style=numeric, citestyle=numeric]{biblatex}
+\addbibresource{parts/References.bib}
+
+\DeclareFieldFormat{labelnumber}{\textcolor{blue}{#1}} % Predefined color
+
 
 \usepackage{tikz}
 \usetikzlibrary{arrows}
@@ -49,6 +55,7 @@
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
+    urlcolor = black,
     linktoc=all,
     linkcolor=blue,
 }
@@ -138,8 +145,7 @@
 \input{parts/Definitions.tex}
 
 \newpage
-
-\appendix
+\printbibliography[heading=bibintoc, title={References}]
 
 \end{document}
 

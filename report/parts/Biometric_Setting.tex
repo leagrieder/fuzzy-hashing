@@ -153,6 +153,15 @@ To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \)
     \end{itemize}
 \end{enumerate}
 
+The joint probability distribution presented in Table 2 represents the relationship between the variables \(\bar{X}_i\) and \(Y_i\), which compare the i-th bit of two biometric samples. The parameter \(p\) denotes the probability of a bit being '1', and by complement, \(1-p\) signifies the probability of a bit being '0'. The parameter \(\delta\) encapsulates the probability that the two bits are not identical, which can occur due to various sources of error in biometric comparison. 
+
+In the table, the entry \(P(X_i = 0, Y_i = 0)\) corresponds to the probability of both bits being '0'. In the absence of any discrepancies (\(\delta = 0\)), this probability would be simply the product of the individual probabilities, \((1-p)^2\). However, considering that discrepancies do occur with probability \(\delta\), and that there are two distinct ways in which the bits can differ (\(X_i = 0, Y_i = 1\) and \(X_i = 1, Y_i = 0\)), we must adjust for these potential errors. Since these two error scenarios are mutually exclusive and equally likely, we subtract half the error probability, \(\frac{\delta}{2}\), from \((1-p)^2\) to obtain \(1-p-\frac{\delta}{2}\) for the probability \(P(X_i = 0, Y_i = 0)\).
+
+The probability \(P(X_i = 1, Y_i = 1)\) is derived in an analogous manner. Without errors, it would be \(p^2\), but we must also adjust for the likelihood of discrepancies by subtracting \(\frac{\delta}{2}\). Hence, the probability is given by \(p-\frac{\delta}{2}\).
+
+Lastly, the probabilities \(P(X_i = 0, Y_i = 1)\) and \(P(X_i = 1, Y_i = 0)\) directly represent the scenarios where the bits differ. As there are only two such cases that contribute to \(\delta\), each is allocated a probability of \(\frac{\delta}{2}\). This division ensures that the total probability of discrepancy \(\delta\) is evenly distributed among the two possible error states.
+
+The construction of this joint distribution is crucial for modeling the behavior of biometric systems, facilitating the assessment of system accuracy by quantifying the likelihood of matching errors.
 
 
 

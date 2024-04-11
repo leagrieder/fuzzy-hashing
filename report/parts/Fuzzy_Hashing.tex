@@ -51,8 +51,8 @@ In the context of a simplified scenario where the hash length parameter (\(m\)) 
 
 \begin{equation} \label{eq:preHash1}
     \begin{aligned}
-        Pr[preHash_{key}^1(X) = preHash_{key}^1(Y)] &= \sum_{i > 0} Pr[preHash_{key}^1(X)\\
-        &= preHash_{key}^1(Y)]\\
+        Pr[preHash_{key}^1(X) = preHash_{key}^1(Y)] &= \sum_{i > 0} Pr[preHash_{key}^1(X)]\\
+        &= preHash_{key}^1(Y)\\
         &= \sum_{i > 0} Pr[X_k = Y_k = 0]^{i - 1} Pr[X_k = Y_k = 1]\\
         &= \frac{Pr[X_k = Y_k = 1]}{1 - Pr[X_k = Y_k = 0]}\\
         &= \frac{HW(X \land Y)}{HW(X) + HW(Y) - HW(X \land Y)}\\
@@ -60,7 +60,7 @@ In the context of a simplified scenario where the hash length parameter (\(m\)) 
     \end{aligned}
 \end{equation}
 
-This equation encapsulates the likelihood of 2 images, \(X\) and \(Y\), having their singular hash index coincide, based on the presence of matching features identified by the algorithm. The final form of the equation relates the probability to the scoring function between \(X\) and \(Y\), inversely proportional to the score minus one. The score here reflects the normalized measure of similarity between the two images, based on their feature overlap.
+This equation encapsulates the likelihood of 2 images, \(X\) and \(Y\), having their singular hash index coincide, based on the presence of matching features identified by the algorithm. The final form of the equation relates the probability to the scoring function between \(X\) and \(Y\), inversely proportional to the score minus one.
 
 It is noticed that there is a direct link with the Miura matching score that is of interest. The direct link between the \textit{preHash} algorithm's outcomes and the Miura matching score lies in their shared foundation of evaluating biometric similarities. Specifically, both methodologies utilize Hamming weight and bitwise operations to assess the overlap between biometric samples, such as finger vein patterns. The \textit{preHash} algorithm, through its probabilistic formula, quantifies the likelihood of matching indices based on feature presence, closely paralleling the Miura score's approach of comparing binary patterns to derive a similarity score. The above computation can also be expressed as follows:
 

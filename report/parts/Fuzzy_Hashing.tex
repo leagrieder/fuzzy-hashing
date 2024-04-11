@@ -30,7 +30,7 @@ Detailed Process of \textit{PreHash}:
 
     \item \textbf{Selection of Indices}: The algorithm iterates through the generated pseudorandom sequence, selecting the first \(m\) indices corresponding to vein pixels in the biometric template \(X\). This selection process involves a careful mechanism to ensure the uniqueness and proper ordering of indices.
 
-    \item \textbf{Handling of Non-Vein Pixels}: In scenarios where the specified number of vein pixels \(m\) cannot be found due to the absence of sufficient vein pixels within the biometric template, the algorithm has a built-in mechanism to handle such situations, ensuring robustness and adaptability to varying biometric inputs.
+    \item \textbf{Handling the Case \(m >\) (Number of 1's in Vein Image)}: In scenarios where the specified number of vein pixels \(m\) cannot be found due to the absence of sufficient vein pixels within the biometric template, the algorithm incorporates a built-in mechanism to address such situations. Before executing the prehash algorithm, it iterates through the image and verifies if the count of pixels equal to 1 is less than \(m\).
 
 \end{itemize}
 
@@ -41,13 +41,13 @@ Detailed Process of \textit{PreHash}:
     \label{preHash Algorithm}
 \end{figure}
 
-The algorithm, preHash, illustrated in Figure~\ref{preHash Algorithm} generates \(m\) smallest indices, denoted by \(i_j\), such that \(j\in{[1, m]} \) and \(1 <= i_1 < ... < i_m\), where each \(i_j\) correponds to an index such that \(X_{PRNG_{key}(i_j)} = 1\). It achieves this by tracking visited indices to maintain uniqueness and avoid infinite loops, and by rigorously verifying that the numbers produced by PRNG (PRNG[i]) stay within the specified bounds \(\text{PRNG}[i] \in (0, n] \text{ for } i \in [0, m]\). The algorithm has been implemented within the project's \textit{Fuzzy\_Hashing/resources/fuzzy\_hashing/fuzzy\_hash.py} script. 
+The algorithm, preHash, illustrated in Figure~\ref{preHash Algorithm} generates \(m\) smallest indices, denoted by \(i_j\), such that \(j\in{[1, m]} \) and \(1 <= i_1 < ... < i_m\), where each \(i_j\) correponds to an index such that \(X_{PRNG_{key}(i_j)} = 1\). It achieves this by rigorously verifying that the numbers produced by PRNG (PRNG[i]) stay within the specified bounds \(\text{PRNG}[i] \in (0, n] \text{ for } i \in [0, m]\).
 
 \subsection{Assessing Similarity of Biometric Inputs After PreHash Application}
 
 After the finger images are processed through the pipeline described in Pipeline~\ref{pipeline_simon} to extract their feature vectors, and the \textit{preHash} algorithm is applied, the outcome is a set of indices that fall within the inclusive range \(\text{PRNG}[i] \in (0, n] \text{ for } i \in [0, m]\), effectively mapping each selected feature to a unique index within the feature vector's length.
 
-In the context of a simplified scenario where the hash length parameter (\(m\)) is set to 1, implying the generation of a single-index hash, and assuming a randomly chosen key for the \textit{preHash} algorithm, along with \(k\) representing a uniformly distributed random index, the probability that the preHash operation yields the same index for two different inputs \(X\) and \(Y\) can be mathematically delineated as follows:
+In the context of a simplified scenario where the hash length parameter (\(m\)) is set to 1, implying the generation of a single-index hash, and assuming a randomly chosen key for the \textit{preHash} algorithm, along with \(k\) representing a uniformly distributed random index, the probability that the \textit{preHash} operation yields the same index for two different inputs \(X\) and \(Y\) can be mathematically delineated as follows:
 
 \begin{equation} \label{eq:preHash1}
     \begin{aligned}

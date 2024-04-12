@@ -106,7 +106,6 @@ Following the processing of all feature vectors, the algorithm computes the prob
         \label{distribution_veins_cam2}
     \end{figure}
 
-
     \item \textbf{Combined Cameras Distribution}: To understand the aggregate behavior of vein detection across both cameras, the data was merged, generating a comprehensive histogram with a Gaussian fit.
 
     \begin{figure}[H]
@@ -149,8 +148,27 @@ To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \)
     \end{itemize}
     \item \textbf{Probability Computation}:
     \begin{itemize}
-        \item For \( \delta_{\text{same}} \), we averaged the normalized distances of the intra-individual comparisons, which furnished us with the probability of observing a difference between captures from the same individual after alignment.
-        \item For \( \delta_{\text{diff}} \), we performed a similar averaging of the normalized distances from the inter-individual comparisons, thereby obtaining the probability that captures from different individuals would differ.
+        \item For \( \delta_{\text{same}} \), we averaged the normalized distances of the intra-individual comparisons, which furnished us with the following probability for observing a difference between captures from the same individual after alignment:
+
+        \[ \delta_{\text{same}} \approx 0.046 \]
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.9\linewidth]{latex-img/delta_same.png}
+            \caption{Frequency Distribution of Normalized Hamming Distances for Identical Biometric Samples with alignment}
+            \label{delta_same}
+        \end{figure}
+
+        \item For \( \delta_{\text{diff}} \), we performed a similar averaging of the normalized distances from the inter-individual comparisons, which furnished us with the following probability for observing a difference between captures from the different individuals after alignment:
+
+        \[ \delta_{\text{diff}} \approx 0.06 \]
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.9\linewidth]{latex-img/delta_diff.png}
+            \caption{Frequency Distribution of Normalized Hamming Distances for Different Biometric Samples with alignment}
+            \label{delta_diff}
+        \end{figure}
     \end{itemize}
 \end{enumerate}
 
@@ -165,6 +183,59 @@ In Table \ref{tab:joint_distribution}, we explain each entry:
     \item The probabilities \(P(\bar{X}_i = 0, \bar{Y}_i = 1)\) and \(P(\bar{X}_i = 1, \bar{Y}_i = 0)\) directly represent the scenarios where the bits differ. As there are only two such cases that contribute to \(\delta\), each is allocated a probability of \(\frac{\delta}{2}\).
 
 \end{itemize}
+
+Utilizing our calculated values for \(\delta_{same}\), \(\delta_{diff}\) and \(\delta_{indep}\), we can determine the corresponding probabilities presented in Table \ref{tab:joint_distribution}. This gives us the following figures:
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & $\bar{Y}_i = 0$ & $\bar{Y}_i = 1$\\
+        \hline
+        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{indep}}{2} = 0.935 $ & $\frac{\delta_{indep}}{2} = 0.032$\\
+        \hline
+        $\bar{X}_i = 1$ & $\frac{\delta_{indep}}{2} = 0.032 $ & $p - \frac{\delta_{indep}}{2} = 0.001$\\
+        \hline
+    \end{tabular}
+    \caption{Joint Distribution of ($\bar{X}_j$, $\bar{Y}_j$) for \(X\) and \(Y\) made up of \(2n\) independent random bits of expected value \(p\)}
+    \label{tab:joint_distribution_deltaindep}
+\end{table}
+
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & $\bar{Y}_i = 0$ & $\bar{Y}_i = 1$\\
+        \hline
+        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{same}}{2} = 0.944 $ & $\frac{\delta_{same}}{2} = 0.023$\\
+        \hline
+        $\bar{X}_i = 1$ & $\frac{\delta_{same}}{2} = 0.023$ & $p - \frac{\delta_{same}}{2} = 0.01$\\
+        \hline
+    \end{tabular}
+    \caption{Joint Distribution of ($\bar{X}_j$, $\bar{Y}_j$) for \(X\) and \(Y\)  Originating from the Same Biometric Subject}
+    \label{tab:joint_distribution_deltasame}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & $\bar{Y}_i = 0$ & $\bar{Y}_i = 1$\\
+        \hline
+        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{diff}}{2} = 0.937 $ & $\frac{\delta_{diff}}{2} = 0.03$\\
+        \hline
+        $\bar{X}_i = 1$ & $\frac{\delta_{diff}}{2} = 0.03$ & $p - \frac{\delta_{diff}}{2} = 0.003$\\
+        \hline
+    \end{tabular}
+    \caption{Joint Distribution of ($\bar{X}_j$, $\bar{Y}_j$) for \(X\) and \(Y\) Originating from Different Biometric Subject}
+    \label{tab:joint_distribution_deltadiff}
+\end{table}
+
+
 
 
 

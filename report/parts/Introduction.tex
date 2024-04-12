@@ -25,7 +25,7 @@ Following this process, the system evaluates whether the feature vector extracte
 
 This project extends the work on optimizing a finger-vein recognition pipeline that has demonstrated the lowest Equal Error Rate (EER) \hyperref[def:EER]{Equal Error Rate (EER)} by incorporating a novel hashing step to process the output of the pipeline. The purpose of integrating \hyperref[def:Hash_Function]{Hash Functions} within this context is multifold, but before delving into hash functions, which are central to our project, it's essential to outline the foundation upon which we have built our advancements. This initial context will provide a clearer understanding of the starting point from which our developments began.
 
-Simon Sommerhalder and Burcu Yildiz have both made significant contributions to the system. Simon introduced an innovative approach to the alignment of freshly captured images (probe images) with those stored in the system (model images), ensuring the hashing process (following the alignment of the finger)is based on the unique finger-vein pattern rather than how the finger is positioned on the scanner. This project aimed to find an alignment technique that could work effectively without accessing both the model and probe simultaneously, a significant challenge given the variability in how users may place their finger on the scanner.
+Simon Sommerhalder and Burcu Yildiz have both made significant contributions to the system. Simon introduced an innovative approach to the alignment of freshly captured images (probe images) with those stored in the system (model images), ensuring the hashing process (following the alignment of the finger) is based on the unique finger-vein pattern rather than how the finger is positioned on the scanner. This project aimed to find an alignment technique that could work effectively without accessing both the model and probe simultaneously, a significant challenge given the variability in how users may place their finger on the scanner.
 
 Simon has developped a pipeline (see Figure~\ref{pipeline_simon}) to align finger-vein images independently, enhancing security by eliminating the need to compare the model and probe images side by side. He organized the pipeline into six clear steps:
 
@@ -54,7 +54,21 @@ Burcu's work on the finger vein authentication project built upon Simon's founda
 
 Simon and Burcu explored a variety of function combinations at different stages of the authentication pipeline, aiming to pinpoint the configuration that yields the most favorable outcomes. They utilized the Equal Error Rate (EER) as a benchmark to measure the pipeline's efficacy, focusing on achieving a balance between security and accessibility. This metric, representing the point where the rate of false acceptances(impostor incorrectly granted access) matches the rate of false rejections(legitimate user incorrectly denied), serves as an indicator of the system's reliability and accuracy. The configuration that demonstrated superior performance, leading to the lowest EER and thereby optimizing the process of analyzing and processing images, is showcased in the subsequent figure.
 
-%insert figure showing the best pipeline combination with the EER values?
+\begin{table}[H]
+    \centering
+    \caption{EER values for the best pipeline: Edge masking, translation pre-alignment, no pre-processing, no post-
+    processing, Miura matching as the post-alignment}
+    \begin{tabular}{lc}
+    \toprule
+    Camera & EER \\
+    \midrule
+    Camera 1 & 0.041 \\
+    Camera 2 & 0.029 \\
+    Sum of cameras & 0.030 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:eervalues_best}
+\end{table}
 
 \subsection{Project Overview}
 

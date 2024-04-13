@@ -79,7 +79,7 @@ Utilizing $p$ (\ref{eq:proba}) and $\delta$ (\ref{eq:delta}), the joint distribu
 
 \subsection{Experimental Derivation of the Probability \(p\)}
 
-In order to derive the probability that a uniformly distributed random pixel is a vein, $p$ (\ref{eq:proba}), a dataset of 20 unique individuals was utilized. Each individual contributed images of both right and left index/middle fingers, with 5 trials per finger, captured using 2 different cameras. This methodology resulted in a comprehensive dataset of 800 images. Following the approach in Section~\ref{sec:extraction-pipeline}, Simon's optimal pipeline was implemented to extract the feature vectors from each image in the dataset (refer to Figure~\ref{pipeline_simon}). Subsequently, statistical analysis was performed on these feature vectors to gain insights into vein patterns, building on the preliminary work by Burcu. It's important to note that the calculation of the probability \(p\) does not take into account any postalignment method, like Miura Matching, even though the code might seem like it does.
+In order to derive the probability that a distributed random pixel is a vein, $p$ (\ref{eq:proba}), a dataset of 20 unique individuals was utilized. Each individual contributed images of both right and left index/middle fingers, with 5 trials per finger, captured using 2 different cameras. This methodology resulted in a comprehensive dataset of 800 images. Following the approach in Section~\ref{sec:extraction-pipeline}, Simon's optimal pipeline was implemented to extract the feature vectors from each image in the dataset (refer to Figure~\ref{pipeline_simon}). Subsequently, statistical analysis was performed on these feature vectors to gain insights into vein patterns, building on the preliminary work by Burcu. It's important to note that the calculation of the probability \(p\) does not take into account any postalignment method, like Miura Matching, even though the code might seem like it does.
 
 We have carried out this analysis by implementing an algorithm which processes the dataset's feature vectors, performing two main functions:
 \begin{enumerate}
@@ -179,11 +179,18 @@ The joint probability distribution presented in Table \ref{tab:joint_distributio
 
 In Table \ref{tab:joint_distribution}, we explain each entry:
 \begin{itemize}
-    \item The entry \(P(\bar{X}_i = 0, \bar{Y}_i = 0)\) corresponds to the probability of both bits being '0'. In the absence of any discrepancies (\(\delta = 0\)), this probability would be simply the product of the individual probabilities, \((1-p)^2\). However, considering that discrepancies do occur with probability \(\delta\), and that there are two distinct ways in which the bits can differ (\(X_i = 0, Y_i = 1\) and \(X_i = 1, Y_i = 0\)), we must adjust for these potential errors. Since these two error scenarios are mutually exclusive and equally likely, we subtract half the error probability, \(\frac{\delta}{2}\), from \((1-p)^2\). Moreover, we approximate the final result to \(1-p-\frac{\delta}{2}\) because p is relatively small. 
+    \item By utilizing the previously determined value of $\delta$, we can infer the probabilities \(P[\bar{X}_i = 1, \bar{Y}_i = 0]\) and \(P[\bar{X}_i = 0, \bar{Y}_i = 1]\) as follows: \[\delta = P[\bar{X} \neq \bar{Y}] = P[\bar{X}_i = 1, \bar{Y}_i = 0] + P[\bar{X}_i = 0, \bar{Y}_i = 1]\].
+    Hence we have: \[P[\bar{X}_i = 1, \bar{Y}_i = 0] = P[\bar{X}_i = 0, \bar{Y}_i = 1] = \frac{\delta}{2}\]. 
 
-    \item The probability \(P(\bar{X}_i = 1, \bar{Y}_i = 1)\) is derived in an analogous manner. The probability is given by \(p-\frac{\delta}{2}\).
+    \item To determine the probability\(P[\bar{X}_i = 0, \bar{Y}_i = 0]\), we consider the following relationships:
+    \[ P[\bar{X}_i = 0, \bar{Y}_i = 0] + P[\bar{X}_i = 0, \bar{Y}_i = 1] = P[\bar{X}_i = 0] = 1-p \]
+    \[ P[\bar{X}_i = 0, \bar{Y}_i = 0] + P[\bar{X}_i = 1, \bar{Y}_i = 0] = P[\bar{Y}_i = 0] = 1-p \]
+    
+    By solving these equations, we can derive the probability of interest, \(P[\bar{X}_i = 0, \bar{Y}_i = 0]\), and hence infer the previously obtained values for \(P[\bar{X}_i = 1, \bar{Y}_i = 0]\) and \(P[\bar{X}_i = 0, \bar{Y}_i = 1]\):
+    \[ P[\bar{X}_i = 0, \bar{Y}_i = 0] = 1-p + \frac{\delta}{2} \] 
 
-    \item The probabilities \(P(\bar{X}_i = 0, \bar{Y}_i = 1)\) and \(P(\bar{X}_i = 1, \bar{Y}_i = 0)\) directly represent the scenarios where the bits differ. As there are only two such cases that contribute to \(\delta\), each is allocated a probability of \(\frac{\delta}{2}\).
+    \item The probability \(P[\bar{X}_i = 1, \bar{Y}_i = 1]\) is derived by 
+    \[P[\bar{X}_i = 1, \bar{Y}_i = 1] = 1 - P[\bar{X}_i = 0, \bar{Y}_i = 0] = p-\frac{\delta}{2}\].
 
 \end{itemize}
 

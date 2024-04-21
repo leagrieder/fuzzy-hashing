@@ -178,19 +178,39 @@ To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \)
 The joint probability distribution presented in Table \ref{tab:joint_distribution} represents the relationship between the variables \(\bar{X}_i\) and \(\bar{Y}_i\), which compare the i-th bit of two biometric samples. The parameter \(p\) denotes the probability of a bit being '1', and by complement, \(1-p\) signifies the probability of a bit being '0'. The parameter \(\delta\) encapsulates the probability that the two bits are not identical, which can occur due to various sources of error in biometric comparison. 
 
 In Table \ref{tab:joint_distribution}, we explain each entry:
-\begin{itemize}
-    \item By utilizing the previously determined value of $\delta$, we can infer the probabilities \(P[\bar{X}_i = 1, \bar{Y}_i = 0]\) and \(P[\bar{X}_i = 0, \bar{Y}_i = 1]\) as follows: \[\delta = P[\bar{X} \neq \bar{Y}] = P[\bar{X}_i = 1, \bar{Y}_i = 0] + P[\bar{X}_i = 0, \bar{Y}_i = 1]\].
-    Hence we have: \[P[\bar{X}_i = 1, \bar{Y}_i = 0] = P[\bar{X}_i = 0, \bar{Y}_i = 1] = \frac{\delta}{2}\]. 
 
+\begin{itemize}
+    \item By utilizing the previously determined value of $\delta$, we can infer the probabilities \(P[\bar{X}_i = 1, \bar{Y}_i = 0]\) and \(P[\bar{X}_i = 0, \bar{Y}_i = 1]\) as follows: 
+    \begin{equation*}
+        \begin{aligned}
+            \delta = P[\bar{X} \neq \bar{Y}] = P[\bar{X}_i = 1, \bar{Y}_i = 0] + P[\bar{X}_i = 0, \bar{Y}_i = 1]
+        \end{aligned}
+    \end{equation*}
+    Hence we have:
+    \begin{equation*}
+        \begin{aligned}
+            P[\bar{X}_i = 1, \bar{Y}_i = 0] = P[\bar{X}_i = 0, \bar{Y}_i = 1] = \frac{\delta}{2}
+        \end{aligned}
+    \end{equation*}
     \item To determine the probability\(P[\bar{X}_i = 0, \bar{Y}_i = 0]\), we consider the following relationships:
-    \[ P[\bar{X}_i = 0, \bar{Y}_i = 0] + P[\bar{X}_i = 0, \bar{Y}_i = 1] = P[\bar{X}_i = 0] = 1-p \]
-    \[ P[\bar{X}_i = 0, \bar{Y}_i = 0] + P[\bar{X}_i = 1, \bar{Y}_i = 0] = P[\bar{Y}_i = 0] = 1-p \]
+    \begin{equation*}
+        \begin{aligned}
+            P[\bar{X}_i = 0, \bar{Y}_i = 0] + P[\bar{X}_i = 0, \bar{Y}_i = 1] &= P[\bar{X}_i = 0](P[\bar{Y}_i = 0] + P[\bar{Y}_i = 1])\\
+            &= P[\bar{X}_i = 0] = 1-p
+        \end{aligned}
+    \end{equation*} 
+    \begin{equation*}
+        \begin{aligned}
+            P[\bar{X}_i = 0, \bar{Y}_i = 0] + P[\bar{X}_i = 1, \bar{Y}_i = 0] &= P[\bar{Y}_i = 0](P[\bar{X}_i = 0] + P[\bar{X}_i = 1])\\
+            &= P[\bar{Y}_i = 0] = 1-p
+        \end{aligned}
+    \end{equation*} 
     
-    By solving these equations, we can derive the probability of interest, \(P[\bar{X}_i = 0, \bar{Y}_i = 0]\), and hence infer the previously obtained values for \(P[\bar{X}_i = 1, \bar{Y}_i = 0]\) and \(P[\bar{X}_i = 0, \bar{Y}_i = 1]\):
-    \[ P[\bar{X}_i = 0, \bar{Y}_i = 0] = 1-p + \frac{\delta}{2} \] 
+    By solving these equations, we can derive the probability of interest, \\\(P[\bar{X}_i = 0, \bar{Y}_i = 0]\), and hence infer the previously obtained values for \\\(P[\bar{X}_i = 1, \bar{Y}_i = 0]\) and \(P[\bar{X}_i = 0, \bar{Y}_i = 1]\):
+    \[ P[\bar{X}_i = 0, \bar{Y}_i = 0] = 1-p - \frac{\delta}{2} \] 
 
     \item The probability \(P[\bar{X}_i = 1, \bar{Y}_i = 1]\) is derived by 
-    \[P[\bar{X}_i = 1, \bar{Y}_i = 1] = 1 - P[\bar{X}_i = 0, \bar{Y}_i = 0] = p-\frac{\delta}{2}\].
+    \[P[\bar{X}_i = 1, \bar{Y}_i = 1] = 1 - P[\bar{X}_i = 0, \bar{Y}_i = 0] = p-\frac{\delta}{2}\]
 
 \end{itemize}
 

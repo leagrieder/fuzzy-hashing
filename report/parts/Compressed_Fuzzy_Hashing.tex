@@ -2,4 +2,61 @@
 
 \subsection{Data Compression Techniques for m=1, d=4}
 
+{
+\renewcommand{\arraystretch}{1.25}
+\[
+\text{postHash}(i) = \left\{
+\begin{array}{lll}
+    \text{15} & \text{if } i = 1 & (\text{Pr} = 3.29\%), \\
+    \text{14} & \text{if } 2 \leq i \leq 3 & (\text{Pr} = 6.26\%), \\
+    \text{13} & \text{if } 4 \leq i \leq 6 & (\text{Pr} = 8.64\%), \\
+    \text{12} & \text{if } 7 \leq i \leq 8 & (\text{Pr} = 5.3\%), \\
+    \text{11} & \text{if } 9 \leq i \leq 11 & (\text{Pr} = 7.31\%), \\
+    \text{10} & \text{if } 12 \leq i \leq 14 & (\text{Pr} = 6.61\%), \\
+    \text{9} & \text{if } 15 \leq i \leq 17 & (\text{Pr} = 6\%), \\
+    \text{8} & \text{if } 18 \leq i \leq 20 & (\text{Pr} = 5.41\%), \\
+    \text{7} & \text{if } 21 \leq i \leq 24 & (\text{Pr} = 6.41\%), \\
+    \text{6} & \text{if } 25 \leq i \leq 29 & (\text{Pr} = 6.9\%), \\
+    \text{5} & \text{if } 30 \leq i \leq 34 & (\text{Pr} = 5.83\%), \\
+    \text{4} & \text{if } 35 \leq i \leq 41 & (\text{Pr} = 6.7\%), \\
+    \text{3} & \text{if } 42 \leq i \leq 50 & (\text{Pr} = 6.6\%), \\
+    \text{2} & \text{if } 51 \leq i \leq 62 & (\text{Pr} = 6.2\%), \\
+    \text{1} & \text{if } 63 \leq i \leq 82 & (\text{Pr} = 6.13\%), \\
+    \text{0} & \text{if } 83 \leq i \leq n & (\text{Pr} = 6.43\%),
+\end{array}
+\right.
+\]
+}
+
+
+Scrambled Domain
+
+\renewcommand{\arraystretch}{1.25}{
+\[
+\text{postHash}(i) = \left\{
+\begin{array}{lll}
+    15 & \text{if } i \in \{1\} \cup \{4\} & (\text{Pr} = 6.27\%), \\
+    14 & \text{if } i \in \{2, 3\} & (\text{Pr} = 6.26\%), \\
+    13 & \text{if } i \in \makecell[tl]{\{5, 6\} \cup \{53\}} & (\text{Pr} = 6.24\%), \\
+    12 & \text{if } i \in \makecell[tl]{\{7, 8\} \cup \{38\}} & (\text{Pr} = 6.25\%), \\
+    11 & \text{if } i \in \makecell[tl]{\{9, 10\} \cup \{29\}} & (\text{Pr} = 6.25\%), \\
+    10 & \text{if } i \in \makecell[tl]{\{12, 13\} \cup \{83\} \cup \{85, \ldots, 92\} \\ \cup \{99\} \cup \{170\}} & (\text{Pr} = 6.24\%), \\
+    9  & \text{if } i \in \makecell[tl]{\{15, \ldots, 17\} \cup \{78\}} & (\text{Pr} = 6.25\%), \\
+    8  & \text{if } i \in \makecell[tl]{\{18, \ldots, 20\} \cup \{42\}} & (\text{Pr} = 6.24\%), \\
+    7  & \text{if } i \in \makecell[tl]{\{21, \ldots, 23\} \cup \{63, 64\} \cup \{71\}} & (\text{Pr} = 6.25\%), \\
+    6  & \text{if } i \in \makecell[tl]{\{25, \ldots, 28\} \cup \{61\} \cup \{84\}} & (\text{Pr} = 6.25\%), \\
+    5  & \text{if } i \in \makecell[tl]{\{30, \ldots, 34\} \cup \{62\}} & (\text{Pr} = 6.26\%), \\
+    4  & \text{if } i \in \makecell[tl]{\{35, \ldots, 37\} \cup \{39, \ldots, 41\} \cup \{57\}} & (\text{Pr} = 6.26\%), \\
+    3  & \text{if } i \in \makecell[tl]{\{43, \ldots, 50\} \cup \{59\}} & (\text{Pr} = 6.24\%), \\
+    2  & \text{if } i \in \makecell[tl]{\{11\} \cup \{51, 52\} \cup \{54, \ldots, 56\} \\ \cup \{58\} \cup \{60\} \cup \{98\}} & (\text{Pr} = 6.25\%), \\
+    1  & \text{if } i \in \makecell[tl]{\{24\} \cup \{65, \ldots, 70\} \cup \{72, \ldots, 77\} \\ \cup \{79, \ldots, 82\}} & (\text{Pr} = 6.25\%), \\
+    0  & \text{if } i \in \makecell[tl]{\{14\} \cup \{93, \ldots, 97\} \cup \{101\} \\ \cup \{103, \ldots, 169\} \cup \{171, \ldots, n\}} & (\text{Pr} = 6.24\%)
+\end{array}
+\right.
+\]
+}
+
+
+
+
 \subsection{Efficiency Improvement in Hashing Process}

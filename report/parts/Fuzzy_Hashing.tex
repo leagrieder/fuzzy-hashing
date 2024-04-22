@@ -26,7 +26,14 @@ Detailed Process of \textit{PreHash}:
 
     \item \textbf{Nonce Generation}: A nonce in CTR mode encryption is initialized to zero to maintain simplicity and security. We opted against using a keyed hash function to generate the nonce, as it would tie the nonce to the secret key. Such a dependency would mean that both the nonce and the Pseudo-Random Number Generator (PRNG) would rely on the same key, creating a security risk by concentrating security on a single element. To avoid this, we keep the generation of the nonce separate from the key.
 
-    \item \textbf{Pseudorandom Sequence Generation}: Upon receiving the parameters —key, nonce, and counter— the PRNG utilizes CTR mode to produce a \(128\)-bit pseudo-random number. However, to tailor the output to the project's requirements, it is necessary to mask it to \(17\) bits. This adjustment is essential as it aims to ensure that pseudo-random numbers are generated within a suitable range form image size, specifically \(96'500\) pixels, which requires \(17\) bits for representation\footnote{\(\lceil \log_2(96'500) \rceil = 17\)}. The predictability of this sequence is entirely dictated by the chosen key. In essence, employing the same key will consistently yield an identical nonce and hence an identical sequence of numbers.
+    \item \textbf{Pseudorandom Sequence Generation}: Upon receiving the parameters—key, nonce, and counter—the PRNG operates in CTR mode to generate a 128-bit pseudo-random number. As depicted in Figure~\ref{ctr encryption}, this process involves encrypting the nonce combined with the counter using the key. The output from this block cipher encryption phase is then XORed with a vector consisting of zero bits. Since we require 17 bits for our application, the block cipher's output is XORed with a bitstring of 3 bytes to achieve the necessary length. To ensure the output meets the project's specific requirements, it is then masked to retain only the top 17 bits. This adjustment is essential as it aims to ensure that pseudo-random numbers are generated within a suitable range form image size, specifically \(96'500\) pixels, which requires \(17\) bits for representation\footnote{\(\lceil \log_2(96'500) \rceil = 17\)}. The predictability of this sequence is entirely dictated by the chosen key. In essence, employing the same key will consistently yield an identical nonce and hence an identical sequence of numbers.
+
+    \begin{figure}[!h]
+        \centering
+        \includegraphics[width=1\linewidth]{latex-img/CTR_encryption.png}
+        \caption{Counter (CTR) mode encryption}
+        \label{ctr encryption}
+    \end{figure}
 
     \item \textbf{Selection of Indices}: The algorithm iterates through the generated pseudorandom sequence, selecting the first \(m\) indices corresponding to vein pixels in the biometric template \(X\). This selection process involves a careful mechanism to ensure the uniqueness and proper ordering of indices.
 

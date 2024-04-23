@@ -1,4 +1,5 @@
 \include{Introduction.tex}
+\include{Biometric_Setting.tex}
 
 \section{Fuzzy Hashing}
 \label{sec:Fuzzy Hashing}
@@ -11,7 +12,7 @@ The \textit{PreHash} algorithm is the first step in the fuzzy hashing process, d
 
 Algorithm Inputs and Outputs:
 \begin{enumerate}
-    \item \textbf{Inputs}: The algorithm takes three main inputs:
+    \item \textbf{Inputs}: As illustrated in the pseudocode~\ref{preHash Algorithm}, the algorithm takes three main inputs:
     \begin{itemize}
         \item \textbf{A parameter m}: the number of indices to find
         \item \textbf{A bitstring X}: the feature-extracted vein patterns of a biometric capture
@@ -41,16 +42,33 @@ Detailed Process of \textit{PreHash}:
 
 \end{itemize}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\linewidth]{latex-img/pseudocode_preHash.png}
-    \caption{\textit{preHash} Algorithm}
-    \label{preHash Algorithm}
-\end{figure}
+
+\begin{algorithm}
+\begin{algorithmic}[1]
+\caption{\textit{preHash} Algorithm}
+\label{preHash Algorithm}
+\Function{\text{preHash}$_\text{key}^m$}{$X$}
+\State \hfill $\triangleright$ $L \gets \lceil \log_2(n) \rceil$
+\State Initialize PRNG using key for $L$ bits
+\State $i \gets 0$
+\For{$j \gets 1 \text{ to } m$}
+    \Repeat
+        \Repeat
+            \State $k \gets \text{PRNG}$
+        \Until{$1 \leq k \leq n$}
+        \State $i \gets i + 1$
+    \Until{$X_k$ is a vein pixel}
+    \State $i_j \gets k$
+    \EndFor
+\State \Return{$i_1, \ldots, i_m$}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
 
 The algorithm, preHash, illustrated in Figure~\ref{preHash Algorithm} generates \(m\) smallest indices, denoted by \(i_j\), such that \(j\in{[1, m]} \) and \(1 <= i_1 < ... < i_m\), where each \(i_j\) correponds to an index such that \(X_{PRNG_{key}(i_j)} = 1\). It achieves this by rigorously verifying that the numbers produced by PRNG (PRNG[i]) stay within the specified bounds \(\text{PRNG}[i] \in (0, n] \text{ for } i \in [0, m]\).
 
 \subsection{Assessing Similarity of Biometric Inputs After PreHash Application}
+\label{sec:mu}
 
 After the finger images are processed through the pipeline described in Pipeline~\ref{pipeline_simon} to extract their feature vectors, and the \textit{preHash} algorithm is applied, the outcome is a set of indices that fall within the inclusive range \(\text{PRNG}[i] \in (0, n] \text{ for } i \in [0, m]\), effectively mapping each selected feature to a unique index within the feature vector's length.
 
@@ -125,31 +143,44 @@ where equality is reached for the optimal offset translations.
 %This includes determining the upper limits for the probabilities of similarity between different finger veins processed through the same fuzzy hashing parameters. 
 \subsection{Experimental Derivation of the Probabilities \(\mu_{\text{same}}, \mu_{\text{diff}}, \mu_{\text{indep}}\)}
 
-% Start this subsection by introducing the mathematical and theoretical concepts that underpin fuzzy hashing. Discuss the relevance of these concepts in the context of biometric data, focusing on how they enable the creation of reliable and secure hashing mechanisms for inherently noisy data.
+In Section~\ref{sec:mu}, we have laid out the mathematical framework that defines the probability \(\mu\). This probability is crucial in our fuzzy hashing approach, as it quantifies the matching likelihood after applying the optimal offset translations to the biometric captures. The application of these optimal offsets is an important preprocessing step before hashing the dataset, ensuring that the biometric features are accurately aligned for comparison.
 
-%     Key Concepts to Cover:
-%         Definition and significance of fuzzy hashing
-%         Mathematical principles governing the construction of fuzzy hashes
-%         Overview of the biometric setting, including the importance of parameters such as pixel dimensions, vein extraction, and the role of random permutations in hashing
+We will proceed to evaluate these theoretical results experimentally, leveraging the same comprehensive database that has been utilized in our prior research, as explained in Section~\ref{sec:delta}. This experimental assessment will enable us to substantiate the theoretical predictions of \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\).
 
-% Subsection 2: Experimental Approach
+In the experimental setup, \(\mu_{\text{same}}\) refers to the probability that a hash function, when applied to two biometric captures of the same finger, will yield the same index. This is the measure of success in correctly identifying matches within the same individual's biometric captures. Conversely, \(\mu_{\text{diff}}\) denotes the probability that the same hash function will produce different indices for biometric captures from different individuals, representing the ability to distinguish between different people's biometric data. Lastly, \(\mu_{\text{indep}}\) indicates the probability of a match in the case where the biometric captures are completely independent, serving as a baseline for random chance.
 
-% In the second subsection, outline the methodology of your experiments designed to test the theoretical underpinnings discussed earlier. Describe the setup, the specific objectives of each experiment, and how these experiments are structured to validate the theoretical models of fuzzy hashing.
+The computation of \( \mu_{\text{indep}} \) is relatively straightforward, having determined the value of \( p \) and \(\delta_{\text{indep}}\). The formula for \( \mu_{\text{indep}} \) relies solely on \( p \) and \(\delta_{\text{indep}}\), allowing us to express it as:
 
-%     Key Components to Include:
-%         Description of the experimental setup and the data used
-%         Explanation of how the experiments are designed to reflect the theoretical aspects of fuzzy hashing
-%         Details on the implementation of preHash and postHash functions, and the criteria for their evaluation
+\[
+    \mu_{\text{indep}} = \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} \approx 0.064
+\]
 
-% Subsection 3: Verifying Theoretical Predictions
+For \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), our experimental protocol adhered to the established optimal pipeline (refer to Figure~\ref{pipeline_simon}) to process the images in our dataset. Following the alignment of images through the computation of optimal offsets (referred to as Miura Matching), our fuzzy hashing function was applied to the extraced features. In alignment with the premise that \(\mu\) is computed under the condition where the hash function's output is a single index (\(m=1\)).
 
-% The final subsection is dedicated to comparing the outcomes of your experiments with the theoretical expectations. This involves analyzing the results, discussing any deviations or confirmations, and what these mean for the validity and reliability of fuzzy hashing in biometric data security.
+\begin{enumerate}
+    \item \textbf{Pairwise Comparison}: We performed a pairwise comparison for each image pair within the dataset after applying the optimal offsets to ensure proper alignment. The fuzzy hashing function, tailored to output a single index per image, was utilized to hash the images.
 
-%     Important Aspects to Discuss:
-%         Analysis of experimental results against theoretical predictions
-%         Discussion on the accuracy of the fuzzy hashing process, including the matching scores and error rates
-%         Implications of the findings for biometric data security and future research directions
+    \item \textbf{Hamming Distance Computation}: We calculated the Hamming distance between the indices obtained from the fuzzy hashing. The distances were binary:
+    \begin{itemize}
+        \item A Hamming distance of 0 indicates the indices are identical, suggesting a match.
+        \item A Hamming distance of 1 indicates differing indices, suggesting a non-match.
+    \end{itemize}
+    
+    \item \textbf{Statistical Analysis and Probability Computation}:
+    \begin{itemize}
+        \item \textbf{\(\mu_{\text{same}}\)}: We computed \(\mu_{\text{same}}\) by averaging the Hamming distances of the intra-individual comparisons, which furnished us with the following probability:
 
-% Conclusion of Section 1
+        \[ \mu_{\text{same}} \approx 0.046 \]
+        
+        \item \textbf{\(\mu_{\text{diff}}\)}: Similarly, \(\mu_{\text{diff}}\) was determined by averaging the Hamming distances of the inter-individual comparisons, which furnished us with the following probability:
 
-% Conclude with a summary of the insights gained from bridging theoretical concepts with empirical evidence. Highlight the importance of this integration for advancing the field of biometric security through fuzzy hashing. Reflect on the potential for future developments and applications stemming from your findings. --> Avons nous vraiment besoin de ça dans cette partie?
+        \[ \mu_{\text{diff}} \approx 0.046 \]
+    \end{itemize}
+    
+    \item \textbf{Results and Discussion}: The experimental data allowed us to calculate the normalized Hamming distances for all comparisons, yielding:
+    \begin{itemize}
+        \item The probability of observing a match when there should be one (\(\mu_{\text{same}}\)) and the probability of observing no match when there should not be one (\(\mu_{\text{diff}}\)), reflecting the reliability and precision of our biometric system.
+        
+        \item A comprehensive statistical analysis which compares these empirical results with our theoretical expectations, demonstrating the practical viability of our fuzzy hashing approach.
+    \end{itemize}
+\end{enumerate}

@@ -107,6 +107,7 @@ The core of this approximation revolves around the expectation formula, which in
 Hence for (\(X\), \(Y\)) random,
 
 \begin{equation}
+    \label{eq:mu_leq}
     Pr[preHash_{key}^1(offset_X * X) = preHash_{key}^1(offset_Y * Y)] \leq \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}}
 \end{equation}
 
@@ -152,7 +153,7 @@ In the experimental setup, \(\mu_{\text{same}}\) refers to the probability that 
 The computation of \( \mu_{\text{indep}} \) is relatively straightforward, having determined the value of \( p \) and \(\delta_{\text{indep}}\). The formula for \( \mu_{\text{indep}} \) relies solely on \( p \) and \(\delta_{\text{indep}}\), allowing us to express it as:
 
 \[
-    \mu_{\text{indep}} = \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} \approx 0.064
+    \mu_{\text{indep}} = \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} \approx 0.0138 = 1.38\%
 \]
 
 For \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), our experimental protocol adhered to the established optimal pipeline (refer to Figure~\ref{pipeline_simon}) to process the images in our dataset. Following the alignment of images through the computation of optimal offsets (referred to as Miura Matching), our fuzzy hashing function was applied to the extraced features. In alignment with the premise that \(\mu\) is computed under the condition where the hash function's output is a single index (\(m=1\)).
@@ -168,19 +169,23 @@ For \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), our experimental protocol a
     
     \item \textbf{Statistical Analysis and Probability Computation}:
     \begin{itemize}
-        \item \textbf{\(\mu_{\text{same}}\)}: We computed \(\mu_{\text{same}}\) by averaging the Hamming distances of the intra-individual comparisons, which furnished us with the following probability:
+        \item \textbf{\(\mu_{\text{same}}\)}: We computed \(\mu_{\text{same}}\) by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the intra-individual comparisons, which furnished us with the following probability:
 
-        \[ \mu_{\text{same}} \approx 0.046 \]
+        \[ \mu_{\text{same}} \approx 0.2302 = 23.02\%\] 
         
-        \item \textbf{\(\mu_{\text{diff}}\)}: Similarly, \(\mu_{\text{diff}}\) was determined by averaging the Hamming distances of the inter-individual comparisons, which furnished us with the following probability:
+        \item \textbf{\(\mu_{\text{diff}}\)}: Similarly, \(\mu_{\text{diff}}\) was determined by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the inter-individual comparisons, which furnished us with the following probability:
 
-        \[ \mu_{\text{diff}} \approx 0.046 \]
-    \end{itemize}
-    
-    \item \textbf{Results and Discussion}: The experimental data allowed us to calculate the normalized Hamming distances for all comparisons, yielding:
-    \begin{itemize}
-        \item The probability of observing a match when there should be one (\(\mu_{\text{same}}\)) and the probability of observing no match when there should not be one (\(\mu_{\text{diff}}\)), reflecting the reliability and precision of our biometric system.
-        
-        \item A comprehensive statistical analysis which compares these empirical results with our theoretical expectations, demonstrating the practical viability of our fuzzy hashing approach.
+        \[ \mu_{\text{diff}} \approx 0.0772 = 7.72\% \]
     \end{itemize}
 \end{enumerate}
+
+In our analysis of the dataset at hand featuring biometric data from 20 unique individuals, we have quantified the performance of the preHash function in distinguishing between identical and different biometric subjects. Specifically, when evaluating samples from the same individual, the probability that the preHash function will produce the same index is approximately \(23\%\). Conversely, when the function is applied to samples from different individuals, the probability of a match in the indices drops to roughly \(7.7\%\). This indicates that the likelihood of mistakenly identifying different individuals as the same is about three times lower than correctly matching samples from the same individual, demonstrating the preHash function's relative efficacy in biometric differentiation within this specific dataset.
+
+It would be valuable to conduct an experimental investigation to determine the effect of omitting the Miura Matching step (finding optimal offsets before comparing images), which serves as a post-alignment phase in our pipeline, on the coincidence probabilities of the indices. Our interest in conducting this verification stems from the contents of Equation~\ref{eq:mu_leq}. Should some other non-optimal offsets be used, or should the Miura Matching phase be excluded entirely from our process, it is anticipated that the probabilities of matching indices should be less than or equal to the values determined for \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), respectively.
+
+% A faire cette experience!!! Juste enlever le miura matching complètement et observer mu_same et mu_diff
+
+
+
+
+

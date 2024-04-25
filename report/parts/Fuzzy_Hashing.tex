@@ -35,6 +35,7 @@ Detailed Process of \textit{PreHash}:
         \caption{Counter (CTR) mode encryption}
         \label{ctr encryption}
     \end{figure}
+    
 
     \item \textbf{Selection of Indices}: The algorithm iterates through the generated pseudorandom sequence, selecting the first \(m\) indices corresponding to vein pixels in the biometric template \(X\). This selection process involves a careful mechanism to ensure the uniqueness and proper ordering of indices.
 
@@ -56,10 +57,10 @@ Detailed Process of \textit{PreHash}:
         \Repeat
             \State $k \gets \text{PRNG}$
         \Until{$1 \leq k \leq n$}
-        \State $k \gets k + 1$
+        \State $i \gets i + 1$
     \Until{$X_k$ is a vein pixel}
     \State $i_j \gets k$
-    \EndFor
+    \EndFor 
 \State \Return{$i_1, \ldots, i_m$}
 \EndFunction
 \end{algorithmic}

@@ -39,7 +39,7 @@ Detailed Process of \textit{PreHash}:
 
     \item \textbf{Selection of Indices}: The algorithm iterates through the generated pseudorandom sequence, selecting the first \(m\) indices corresponding to vein pixels in the biometric template \(X\). This selection process involves a careful mechanism to ensure the uniqueness and proper ordering of indices.
 
-    \item \textbf{Handling the Case \(m >\) (Number of 1's in Vein Image)}: In situations where the required number of vein pixels \(m\) cannot be located due to insufficient vein pixels in the biometric template, the algorithm is equipped with a built-in mechanism to handle such scenarios. Prior to executing the prehash algorithm, it systematically scans the image, checking if the count of pixels with a value of 1 is zero or negative. If so, the algorithm halts. However, if the count of pixels with a value of 1 falls below the specified number of vein pixels \(m\) but remains above 0, the algorithm continues to generate PRNGs and iterates through previously accessed indices of the image.
+    \item \textbf{Corner Cases}: In scenarios where there are no veins present in the image, the algorithm incorporates a built-in mechanism to address such situations. Prior to initiating the prehash process, it assesses whether at least one vein is present in the image. If no veins are detected, the algorithm suspends further execution, preventing an infinite loop.
 
 \end{itemize}
 
@@ -128,7 +128,7 @@ The following figures are provided:
         \hline
         $\mu_{same}$ & $\mu_{diff}$ & $\mu_{indep}$\\
         \hline
-        $24\%$ & $8.3\%$ & $1.8\%$\\
+        $23.02\%$ & $7.72\%$ & $1.38\%$\\
         \hline
     \end{tabular}
 \caption{Comparison of Distributions: $\delta_{same}$, $\delta_{diff}$, and $\delta_{indep}$}

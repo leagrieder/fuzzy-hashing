@@ -11,7 +11,7 @@ In the biometric context, each finger serves as a biometric subject, with a corr
 Each of the \(n\) bits of the biometric capture is designated as \(X_1\),..., \(X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. In the case where \(i\) is a \hyperref[def:Uniform Distribution]{uniformly distributed} random index and \(X\) is randomly chosen, the probability of pixel \(X_i\) being a vein is defined as follows:
 
 \begin{equation} \label{eq:proba}
-    Pr[X_i = 1] = p \approx 3.3 \% 
+    Pr[X_i = 1] = p \approx 3.29 \% 
 \end{equation}
 
 In biometric authentication and identification, the uniqueness of each biometric capture is encoded in its bits. The objective revolves around discerning the similarity between two biometric captures to verify or identify two individuals. Therefore, the scoring mechansim plays a crucial role in quantatively determining the similarity between biometric captures. This similarity score holds significance in verifying the identity of an individual (authentication) or identifying potential matches in a database (identification). A higher score indicates a greater ressemblance between captures, while a lower score suggests less similarity. This scoring mechanism is indispensable for ensuring the accuracy and reliability of biometric systems. The score of (\(X\), \(Y\)) is computed as
@@ -53,7 +53,7 @@ Distinguishing between the types of distributions associated with the two captur
         \hline
         $\delta_{same}$ & $\delta_{diff}$ & $\delta_{indep}$\\
         \hline
-        $4.6\%$ & $6\%$ & $6.4\%$\\
+        $4.5\%$ & $6\%$ & $6.4\%$\\
         \hline
     \end{tabular}
 \caption{Comparison of Distributions: $\delta_{same}$, $\delta_{diff}$, and $\delta_{indep}$}
@@ -136,7 +136,7 @@ The findings from this analysis revealed the following probabilities:
 
 To assess the probability that the i-th pixel of two captures diverges after applying the optimal offset translations \( d_X \) and \( d_Y \) (Equation (\ref{eq:delta})), we undertake additional experimental analysis. This investigation continues to utilize the same dataset comprising 20 distinct individuals. Here, the post-alignment process, specifically Miura Matching, is included in our examination as the calculation formula integrates this step. As detailed in Section~\ref{Bio_data_sim_scores}, our objective is to evaluate three distinct delta values: \(\delta_{\text{same}}, \delta_{\text{diff}}, \delta_{\text{indep}}\). The computation of \( \delta_{\text{indep}} \) is relatively straightforward, having determined the value of \( p \). The formula for \( \delta_{\text{indep}} \) relies solely on \( p \), allowing us to express it as:
 
-\[ \delta_{\text{indep}} = 2p(1 - p) = 2 \times 0.0329 \times (1 - 0.0329) \approx 0.064 \]
+\[ \delta_{\text{indep}} = 2p(1 - p) = 2 \times 0.0329 \times (1 - 0.0329) \approx 6.4\% \]
 
 This result provides an estimated 6.4\% independent delta value.
 
@@ -154,7 +154,7 @@ To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \)
     \begin{itemize}
         \item For \( \delta_{\text{same}} \), we averaged the normalized distances of the intra-individual comparisons, which furnished us with the following probability for observing a difference between captures from the same individual after alignment:
 
-        \[ \delta_{\text{same}} \approx 0.046 \]
+        \[ \delta_{\text{same}} \approx 4.6\% \]
 
         \begin{figure}[H]
             \centering
@@ -165,7 +165,7 @@ To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \)
         
         \item For \( \delta_{\text{diff}} \), we performed a similar averaging of the normalized distances from the inter-individual comparisons, which furnished us with the following probability for observing a difference between captures from the different individuals after alignment:
 
-        \[ \delta_{\text{diff}} \approx 0.06 \]
+        \[ \delta_{\text{diff}} \approx 6\% \]
 
         \begin{figure}[H]
             \centering
@@ -224,9 +224,9 @@ Utilizing our calculated values for \(\delta_{same}\), \(\delta_{diff}\) and \(\
         \hline
         & $\bar{Y}_i = 0$ & $\bar{Y}_i = 1$\\
         \hline
-        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{indep}}{2} = 0.935 $ & $\frac{\delta_{indep}}{2} = 0.032$\\
+        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{indep}}{2} = 93.5\% $ & $\frac{\delta_{indep}}{2} = 3.2\%$\\
         \hline
-        $\bar{X}_i = 1$ & $\frac{\delta_{indep}}{2} = 0.032 $ & $p - \frac{\delta_{indep}}{2} = 0.001$\\
+        $\bar{X}_i = 1$ & $\frac{\delta_{indep}}{2} = 3.2\% $ & $p - \frac{\delta_{indep}}{2} = 0.1\%$\\
         \hline
     \end{tabular}
     \caption{Joint Distribution of ($\bar{X}_j$, $\bar{Y}_j$) for \(X\) and \(Y\) made up of \(2n\) independent random bits of expected value \(p\)}
@@ -241,9 +241,9 @@ Utilizing our calculated values for \(\delta_{same}\), \(\delta_{diff}\) and \(\
         \hline
         & $\bar{Y}_i = 0$ & $\bar{Y}_i = 1$\\
         \hline
-        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{same}}{2} = 0.944 $ & $\frac{\delta_{same}}{2} = 0.023$\\
+        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{same}}{2} = 94.4\% $ & $\frac{\delta_{same}}{2} = 2.3\%$\\
         \hline
-        $\bar{X}_i = 1$ & $\frac{\delta_{same}}{2} = 0.023$ & $p - \frac{\delta_{same}}{2} = 0.01$\\
+        $\bar{X}_i = 1$ & $\frac{\delta_{same}}{2} = 2.3\%$ & $p - \frac{\delta_{same}}{2} = 1\%$\\
         \hline
     \end{tabular}
     \caption{Joint Distribution of ($\bar{X}_j$, $\bar{Y}_j$) for \(X\) and \(Y\)  Originating from the Same Biometric Subject}
@@ -257,9 +257,9 @@ Utilizing our calculated values for \(\delta_{same}\), \(\delta_{diff}\) and \(\
         \hline
         & $\bar{Y}_i = 0$ & $\bar{Y}_i = 1$\\
         \hline
-        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{diff}}{2} = 0.937 $ & $\frac{\delta_{diff}}{2} = 0.03$\\
+        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{diff}}{2} = 93.7\% $ & $\frac{\delta_{diff}}{2} = 3\%$\\
         \hline
-        $\bar{X}_i = 1$ & $\frac{\delta_{diff}}{2} = 0.03$ & $p - \frac{\delta_{diff}}{2} = 0.003$\\
+        $\bar{X}_i = 1$ & $\frac{\delta_{diff}}{2} = 3\%$ & $p - \frac{\delta_{diff}}{2} = 0.3\%$\\
         \hline
     \end{tabular}
     \caption{Joint Distribution of ($\bar{X}_j$, $\bar{Y}_j$) for \(X\) and \(Y\) Originating from Different Biometric Subject}

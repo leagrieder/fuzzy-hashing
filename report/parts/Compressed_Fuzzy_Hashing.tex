@@ -4,37 +4,38 @@
 \section{Compressed Fuzzy Hashing}
 \label{sec:Compressed Fuzzy Hashing}
 
-Compressed fuzzy hashing generates concise hashes of files or data, capturing key features while allowing for slight variations - a concept referred to as "fuzziness". Unlike traditional cryptographic hashing methods, which produce fixed-length hashes vulnerable to significant changes even with minor input alterations, compressed fuzzy hashing offers greater resilience. Even when alterations occur, the hashing algorithm can still identify similar content. 
-
-This section delves into the implementation of the compressed fuzzy hashing algorithm, known as \textit{PostHash}, its underlying mathematical principles, and present certain experimental results.
+Compressed fuzzy hashing generates concise hashes of data, capturing key features while allowing for slight variations - a concept referred to as "fuzziness". Unlike conventional cryptographic hashing, which generates fixed-length outputs and is highly sensitive to even minimal changes in input, compressed fuzzy hashing maintains a robust link to the original content despite alterations.
+This section delves into the mechanics of the compressed fuzzy hashing algorithm, called the \textit{PostHash} procedure. We will explore the mathematical concepts that enable its effectiveness and discuss experimental results that demonstrate its capabilities and performance on our dataset.
 
 \subsection{PostHashing Algorithm}
 
-The \textit{PostHash} algorithm, constituting the second step in the fuzzy hashing process, generates compact hashes based on the indices derived from the \textit{PreHash} algorithm (see section \ref{sec:Fuzzy Hashing}). It maps a list of indices to a hash \(h_1|| \ldots || h_m\), where each \(h_i\) \(i \in [1, m]\), is an integer in the range \([0, \ldots, D-1]\). Here, \(D = 2^d\), with d indicating the number of bits used to represent a single index. 
+The \textit{PostHash} algorithm, constituting the second and final step in the fuzzy hashing process, generates compact hashes based on the indices derived from the \textit{PreHash} algorithm (see section \ref{sec:Fuzzy Hashing}). This algorithm is designed to transform a tuple of indices into a concise hash format, \(h_1 || \ldots || h_m\), where each \(h_i\), for \(i \in [1, m]\), is an integer within the range \([0, \ldots, D-1]\).The parameter \(D\), defined as \(2^d\), denotes the total number of possible values each \(h_i\) can assume, with \(d\) representing the bit depth used per index. 
 
 Algorithm Inputs and Outputs:
 \begin{enumerate}
     \item \textbf{Inputs}: As illustrated in Figure~\ref{postHash Algorithm}, the algorithm takes as input:
     \begin{itemize}
-        \item \textbf{A tuple of indices}: A tuple of indices \((i_1, \ldots, i_m)\), which is the output of the \textit{PreHash} algorithm
+        \item \textbf{A tuple of indices}: \((i_1, \ldots, i_m)\), which is the output of the \textit{PreHash} algorithm
     \end{itemize}
     \item \textbf{Output}: Converted indices, forming a compact hash \(h_1|| \ldots || h_m\), where \(h_i\) \(i \in [1, m]\), is an integer in \([0, \ldots, D-1]\)
-\end{enumerate} 
+\end{enumerate}
 
 Detailed Process of \textit{PostHash}:
-\begin{itemize}
-    \item \textbf{Subroutine}: For each index produced by the \textit{PreHash} algorithm, \textit{PostHash} employs a subroutine \(T\) (see Figure ~\ref{Subroutine Algorithm}). This subroutine returns 0 if the input is out of range and performs a table lookup otherwise. It maps an index \(i\) to an integer nearly uniformly distributed between \([0, D-1]\). The implementation is as follows:
+\begin{enumerate}
+    \item \textbf{Subroutine}: For each index provided by the \textit{PreHash}, subroutine \(T\) checks if the index is within the acceptable range. If an index is out of range, \(T\) returns 0, otherwise, it proceeds with a table lookup. The subroutine maps each valid index \(i\) to an integer nearly uniformly distributed between \([0, D-1]\), ensuring that all potential hash values are equally probable. This mapping is important for the security and effectiveness of the fuzzy hashing system.
+    
+    The subroutine function, \(T\), works as follows:
     \begin{itemize}
         \item \textbf{Inputs}: 
         \begin{itemize}
-            \item \textbf{Index}: The index in the indices array that we wish to convert
-            \item \textbf{d}: Bitlength of the desired hash index, indicating the number of bits used to represent a single index \(h_i\) \(i \in [1, m]\). The relationship \(D = 2^d\) expresses the total number of possible hash indices that can be represented with d bits
+            \item \textbf{Shifted Index}: Each index from the \textit{PreHash} output tuple \((i_1, \ldots, i_m)\) is adjusted before conversion into a hash component. Specifically, the index \(i\) is shifted by subtracting a previously determined index \(i'\), resulting in a transformed index \(i - i'\). This shifting process normalizes the indices, maintaining a consistent relative positioning within the dataset, which helps in achieving a more uniform distribution of hash values across the range \([0, D-1]\).
+            \item \textbf{d}: Represents the bit length used for each hash index \(h_i\). This value determines \(D = 2^d\), the total number of distinct values each \(h_i\) can take, effectively setting the hash resolution.
         \end{itemize}
         \item \textbf{Output}: \(h_i\), the mapped integer
     \end{itemize}
-\end{itemize}
+\end{enumerate}
 
-The \textit{postHash} algorithm generates integers \(h_1 || \ldots || h_m\), where each \(h_i \in [0, D-1]\). Here, \(D = 2^d\), with \(d\) indicating the number of bits used to represent a single index. 
+\vspace{20pt}
 
 \begin{algorithm}
     \begin{algorithmic}[1]
@@ -68,19 +69,21 @@ The \textit{postHash} algorithm generates integers \(h_1 || \ldots || h_m\), whe
 \subsection{Assessing Similarity of Biometric Inputs After PostHash Application}
 \label{sec:q}
 
-After processing the finger images through the pipeline outlined in Pipeline~\ref{pipeline_simon} to extract their feature vectors, and subsequently applying the \textit{postHash} algorithm to the output of \textit{preHash}, the result comprises a set of integers falling within the inclusive range \(h_i \in [0, D-1]\), effectively assigning each index to an integer.
+After processing finger images through the pipeline referenced in Pipeline~\ref{pipeline_simon} to extract their feature vectors, the resulting data undergo the \textit{preHash} and subsequently, the \textit{postHash} algorithms. The final output from \textit{postHash} consists of a set of integers \( h_i \), each bounded within the inclusive range \([0, D-1]\). This process effectively assigns each feature vector index to an integer within this range.
 
-Our methodology assumes that these integers \(h_i\) follow a geometric distribution, with the hash length parameter \(m\) set to \(1\) for generating single-integer hashes. Given that the input for \textit{postHash} is the output of \textit{preHash}, let us denote this relationship as \(Hash_{key}^m(X) = \text{postHash}(\text{preHash}_{key}^m(X))\). We assume the same conditions as discussed in Section~\ref{sec:Fuzzy Hashing}: the key is randomly chosen, and \(k\) represents a uniformly distributed random index. Consequently, the probability of the \textit{Hash} operation yielding the same index for two different inputs \(X\) and \(Y\) can be mathematically characterized as follows:
+In our methodology, we model these integers \( h_i \) as following a geometric distribution. This assumption is based on the output relationship established by \( Hash_{key}^m(X) = \text{postHash}(\text{preHash}_{key}^m(X)) \). We assume the same conditions as discussed in Section~\ref{sec:Fuzzy Hashing}: the key is randomly chosen, and \(k\) represents a uniformly distributed random index. Consequently, the probability of the \textit{Hash} operation yielding the same index for two different inputs \(X\) and \(Y\) can be mathematically characterized as follows:
 
 \[Pr[Hash_{key}^m(d_X) = Hash_{key}^m(d_Y)] \leq \mu^m(1 - \frac{1}{D}) + \frac{1}{D}\]
 
-where equality is reached for the optimal offset translations. 
+where equality is reached for the optimal offset translations.
 
-Depending on the distribution of \(X\), \(Y\) it is denoted
+The overall probability \( q \) of a matching hash index under random inputs \( X \) and \( Y \), reflecting their distribution, is denoted by:
 
-\[q = \mu^m(1 - \frac{1}{D}) + \frac{1}{D}\]
+\[
+q = \mu^m(1 - \frac{1}{D}) + \frac{1}{D}
+\]
 
-Depending on the values that \(d\) can take on, we computed a few values:
+Based on the range of possible values for \(d\), we have computed several specific instances of \(q\):
 \begin{table}[H]
     \centering
     \renewcommand{\arraystretch}{1.25}\begin{tabular}{|c|c|c|c|}
@@ -97,6 +100,16 @@ Depending on the values that \(d\) can take on, we computed a few values:
 \end{table}
 
 \subsection{Data Compression Techniques for m=1, d=4}
+
+In this subsection, we focus on optimizing data compression strategies within our fuzzy hashing framework, specifically utilizing settings where \(m=1\) and \(d=4\). This configuration means that we use a single index (\(m=1\)) from our hashed data and encode each integer in our hash using 4 bits (\(d=4\)).
+
+Integral to this implementation is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
+
+\[ 
+\text{postHash}(i) = \left\lfloor 2^d \left(1 - p\right)^i \right\rfloor 
+\]
+
+Leveraging the above formula, we present the constructed lookup table for a four-bit representation, \(d=4\). Each entry in the table corresponds to an integer value, denoted by \(i\), and is associated with a specific hash output along with its calculated probability of occurrence.
 
 {
 \renewcommand{\arraystretch}{1.25}
@@ -124,8 +137,8 @@ Depending on the values that \(d\) can take on, we computed a few values:
 \]
 }
 
+To enhance the equilibrium of occurrence probabilities associated with each integer in our hashing output, we employed a domain scrambling strategy. This method involves a deliberate, manual reassignment of indices to different categories. This careful reallocation ensures a more uniform probability distribution for each hashed integer, optimizing the overall balance of our compression scheme. 
 
-Scrambled Domain
 
 \renewcommand{\arraystretch}{1.25}{
 \[

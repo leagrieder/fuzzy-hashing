@@ -31,7 +31,7 @@ Detailed Process of \textit{PreHash}:
     To optimize the utilization of the cryptographic output and reduce operational overhead, the PRNG is designed to generate a full 128-bit block of pseudo-random data at a time, even though only a portion of these bits are used immediately. The generated bits are stored and consumed incrementally according to the needs of the application. For instance, if 17 bits are required, the system retrieves these bits from the stored block. Once the block is exhausted, a new block is generated.
     This mechanism ensures that all bits produced by the block cipher are utilized, enhancing efficiency and reducing the frequency of cryptographic operations. The output is then masked to retain only the most significant 17 bits to meet the project's specific requirement for representing image sizes. Specifically, a maximum of \(96,500\) pixels can be represented, which necessitates exactly 17 bits per operation \(\left(\lceil \log_2(96,500) \rceil = 17\right)\).
     The predictability and reproducibility of the sequence are entirely dictated by the chosen key. Employing the same key across sessions guarantees the generation of an identical sequence of pseudo-random numbers.
-    
+     
 
     \begin{figure}[!h]
         \centering

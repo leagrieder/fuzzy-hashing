@@ -99,17 +99,36 @@ Based on the range of possible values for \(d\), we have computed several specif
 \caption{Comparison of Distributions: $q_{same}$, $q_{diff}$, and $q_{indep}$}
 \end{table}
 
-\subsection{Data Compression Techniques for m=1, d=4}
+\subsection{Experimental Derivation of the probabilities $q_{same}$, $q_{diff}$, and $q_{indep}$ for different \(m\), \(d\) parameter combinations}
 
-In this subsection, we focus on optimizing data compression strategies within our fuzzy hashing framework, specifically utilizing settings where \(m=1\) and \(d=4\). This configuration means that we use a single index (\(m=1\)) from our hashed data and encode each integer in our hash using 4 bits (\(d=4\)).
+In the subsequent section, we explore enhancements to data compression techniques within our fuzzy hashing framework, emphasizing the use of various \(m\) and \(d\) parameter combinations.
 
-Integral to this implementation is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
+We initiate our analysis by conducting experiments to determine \(q_{same}\), \(q_{diff}\), and \(q_{indep}\) using a configuration of \(m=1\) and \(d=1\). This setup involves selecting a single index (integer) (\(m=1\)) from our hashed data and encoding each integer in the hash using 1 bit (\(d=1\)). 
+
+Integral to this implementation and the following ones, is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table and all subsequent ones, is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
 
 \[ 
-\text{postHash}(i) = \left\lfloor 2^d \left(1 - p\right)^i \right\rfloor 
+\text{postHash}(i) = \left\lfloor 2^d \left(1 - p\right)^i \right\rfloor
 \]
 
-Leveraging the above formula, we present the constructed lookup table for a four-bit representation, \(d=4\). Each entry in the table corresponds to an integer value, denoted by \(i\), and is associated with a specific hash output along with its calculated probability of occurrence.
+Leveraging the above formula, we present the lookup table for a unique bit representation, \(d=1\). Each entry in the table corresponds to an integer value, denoted by \(i\), and is associated with a specific hash output along with its calculated probability of occurrence.
+
+--> Insert lookuptable
+
+To enhance the equilibrium of occurrence probabilities associated with each integer in our hashing output, we employed a domain scrambling strategy. This method involves a deliberate, manual reassignment of indices to different categories. This careful reallocation ensures a more uniform probability distribution for each hashed integer, optimizing the overall balance of our compression scheme. 
+
+--> Insert scrambled lookup Table
+
+Utilizing the lookup table, alongside our established PreHash function (\(~\ref{preHash Algorithm}\)) and the newly implemented PostHash function (\(~\ref{postHash Algorithm}\)), we are equipped to conduct experiments on our dataset to assess \(q_{same}\) and \(q_{diff}\). The modification in our pipeline involves passing the output from the PreHash function directly into the PostHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the PreHash and PostHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
+
+--> Insert results for q's for m=1 and d=1
+
+
+Following the same methodology, we continue to evaluate additional combinations of \(m\) and \(d\) parameters within our framework.
+
+--> Integrate the lookuptables for each m and d param combination and the results for q
+
+We present the constructed lookup table for a four-bit representation, \(d=4\). Each entry in the table corresponds to an integer value, denoted by \(i\), and is associated with a specific hash output along with its calculated probability of occurrence.
 
 {
 \renewcommand{\arraystretch}{1.25}
@@ -137,7 +156,7 @@ Leveraging the above formula, we present the constructed lookup table for a four
 \]
 }
 
-To enhance the equilibrium of occurrence probabilities associated with each integer in our hashing output, we employed a domain scrambling strategy. This method involves a deliberate, manual reassignment of indices to different categories. This careful reallocation ensures a more uniform probability distribution for each hashed integer, optimizing the overall balance of our compression scheme. 
+And we present the lookup table using the domain scrambling strategy: 
 
 
 \renewcommand{\arraystretch}{1.25}{
@@ -164,8 +183,3 @@ To enhance the equilibrium of occurrence probabilities associated with each inte
 \right.
 \]
 }
-
-
-
-
-\subsection{Efficiency Improvement in Hashing Process}

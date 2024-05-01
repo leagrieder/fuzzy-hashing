@@ -196,13 +196,15 @@ In Table \ref{tab:joint_distribution}, we explain each entry:
     \item To determine the probability\(P[\bar{X}_i = 0, \bar{Y}_i = 0]\), we consider the following relationships:
     \begin{equation*}
         \begin{aligned}
-            P[\bar{X}_i = 0, \bar{Y}_i = 0] + P[\bar{X}_i = 0, \bar{Y}_i = 1] &= P[\bar{X}_i = 0](P[\bar{Y}_i = 0] + P[\bar{Y}_i = 1])\\
+            P[\bar{X}_i = 0, \bar{Y}_i = 0] + P[\bar{X}_i = 0, \bar{Y}_i = 1] &= P[\bar{X}_i = 0 | \bar{Y}_i = 0]P[\bar{Y}_i = 0] \\
+            &+ P[\bar{X}_i = 0 | \bar{Y}_i = 1]P[\bar{Y}_i = 1]\\
             &= P[\bar{X}_i = 0] = 1-p
         \end{aligned}
     \end{equation*} 
     \begin{equation*}
         \begin{aligned}
-            P[\bar{X}_i = 0, \bar{Y}_i = 0] + P[\bar{X}_i = 1, \bar{Y}_i = 0] &= P[\bar{Y}_i = 0](P[\bar{X}_i = 0] + P[\bar{X}_i = 1])\\
+            P[\bar{X}_i = 0, \bar{Y}_i = 0] + P[\bar{X}_i = 1, \bar{Y}_i = 0] &= P[\bar{Y}_i = 0 | \bar{X}_i = 0]P[\bar{X}_i = 0] \\
+            &+ P[\bar{Y}_i = 0 | \bar{X}_i = 1]P[\bar{X}_i = 1]\\
             &= P[\bar{Y}_i = 0] = 1-p
         \end{aligned}
     \end{equation*} 

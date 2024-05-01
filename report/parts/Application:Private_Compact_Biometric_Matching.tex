@@ -1,0 +1,26 @@
+\newpage
+\section{Application: Private and Compact Biometric Matching}
+\label{Application: Private and Compact Biometric Matching}
+
+This section explores the practical implementation of fuzzy hashing in the context of biometric matching. Utilizing the Hamming distance for biometric matching enables a systematic approach by iteratively generating \textit{l} iterations of the \textit{PreHash} function, such that:
+
+\begin{equation}
+    \begin{aligned}
+        Hash_{\text{key}}^m &= Hash_{\text{key}_1, \ldots, \text{key}_l}^m(X)\\
+        &= (PreHash_{\text{key}_1}^m(X), \ldots, PreHash_{\text{key}_l}^m(X))
+    \end{aligned}
+\end{equation}
+
+
+Subsequently, the Hamming distance between the resulting hash values of two biometric samples \(X\) and \(Y\) is calculated as:
+
+\[d_H(Hash_{key}(X), Hash_{key}(Y)) = \# \{i: PreHash_{key_i}(X) \neq PreHash_{key_i}(Y)\}\]
+
+This expression captures the count of elements "i" where the corresponding outputs of the \textit{PreHash} function differ between the samples \(X\) and \(Y\). 
+
+A first advantage to such an approach, is that the biometric template that will be stored will be smaller. Instead of storing the \textit{n} pixels, \textit{ml} integers will be stored. A second advantage, 
+
+
+\subsection{Theoretical Foundations of FPR and FNR within Fuzzy Hashing Systems}
+
+\subsection{Experimental Derivation of the FPR and FNR for m=1 and d=4 (?)}

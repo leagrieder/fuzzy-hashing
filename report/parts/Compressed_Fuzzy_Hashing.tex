@@ -111,13 +111,34 @@ Integral to this implementation and the following ones, is the creation of the l
 \text{postHash}(i) = \left\lfloor 2^d \left(1 - p\right)^i \right\rfloor
 \]
 
-Leveraging the above formula, we present the lookup table for a unique bit representation, \(d=1\). Each entry in the table corresponds to an integer value, denoted by \(i\), and is associated with a specific hash output along with its calculated probability of occurrence.
+Leveraging the above formula, we present the lookup table for converting a single index (\(m = 1\)) into a unique bit representation (\(d=1\)). Each entry in the table corresponds to an integer value, denoted by \(i\), and is associated with a specific hash output along with its calculated probability of occurrence.
 
---> Insert lookuptable
+{\renewcommand{\arraystretch}{1.25}
+\[
+\text{postHash}(i) = \left\{
+    \begin{array}{lll}
+        \text{1}  & \text{if } 1 \leq i \leq 20 & (\text{Pr} = 48.78\%)
+        \\
+        \text{0}  & \text{if } 21 \leq i & (\text{Pr} = 51.22\%)
+        \\
+    \end{array}
+\right.    
+\]}
 
 To enhance the equilibrium of occurrence probabilities associated with each integer in our hashing output, we employed a domain scrambling strategy. This method involves a deliberate, manual reassignment of indices to different categories. This careful reallocation ensures a more uniform probability distribution for each hashed integer, optimizing the overall balance of our compression scheme. 
 
---> Insert scrambled lookup Table
+\textcolor{red}{same as not scrambled!}
+{\renewcommand{\arraystretch}{1.25}
+\[
+\text{postHash}(i) = \left\{
+    \begin{array}{lll}
+        \text{1}  & \text{if } 1 \leq i \leq 20 & (\text{Pr} = 48.78\%)
+        \\
+        \text{0}  & \text{if } 21 \leq i & (\text{Pr} = 51.22\%)
+        \\
+    \end{array}
+\right.    
+\]}
 
 Utilizing the lookup table, alongside our established PreHash function (\(~\ref{preHash Algorithm}\)) and the newly implemented PostHash function (\(~\ref{postHash Algorithm}\)), we are equipped to conduct experiments on our dataset to assess \(q_{same}\) and \(q_{diff}\). The modification in our pipeline involves passing the output from the PreHash function directly into the PostHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the PreHash and PostHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
 
@@ -128,6 +149,51 @@ Following the same methodology, we continue to evaluate additional combinations 
 
 --> Integrate the lookuptables for each m and d param combination and the results for q
 
+Not scrambled + scrambled: m = 1 and d = 2
+
+{\renewcommand{\arraystretch}{1.25}
+\[
+\text{postHash}(i) = \left\{
+    \begin{array}{lll}
+        \text{3}  & \text{if } 1 \leq i \leq 8 & (\text{Pr} = 23.48\%)
+        \\
+        \text{2}  & \text{if } 9 \leq i \leq 20 & (\text{Pr} = 25.3\%)
+        \\
+        \text{1}  & \text{if } 21 \leq i \leq 41 & (\text{Pr} = 25.85\%)
+        \\
+        \text{0}  & \text{if } 42 \leq i & (\text{Pr} = 25.37\%)
+        \\
+    \end{array}
+\right.    
+\]}
+
+
+Not scrambled + scrambled: m = 1 and d = 3
+{\renewcommand{\arraystretch}{1.25}
+\[
+\text{postHash}(i) = \left\{
+    \begin{array}{lll}
+        \text{7}  & \text{if } 1 \leq i \leq 3 & (\text{Pr} = 9.55\%)
+        \\
+        \text{6}  & \text{if } 4 \leq i \leq 8 & (\text{Pr} = 13.93\%)
+        \\
+        \text{5}  & \text{if } 9 \leq i \leq 14 & (\text{Pr} = 13.92\%)
+        \\
+        \text{4}  & \text{if } 15 \leq i \leq 20 & (\text{Pr} = 11.39\%)
+        \\
+        \text{3}  & \text{if } 21 \leq i \leq 29 & (\text{Pr} = 13.32\%)
+        \\
+        \text{2}  & \text{if } 30 \leq i \leq 41 & (\text{Pr} = 12.53\%)
+        \\
+        \text{1}  & \text{if } 42 \leq i \leq 62 & (\text{Pr} = 12.8\%)
+        \\
+        \text{0}  & \text{if } 63 \leq i & (\text{Pr} = 12.57\%)
+        \\
+    \end{array}
+\right.    
+\]}
+
+
 We present the constructed lookup table for a four-bit representation, \(d=4\). Each entry in the table corresponds to an integer value, denoted by \(i\), and is associated with a specific hash output along with its calculated probability of occurrence.
 
 {
@@ -136,27 +202,72 @@ We present the constructed lookup table for a four-bit representation, \(d=4\). 
 \text{postHash}(i) = \left\{
 \begin{array}{lll}
     \text{15} & \text{if } i = 1 & (\text{Pr} = 3.29\%), \\
-    \text{14} & \text{if } 2 \leq i \leq 3 & (\text{Pr} = 6.26\%), \\
-    \text{13} & \text{if } 4 \leq i \leq 6 & (\text{Pr} = 8.64\%), \\
-    \text{12} & \text{if } 7 \leq i \leq 8 & (\text{Pr} = 5.3\%), \\
-    \text{11} & \text{if } 9 \leq i \leq 11 & (\text{Pr} = 7.31\%), \\
-    \text{10} & \text{if } 12 \leq i \leq 14 & (\text{Pr} = 6.61\%), \\
-    \text{9} & \text{if } 15 \leq i \leq 17 & (\text{Pr} = 6\%), \\
-    \text{8} & \text{if } 18 \leq i \leq 20 & (\text{Pr} = 5.41\%), \\
-    \text{7} & \text{if } 21 \leq i \leq 24 & (\text{Pr} = 6.41\%), \\
-    \text{6} & \text{if } 25 \leq i \leq 29 & (\text{Pr} = 6.9\%), \\
-    \text{5} & \text{if } 30 \leq i \leq 34 & (\text{Pr} = 5.83\%), \\
-    \text{4} & \text{if } 35 \leq i \leq 41 & (\text{Pr} = 6.7\%), \\
-    \text{3} & \text{if } 42 \leq i \leq 50 & (\text{Pr} = 6.6\%), \\
-    \text{2} & \text{if } 51 \leq i \leq 62 & (\text{Pr} = 6.2\%), \\
-    \text{1} & \text{if } 63 \leq i \leq 82 & (\text{Pr} = 6.13\%), \\
-    \text{0} & \text{if } 83 \leq i \leq n & (\text{Pr} = 6.43\%),
+    \text{14} & \text{if } 2 \leq i \leq 3 & (\text{Pr} = 6.26\%) \\
+    \text{13} & \text{if } 4 \leq i \leq 6 & (\text{Pr} = 8.64\%) \\
+    \text{12} & \text{if } 7 \leq i \leq 8 & (\text{Pr} = 5.3\%) 
+    \\
+    \text{11} & \text{if } 9 \leq i \leq 11 & (\text{Pr} = 7.31\%) \\
+    \text{10} & \text{if } 12 \leq i \leq 14 & (\text{Pr} = 6.61\%) \\
+    \text{9} & \text{if } 15 \leq i \leq 17 & (\text{Pr} = 6\%) \\
+    \text{8} & \text{if } 18 \leq i \leq 20 & (\text{Pr} = 5.41\%) \\
+    \text{7} & \text{if } 21 \leq i \leq 24 & (\text{Pr} = 6.41\%) \\
+    \text{6} & \text{if } 25 \leq i \leq 29 & (\text{Pr} = 6.9\%) \\
+    \text{5} & \text{if } 30 \leq i \leq 34 & (\text{Pr} = 5.83\%) \\
+    \text{4} & \text{if } 35 \leq i \leq 41 & (\text{Pr} = 6.7\%) \\
+    \text{3} & \text{if } 42 \leq i \leq 50 & (\text{Pr} = 6.6\%) \\
+    \text{2} & \text{if } 51 \leq i \leq 62 & (\text{Pr} = 6.2\%) \\
+    \text{1} & \text{if } 63 \leq i \leq 82 & (\text{Pr} = 6.13\%) \\
+    \text{0} & \text{if } 83 \leq i \leq n & (\text{Pr} = 6.43\%)
 \end{array}
 \right.
 \]
 }
 
 And we present the lookup table using the domain scrambling strategy: 
+
+
+
+{\renewcommand{\arraystretch}{1.25}
+\[
+\text{postHash}(i) = \left\{
+    \begin{array}{lll}
+        \text{15}  & \text{if } i \in \{1\} \cup \{3\} \cup \{6\} & (\text{Pr} = 9.15\%)
+        \\
+        \text{14}  & \text{if } i \in \{2\} & (\text{Pr} = 3.18\%)
+        \\
+        \text{13}  & \text{if } i \in \{4, 5\} & (\text{Pr} = 5.85\%)
+        \\
+        \text{12}  & \text{if } i \in \{7, 8\} & (\text{Pr} = 5.3\%)
+        \\
+        \text{11}  & \text{if } i \in \{9, \ldots, 11\} & (\text{Pr} = 7.3\%)
+        \\
+        \text{10}  & \text{if } i \in \{12, \ldots, 14\} & (\text{Pr} = 6.6\%)
+        \\
+        \text{9}  & \text{if } i \in \{15, \ldots, 17\} & (\text{Pr} = 5.98\%)
+        \\
+        \text{8}  & \text{if } i \in \{18, \ldots, 20\} & (\text{Pr} = 5.41\%)
+        \\
+        \text{7}  & \text{if } i \in \{21, \ldots, 24\} & (\text{Pr} = 6.42\%)
+        \\
+        \text{6}  & \text{if } i \in \{25, \ldots, 29\} & (\text{Pr} = 6.9\%)
+        \\
+        \text{5}  & \text{if } i \in \{30, \ldots, 34\} & (\text{Pr} = 5.84\%)
+        \\
+        \text{4}  & \text{if } i \in \{35, \ldots, 41\} & (\text{Pr} = 6.69\%)
+        \\
+        \text{3}  & \text{if } i \in \{42, \ldots, 50\} & (\text{Pr} = 6.6\%)
+        \\
+        \text{2}  & \text{if } i \in \{51, \ldots, 62\} \cup \{96497, \ldots, 96500\} & (\text{Pr} = 6.21\%)
+        \\
+        \text{1}  & \text{if } i \in \{63, \ldots, 82\} \cup \{95996, \ldots, 96496\} & (\text{Pr} = 6.13\%)
+        \\
+        \text{0}  & \text{if } i \in \{83, \ldots, 95995\} & (\text{Pr} = 6.44\%)
+        \\
+    \end{array}
+\right.    
+\]}
+
+
 
 
 \renewcommand{\arraystretch}{1.25}{

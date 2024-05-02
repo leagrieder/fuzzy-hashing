@@ -2,7 +2,7 @@
 \section{Application: Private and Compact Biometric Matching}
 \label{Application: Private and Compact Biometric Matching}
 
-This section explores the practical implementation of fuzzy hashing in the context of biometric matching. Utilizing the Hamming distance for biometric matching enables a systematic approach by iteratively generating \textit{l} iterations of the \textit{PreHash} function, such that:
+This section delves into the practical application of fuzzy hashing within the realm of biometric matching. Employing the Hamming distance for biometric matching offers a systematic approach by iteratively generating \textit{l} iterations of the \textit{PreHash} function, defined as:
 
 \begin{equation}
     \begin{aligned}
@@ -11,16 +11,60 @@ This section explores the practical implementation of fuzzy hashing in the conte
     \end{aligned}
 \end{equation}
 
-
 Subsequently, the Hamming distance between the resulting hash values of two biometric samples \(X\) and \(Y\) is calculated as:
 
 \[d_H(Hash_{key}(X), Hash_{key}(Y)) = \# \{i: PreHash_{key_i}(X) \neq PreHash_{key_i}(Y)\}\]
 
-This expression captures the count of elements "i" where the corresponding outputs of the \textit{PreHash} function differ between the samples \(X\) and \(Y\). 
+This expression quantifies the instances "i" where the outputs of the \textit{PreHash} function differ between samples \(X\) and \(Y\).
 
-A first advantage to such an approach, is that the biometric template that will be stored will be smaller. Instead of storing the \textit{n} pixels, \textit{ml} integers will be stored. A second advantage, 
+One notable advantage of this approach is the reduction in size of the stored biometric template. Rather than storing \textit{n} pixels, \textit{ml} integers are stored. Additionally, the key renders the reference \textit{PreHash} less privacy-sensitive compared to a biometric template. Specifically, if the key is known, each integer in the hash discloses about \(\frac{1}{p}\) pixels, revealing \(\frac{ml}{p}\) pixels at worst.
 
+Similarly, when employing the Hamming distance for biometric matching through the iterative generation of \textit{l} iterations of the \textit{PostHash} function, analogous advantages arise. Here, the stored biometric template is condensed to \textit{mld} integers instead of \textit{n} pixels. Furthermore, the key diminishes the sensitivity of the reference \textit{PostHash} in terms of privacy, exposing \(\frac{mld}{p}\) pixels at most if known. Additionally, \textit{PostHash} contributes to leakage reduction.
+
+It's crucial to note that for both scenarios, additional privacy safeguards can be implemented, such as restricted access to the key. Hence, the intricacies of the biometric infrastructure must be addressed on a case-by-case basis.
 
 \subsection{Theoretical Foundations of FPR and FNR within Fuzzy Hashing Systems}
+
+The transformation of biometric data into a hash, whether through the \textit{PreHash} method or its compressed counterpart, \textit{PostHash}, is pivotal in shaping the system's operational efficiency and security. The inherent privacy preservation achieved by either methodology significantly impacts the system's performance metrics, notably the \hyperref[def:FNR]{False Negative Rate (FNR)} and \hyperref[def:FPR]{False Positive Rate (FPR)}. By encapsulating biometric information into a condensed form, the system not only optimizes storage but also diminishes the potential for unauthorized access to sensitive data. This strategic conversion process not only ensures data integrity but also fosters a robust defense against potential security breaches. Furthermore, the judicious selection of hash generation techniques bolsters the system's discrimination capabilities, thereby minimizing the occurrence of false rejections and acceptances, consequently enhancing the overall accuracy and reliability of biometric matching.
+
+We establish a threshold \(t\) to evaluate the match between two biometric samples, \(X\) and \(Y\), by analyzing the Hamming distance between their hash values. A match is confirmed if the difference between \(l\) (the total iterations) and the Hamming distance is equal to or exceeds the threshold \(t\), expressed as: \[l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) \geq t\].
+By leveraging the approximation to a normal distribution, we establish the False Negative Rate (FNR) as:
+
+\[FNR = \Phi\left( \frac{t - l\mu_{\text{same}}^m}{\sqrt{l\mu_{\text{same}}^m}} \right)\]
+
+Here, \(\Phi\) denotes the Cumulative Distribution Function (CDF) of \(\mathcal{N}(0, 1)\).
+
+In contrast, we define the False Positive Rate (FPR) as:
+
+\[FPR = \Phi\left( \frac{t - l\mu_{\text{diff}}^m}{\sqrt{l\mu_{\text{diff}}^m}} \right)\]
+
+These formulations allow for the evaluation of false match rates based on the standard deviation and mean of the distributions for same and different samples, respectively. The upper bound \(\mu_{same}\) and \(\mu_{diff}\) are defined in Equation \ref{eq:mu}.
+
+For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate the threshold (\(t\)) from parameters \(m\) and \(l\) to achieve an FNR of 1\%. This process is repeated for all \(l\) until reaching an FPR \(\leq 2^{-36} \). The resulting set of parameters is as follows: 
+
+\begin{table}[htbp] 
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        \textit{m} & \textit{l} & \textit{t} & \textit{l}\(\mu_{\text{same}}^m\) & \textit{l}\(\mu_{\text{diff}}^m\) & \textit{FNR} & \textit{FPR} \\
+        \hline
+        1 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
+        2 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
+        3 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
+        4 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
+        5 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
+        6 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
+        7 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
+        8 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
+        \hline
+    \end{tabular}
+    \caption{Parameterization Results for FNR and FPR Calculation}
+    \label{tab:parameterization}
+\end{table}
+
+
+
+
+
 
 \subsection{Experimental Derivation of the FPR and FNR for m=1 and d=4 (?)}

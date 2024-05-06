@@ -90,10 +90,10 @@ Based on the range of possible values for \(d\), we have computed several specif
         \hline
         & $q_{same}$ & $q_{diff}$ & $q_{indep}$\\
         \hline
-        m = 1 d = 1 & $60\%$ & $54\%$ & $51\%$\\
-        m = 1 d = 2 & $40\%$ & $31\%$ & $26\%$\\
-        m = 1 d = 3 & $30\%$ & $20\%$ & $14\%$\\
-        m = 1 d = 4 & $25\%$ & $14\%$ & $8\%$\\
+        m = 1 d = 1 & $??\%$ & $??\%$ & $??\%$\\
+        m = 1 d = 2 & $??\%$ & $??\%$ & $??\%$\\
+        m = 1 d = 3 & $??\%$ & $??\%$ & $??\%$\\
+        m = 1 d = 4 & $??\%$ & $??\%$ & $??\%$\\
         \hline
     \end{tabular}
 \caption{Comparison of Distributions: $q_{same}$, $q_{diff}$, and $q_{indep}$}
@@ -101,9 +101,7 @@ Based on the range of possible values for \(d\), we have computed several specif
 
 \subsection{Experimental Derivation of the probabilities $q_{same}$, $q_{diff}$, and $q_{indep}$ for different \(m\), \(d\) parameter combinations}
 
-In the subsequent section, we explore enhancements to data compression techniques within our fuzzy hashing framework, emphasizing the use of various \(m\) and \(d\) parameter combinations.
-
-We initiate our analysis by conducting experiments to determine \(q_{same}\), \(q_{diff}\), and \(q_{indep}\) using a configuration of \(m=1\) and \(d=1\). This setup involves selecting a single index (integer) (\(m=1\)) from our hashed data and encoding each integer in the hash using 1 bit (\(d=1\)). 
+In the subsequent section, we explore enhancements to data compression techniques within our fuzzy hashing framework, emphasizing the use of various \(m\) and \(d\) parameter combinations. We initiate our analysis by conducting experiments to determine \(q_{same}\), \(q_{diff}\), and \(q_{indep}\).
 
 Integral to this implementation and the following ones, is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table and all subsequent ones, is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
 
@@ -208,9 +206,7 @@ In the context of compressed fuzzy hashing, domain scrambling aims to reorder th
     \item There is no known algorithm that can find an optimal solution to NP-complete problems in polynomial time for all general cases.
 \end{enumerate}
 
-Given the NP-completeness of the partition problem, programming an optimal solution for domain scrambling — which is akin to a continuous partitioning challenge — is impractical. Theoretically, while it is feasible to verify if a given distribution of indices across hash buckets is optimal, finding that distribution algorithmically cannot be guaranteed to be efficient for all possible cases. However, we did try to implement this algorithm and observe the results.
-
-For the case where the hash depth \(d=4\), resulting in \(D=16\) possible hash values. The program we wrote is designed to distribute a sequence of integers (1 to 96,500) across predefined buckets to achieve a target probability distribution based on our geometric decay model~\ref{eq:GeomFormula}. This process begins by mapping each integer to a bucket using a calculated index derived from the geometric formula, adjusted by a scaling factor. Initial bucket assignments aim to approximate a uniform distribution of probabilities. The program then iteratively adjusts these assignments: integers are moved between buckets to better align with the target probabilities, ensuring that the sum of probabilities within each bucket remains close to the desired uniform distribution. This adjustment process continues until the distribution of probabilities across all buckets falls within an acceptable error margin, or until no further beneficial adjustments can be made.
+Given the NP-completeness of the partition problem, programming an optimal solution for domain scrambling — which is akin to a continuous partitioning challenge — is impractical. Theoretically, while it is feasible to verify if a given distribution of indices across hash buckets is optimal, finding that distribution algorithmically cannot be guaranteed to be efficient for all possible cases. However, we did try to implement this algorithm and observe the results for the case where the hash depth is \(d=4\), resulting in \(D=16\) possible hash values. The program written is designed to distribute a sequence of integers (1 to 96,500) across predefined buckets (0 to 15) to achieve a target probability distribution based on our geometric decay model~\ref{eq:GeomFormula}. This process begins by mapping each integer to a bucket using a calculated index derived from the geometric formula, adjusted by a scaling factor. Initial bucket assignments aim to approximate a uniform distribution of probabilities. The program then iteratively adjusts these assignments: integers are moved between buckets to better align with the target probabilities, ensuring that the sum of probabilities within each bucket remains close to the desired uniform distribution. This adjustment process continues until the distribution of probabilities across all buckets falls within an acceptable error margin, or until no further beneficial adjustments can be made.
 
 \renewcommand{\arraystretch}{1.25}
 \[
@@ -236,15 +232,14 @@ For the case where the hash depth \(d=4\), resulting in \(D=16\) possible hash v
 \right.
 \]
 
-This gives interesting results (....)
+The distribution of probabilities and counts across buckets demonstrates a commendable effort towards achieving uniformity. However, the variations observed, particularly in buckets \(14\) and \(13\) with their notably lower probabilities of \(5.981\%\) and \(6.092\), indicate potential areas for further optimization. To address this, we have decided to try implementing a close to optimal solution by manually scrambling the domain to achieve a desirable uniform distribution. This manual method involved:
 
-We have also tried to achieve an optimal solution by manually scrambling the domain to achieve a desirable uniform distribution. This manual method involved:
 \begin{itemize}
     \item Assigning indices to buckets (hash values) initially based on heuristic insights and preliminary analysis to ensure a rough balance.
     \item Iteratively adjusting the distribution by swapping indices between buckets to refine the balance, based on observed distributions and targeted uniformity.
 \end{itemize}
 
-This manual approach allowed us to control the distribution directly and ensure an even spread across hash outputs, which is crucial for maintaining the efficacy and reliability of the compressed fuzzy hashing system.
+This manual approach allowed us to control the distribution directly and ensure a quasi-even spread across hash outputs, which is crucial for maintaining the efficacy and reliability of the compressed fuzzy hashing system.
 
 \renewcommand{\arraystretch}{1.25}{
 \[
@@ -273,47 +268,28 @@ This manual approach allowed us to control the distribution directly and ensure 
 
 Utilizing these derived lookup tables, alongside our established PreHash function(\(~\ref{preHash Algorithm}\)) and the newly implemented PostHash function (\(~\ref{postHash Algorithm}\)), we are equipped to conduct experiments on our dataset to assess \(q_{same}\) and \(q_{diff}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the PreHash function directly into the PostHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the PreHash and PostHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
 
---> Insert results for q's all m's and d's combinations
-
-
-
-% WHAT IS THIS ????????
-% {\renewcommand{\arraystretch}{1.25}
-% \[
-% \text{postHash}(i) = \left\{
-%     \begin{array}{lll}
-%         \text{15}  & \text{if } i \in \{1\} \cup \{3\} \cup \{6\} & (\text{Pr} = 9.15\%)
-%         \\
-%         \text{14}  & \text{if } i \in \{2\} & (\text{Pr} = 3.18\%)
-%         \\
-%         \text{13}  & \text{if } i \in \{4, 5\} & (\text{Pr} = 5.85\%)
-%         \\
-%         \text{12}  & \text{if } i \in \{7, 8\} & (\text{Pr} = 5.3\%)
-%         \\
-%         \text{11}  & \text{if } i \in \{9, \ldots, 11\} & (\text{Pr} = 7.3\%)
-%         \\
-%         \text{10}  & \text{if } i \in \{12, \ldots, 14\} & (\text{Pr} = 6.6\%)
-%         \\
-%         \text{9}  & \text{if } i \in \{15, \ldots, 17\} & (\text{Pr} = 5.98\%)
-%         \\
-%         \text{8}  & \text{if } i \in \{18, \ldots, 20\} & (\text{Pr} = 5.41\%)
-%         \\
-%         \text{7}  & \text{if } i \in \{21, \ldots, 24\} & (\text{Pr} = 6.42\%)
-%         \\
-%         \text{6}  & \text{if } i \in \{25, \ldots, 29\} & (\text{Pr} = 6.9\%)
-%         \\
-%         \text{5}  & \text{if } i \in \{30, \ldots, 34\} & (\text{Pr} = 5.84\%)
-%         \\
-%         \text{4}  & \text{if } i \in \{35, \ldots, 41\} & (\text{Pr} = 6.69\%)
-%         \\
-%         \text{3}  & \text{if } i \in \{42, \ldots, 50\} & (\text{Pr} = 6.6\%)
-%         \\
-%         \text{2}  & \text{if } i \in \{51, \ldots, 62\} \cup \{96497, \ldots, 96500\} & (\text{Pr} = 6.21\%)
-%         \\
-%         \text{1}  & \text{if } i \in \{63, \ldots, 82\} \cup \{95996, \ldots, 96496\} & (\text{Pr} = 6.13\%)
-%         \\
-%         \text{0}  & \text{if } i \in \{83, \ldots, 95995\} & (\text{Pr} = 6.44\%)
-%         \\
-%     \end{array}
-% \right.    
-% \]}
+\begin{enumerate}
+    \item \textbf{d = 1 and m = 1}:
+    \begin{itemize}
+        \item \(q_{same} = ??\%\)
+        \item \(q_{diff} = ??\%\)
+    \end{itemize}
+    
+    \item \textbf{\(d = 2\) and \(m = 1\)}:
+    \begin{itemize}
+        \item \(q_{same} = ??\%\)
+        \item \(q_{diff} = ??\%\)
+    \end{itemize}
+    
+    \item \textbf{\(d = 3\) and \(m = 1\)}:
+    \begin{itemize}
+        \item \(q_{same} = ??\%\)
+        \item \(q_{diff} = ??\%\)
+    \end{itemize}
+    
+    \item \textbf{\(d = 4\) and \(m = 1\)}:
+    \begin{itemize}
+        \item \(q_{same} = ??\%\)
+        \item \(q_{diff} = ??\%\)
+    \end{itemize}
+\end{enumerate}

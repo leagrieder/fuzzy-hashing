@@ -21,13 +21,13 @@ One notable advantage of this approach is the reduction in size of the stored bi
 
 Similarly, when employing the Hamming distance for biometric matching through the iterative generation of \textit{l} iterations of the \textit{PostHash} function, analogous advantages arise. Here, the stored biometric template is condensed to \textit{mld} integers instead of \textit{n} pixels. Furthermore, the key diminishes the sensitivity of the reference \textit{PostHash} in terms of privacy, exposing \(\frac{mld}{p}\) pixels at most if known. Additionally, \textit{PostHash} contributes to leakage reduction.
 
-It's crucial to note that for both scenarios, additional privacy safeguards can be implemented, such as restricted access to the key. Hence, the intricacies of the biometric infrastructure must be addressed on a case-by-case basis.
+It's crucial to note that for both scenarios, additional privacy safeguards can be implemented, for instance a restricted access to the key. Hence, the intricacies of the biometric infrastructure must be addressed on a case-by-case basis.
 
 \subsection{Theoretical Foundations of FPR and FNR within Fuzzy Hashing Systems}
 
-The transformation of biometric data into a hash, whether through the \textit{PreHash} method or its compressed counterpart, \textit{PostHash}, is pivotal in shaping the system's operational efficiency and security. The inherent privacy preservation achieved by either methodology significantly impacts the system's performance metrics, notably the \hyperref[def:FNR]{False Negative Rate (FNR)} and \hyperref[def:FPR]{False Positive Rate (FPR)}. By encapsulating biometric information into a condensed form, the system not only optimizes storage but also diminishes the potential for unauthorized access to sensitive data. This strategic conversion process not only ensures data integrity but also fosters a robust defense against potential security breaches. Furthermore, the judicious selection of hash generation techniques bolsters the system's discrimination capabilities, thereby minimizing the occurrence of false rejections and acceptances, consequently enhancing the overall accuracy and reliability of biometric matching.
+The transformation of biometric data into a hash, whether through the \textit{PreHash} method or its compressed counterpart, \textit{PostHash}, is significant in shaping the system's operational efficiency and security. The inherent privacy preservation achieved by either methodology significantly impacts the system's performance metrics, notably the \hyperref[def:FNR]{False Negative Rate (FNR)} and \hyperref[def:FPR]{False Positive Rate (FPR)}. By encapsulating biometric information into a condensed form, the system not only optimizes storage but also diminishes the potential for unauthorized access to sensitive data. This strategic conversion process not only ensures data integrity but also fosters a robust defense against potential security breaches. Furthermore, the judicious selection of hash generation techniques bolsters the system's discrimination capabilities, thereby minimizing the occurrence of false rejections and acceptances, consequently enhancing the overall accuracy and reliability of biometric matching.
 
-We establish a threshold \(t\) to evaluate the match between two biometric samples, \(X\) and \(Y\), by analyzing the Hamming distance between their hash values. A match is confirmed if the difference between \(l\) (the total iterations) and the Hamming distance is equal to or exceeds the threshold \(t\), expressed as: \[l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) \geq t\].
+We establish a threshold \(t\) to evaluate the match between two biometric samples, \(X\) and \(Y\), by analyzing the Hamming distance between their hash values. A match is confirmed if the difference between \(l\) (the total iterations) and the Hamming distance is equal to or exceeds the threshold \(t\), expressed as: \[l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) \geq t\]
 By leveraging the approximation to a normal distribution, we establish the False Negative Rate (FNR) as:
 
 \[FNR = \Phi\left( \frac{t - l\mu_{\text{same}}^m}{\sqrt{l\mu_{\text{same}}^m}} \right)\]
@@ -40,7 +40,7 @@ In contrast, we define the False Positive Rate (FPR) as:
 
 These formulations allow for the evaluation of false match rates based on the standard deviation and mean of the distributions for same and different samples, respectively. The upper bound \(\mu_{same}\) and \(\mu_{diff}\) are defined in Equation \ref{eq:mu}.
 
-For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate the threshold (\(t\)) from parameters \(m\) and \(l\) to achieve an FNR of 1\%. This process is repeated for all \(l\) until reaching an FPR \(\leq 2^{-36} \). The resulting set of parameters is as follows: 
+For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate the threshold (\(t\)) from parameters \(m\) and \(l\) to achieve an FNR of 1\% and an FPR \(\leq 2^{-36} \). The resulting set of parameters is as follows: 
 
 \begin{table}[htbp] 
     \centering
@@ -48,23 +48,19 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
         \hline
         \textit{m} & \textit{l} & \textit{t} & \textit{l}\(\mu_{\text{same}}^m\) & \textit{l}\(\mu_{\text{diff}}^m\) & \textit{FNR} & \textit{FPR} \\
         \hline
-        1 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
-        2 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
-        3 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
-        4 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
-        5 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
-        6 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
-        7 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
-        8 & Valeur & Valeur & Valeur & Valeur & Valeur & Valeur \\
+        1 & 637 & 118 & 146.6 & 49.2 & 1\% & \(2^{-37}\) \\
+        2 & 961 & 34 & 50.0 & 5.7 & 1\% & \(2^{-38}\) \\
+        3 & 2569 & 18 & 31.3 & 1.2 & 1\% & \(2^{-41}\) \\
+        4 & 8481 & 12 & 23.8 & 0.3 & 1\% & \(2^{-43}\) \\
+        5 & 32 999 & 11 & 21.3 & 0.1 & 1\% & \(2^{-51}\) \\
+        6 & 140 090 & 10 & 20.8 & 0.0 & 1\% & \(2^{-67}\) \\
+        7 & 568 315 & 9 & 19.5 & 0.0 & 1\% & \(2^{-51}\) \\
+        8 & 2 841 573 & 11 & 22.4 & 0.0 & 1\% & \(2^{-120}\) \\
         \hline
     \end{tabular}
     \caption{Parameterization Results for FNR and FPR Calculation}
     \label{tab:parameterization}
 \end{table}
-
-
-
-
 
 
 \subsection{Experimental Derivation of the FPR and FNR for m=1 and d=4 (?)}

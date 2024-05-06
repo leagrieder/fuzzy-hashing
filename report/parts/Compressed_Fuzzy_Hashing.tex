@@ -200,7 +200,7 @@ Hexadecimal Hash Output Distribution Table \(d=4\)
 
 In our current implementation of PostHash output tables, each partition does not distribute probabilities equally among the bins. This uneven distribution, observed from binary to hexadecimal outputs, poses some challenges, particularly in our system, where hash functions are employed to ensure the confidentiality of biometric data. The non-uniform distribution can lead to predictable patterns, potentially compromising the security by making the system more vulnerable to attacks such as hash collisions. These predictable patterns can be exploited by attackers to reverse-engineer or guess hash values, thereby breaching the confidentiality of biometric information and undermining the integrity of our security measures.
 
-In the context of compressed fuzzy hashing, domain scrambling aims to reorder the indices in a way that the resulting hash values are "nearly" uniformly distributed. This task shares similarities with a well known problem in computer science called the "Partition Problem". This problem involves deciding whether a given multiset of positive integers can be partitioned into two subsets such that the sum of the numbers in each subset is equal. This problem is a specific instance of the subset sum problem, where the target sum is half of the total sum of all elements in the set. The partition problem is classified as NP-complete, a categorization in computational complexity theory used to describe decision problems. A problem is in NP (Non-deterministic Polynomial time) if a solution for the problem can be verified in polynomial time given a candidate solution. moreover, a problem is NP-complete if it is as hard as the hardest problems in NP and if every problem in NP can be reduced to it in polynomial time. This implies two things for NP-complete problems:
+In the context of compressed fuzzy hashing, domain scrambling aims to reorder the indices in a way that the resulting hash values are "nearly" uniformly distributed. This task shares similarities with a well known problem in computer science called the "Partition Problem". This problem involves deciding whether a given multiset of positive integers can be partitioned into two or more subsets such that the sum of the numbers in each subset is equal. This problem is a specific instance of the subset sum problem, where the target sum is half of the total sum of all elements in the set. The partition problem is classified as NP-complete, a categorization in computational complexity theory used to describe decision problems. A problem is in NP (Non-deterministic Polynomial time) if a solution for the problem can be verified in polynomial time given a candidate solution. moreover, a problem is NP-complete if it is as hard as the hardest problems in NP and if every problem in NP can be reduced to it in polynomial time. This implies two things for NP-complete problems:
 
 \begin{enumerate}
     \item Verification is Feasible: Given a ``solution,'' we can verify whether it is correct in polynomial time.
@@ -225,18 +225,18 @@ This manual approach allowed us to control the distribution directly and ensure 
     14 & \text{if } i \in \{2, 3\} & (\text{Pr} = 6.26\%), \\
     13 & \text{if } i \in \makecell[tl]{\{5, 6\} \cup \{53\}} & (\text{Pr} = 6.24\%), \\
     12 & \text{if } i \in \makecell[tl]{\{7, 8\} \cup \{38\}} & (\text{Pr} = 6.25\%), \\
-    11 & \text{if } i \in \makecell[tl]{\{9, 10\} \cup \{29\}} & (\text{Pr} = 6.25\%), \\
-    10 & \text{if } i \in \makecell[tl]{\{12, 13\} \cup \{83\} \cup \{85, \ldots, 92\} \\ \cup \{99\} \cup \{170\}} & (\text{Pr} = 6.24\%), \\
-    9  & \text{if } i \in \makecell[tl]{\{15, \ldots, 17\} \cup \{78\}} & (\text{Pr} = 6.25\%), \\
+    11 & \text{if } i \in \makecell[tl]{\{9, 10\} \cup \{29\}} & (\text{Pr} = 6.24\%), \\
+    10 & \text{if } i \in \makecell[tl]{\{12, 13\} \cup \{83\} \cup \{85, \ldots, 92\} \cup \{99\} \cup \{170\}} & (\text{Pr} = 6.24\%), \\
+    9  & \text{if } i \in \makecell[tl]{\{15, \ldots, 17\} \cup \{78\}} & (\text{Pr} = 6.23\%), \\
     8  & \text{if } i \in \makecell[tl]{\{18, \ldots, 20\} \cup \{42\}} & (\text{Pr} = 6.24\%), \\
-    7  & \text{if } i \in \makecell[tl]{\{21, \ldots, 23\} \cup \{63, 64\} \cup \{71\}} & (\text{Pr} = 6.25\%), \\
-    6  & \text{if } i \in \makecell[tl]{\{25, \ldots, 28\} \cup \{61\} \cup \{84\}} & (\text{Pr} = 6.25\%), \\
-    5  & \text{if } i \in \makecell[tl]{\{30, \ldots, 34\} \cup \{62\}} & (\text{Pr} = 6.26\%), \\
-    4  & \text{if } i \in \makecell[tl]{\{35, \ldots, 37\} \cup \{39, \ldots, 41\} \cup \{57\}} & (\text{Pr} = 6.26\%), \\
-    3  & \text{if } i \in \makecell[tl]{\{43, \ldots, 50\} \cup \{59\}} & (\text{Pr} = 6.24\%), \\
-    2  & \text{if } i \in \makecell[tl]{\{11\} \cup \{51, 52\} \cup \{54, \ldots, 56\} \\ \cup \{58\} \cup \{60\} \cup \{98\}} & (\text{Pr} = 6.25\%), \\
-    1  & \text{if } i \in \makecell[tl]{\{24\} \cup \{65, \ldots, 70\} \cup \{72, \ldots, 77\} \\ \cup \{79, \ldots, 82\}} & (\text{Pr} = 6.25\%), \\
-    0  & \text{if } i \in \makecell[tl]{\{14\} \cup \{93, \ldots, 97\} \cup \{101\} \\ \cup \{103, \ldots, 169\} \cup \{171, \ldots, n\}} & (\text{Pr} = 6.24\%)
+    7  & \text{if } i \in \makecell[tl]{\{21, \ldots, 23\} \cup \{63, 64\} \cup \{71\} \cup \{100\} \cup \{102\}} & (\text{Pr} = 6.25\%), \\
+    6  & \text{if } i \in \makecell[tl]{\{25, \ldots, 28\} \cup \{61\} \cup \{84\}} & (\text{Pr} = 6.26\%), \\
+    5  & \text{if } i \in \makecell[tl]{\{30, \ldots, 34\} \cup \{62\}} & (\text{Pr} = 6.27\%), \\
+    4  & \text{if } i \in \makecell[tl]{\{35, \ldots, 37\} \cup \{39, \ldots, 41\} \cup \{57\}} & (\text{Pr} = 6.25\%), \\
+    3  & \text{if } i \in \makecell[tl]{\{43, \ldots, 50\} \cup \{59\}} & (\text{Pr} = 6.23\%), \\
+    2  & \text{if } i \in \makecell[tl]{\{11\} \cup \{51, 52\} \cup \{54, \ldots, 56\} \cup \{58\} \cup \{60\} \\ \cup \{98\}} & (\text{Pr} = 6.27\%), \\
+    1  & \text{if } i \in \makecell[tl]{\{24\} \cup \{65, \ldots, 70\} \cup \{72, \ldots, 77\} \\ \cup \{79, \ldots, 82\}} & (\text{Pr} = 6.27\%), \\
+    0  & \text{if } i \in \makecell[tl]{\{14\} \cup \{93, \ldots, 97\} \cup \{101\} \cup \{103, \ldots, 169\} \\ \cup \{171, \ldots, n\}} & (\text{Pr} = 6.24\%)
 \end{array}
 \right.
 \]

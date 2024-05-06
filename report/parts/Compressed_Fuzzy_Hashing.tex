@@ -107,7 +107,8 @@ We initiate our analysis by conducting experiments to determine \(q_{same}\), \(
 
 Integral to this implementation and the following ones, is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table and all subsequent ones, is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
 
-\[ 
+\[
+    \label{eq:GeomFormula}
 \text{postHash}(i) = \left\lfloor 2^d \left(1 - p\right)^i \right\rfloor
 \]
 
@@ -207,9 +208,37 @@ In the context of compressed fuzzy hashing, domain scrambling aims to reorder th
     \item There is no known algorithm that can find an optimal solution to NP-complete problems in polynomial time for all general cases.
 \end{enumerate}
 
-Given the NP-completeness of the partition problem, programming an optimal solution for domain scrambling — which is akin to a continuous partitioning challenge — is impractical. Theoretically, while it is feasible to verify if a given distribution of indices across hash buckets is optimal, finding that distribution algorithmically cannot be guaranteed to be efficient for all possible cases. Therefore, instead of striving to achieve a programmed solution, we have opted to manually derive the domain distribution for a specific configuration.
+Given the NP-completeness of the partition problem, programming an optimal solution for domain scrambling — which is akin to a continuous partitioning challenge — is impractical. Theoretically, while it is feasible to verify if a given distribution of indices across hash buckets is optimal, finding that distribution algorithmically cannot be guaranteed to be efficient for all possible cases. However, we did try to implement this algorithm and observe the results.
 
-For the case where the hash depth \(d=4\), resulting in \(D=16\) possible hash values, we have manually scrambled the domain to achieve a desirable uniform distribution. This manual method involved:
+For the case where the hash depth \(d=4\), resulting in \(D=16\) possible hash values. The program we wrote is designed to distribute a sequence of integers (1 to 96,500) across predefined buckets to achieve a target probability distribution based on our geometric decay model~\ref{eq:GeomFormula}. This process begins by mapping each integer to a bucket using a calculated index derived from the geometric formula, adjusted by a scaling factor. Initial bucket assignments aim to approximate a uniform distribution of probabilities. The program then iteratively adjusts these assignments: integers are moved between buckets to better align with the target probabilities, ensuring that the sum of probabilities within each bucket remains close to the desired uniform distribution. This adjustment process continues until the distribution of probabilities across all buckets falls within an acceptable error margin, or until no further beneficial adjustments can be made.
+
+\renewcommand{\arraystretch}{1.25}
+\[
+\text{Bucket Assignments} = \left\{
+\begin{array}{lll}
+    0 & \text{if } i \in [1, 96500] & (\text{Count} = 88216, \text{Pr} = 6.269\%), \\
+    1 & \text{if } i \in [2, 8287] & (\text{Count} = 2075, \text{Pr} = 6.274\%), \\
+    2 & \text{if } i \in [3, 6215] & (\text{Count} = 1216, \text{Pr} = 6.298\%), \\
+    3 & \text{if } i \in [4, 5003] & (\text{Count} = 864, \text{Pr} = 6.292\%), \\
+    4 & \text{if } i \in [5, 4143] & (\text{Count} = 671, \text{Pr} = 6.289\%), \\
+    5 & \text{if } i \in [6, 3476] & (\text{Count} = 549, \text{Pr} = 6.253\%), \\
+    6 & \text{if } i \in [7, 2931] & (\text{Count} = 465, \text{Pr} = 6.298\%), \\
+    7 & \text{if } i \in [8, 2471] & (\text{Count} = 405, \text{Pr} = 6.289\%), \\
+    8 & \text{if } i \in [9, 2071] & (\text{Count} = 358, \text{Pr} = 6.298\%), \\
+    9 & \text{if } i \in [10, 1719] & (\text{Count} = 321, \text{Pr} = 6.290\%), \\
+    10 & \text{if } i \in [11, 1404] & (\text{Count} = 291, \text{Pr} = 6.297\%), \\
+    11 & \text{if } i \in [12, 1120] & (\text{Count} = 269, \text{Pr} = 6.298\%), \\
+    12 & \text{if } i \in [13, 859] & (\text{Count} = 247, \text{Pr} = 6.231\%), \\
+    13 & \text{if } i \in [14, 620] & (\text{Count} = 230, \text{Pr} = 6.092\%), \\
+    14 & \text{if } i \in [15, 399] & (\text{Count} = 215, \text{Pr} = 5.981\%), \\
+    15 & \text{if } i \in [80, 192] & (\text{Count} = 108, \text{Pr} = 6.252\%)
+\end{array}
+\right.
+\]
+
+This gives interesting results (....)
+
+We have also tried to achieve an optimal solution by manually scrambling the domain to achieve a desirable uniform distribution. This manual method involved:
 \begin{itemize}
     \item Assigning indices to buckets (hash values) initially based on heuristic insights and preliminary analysis to ensure a rough balance.
     \item Iteratively adjusting the distribution by swapping indices between buckets to refine the balance, based on observed distributions and targeted uniformity.

@@ -177,11 +177,31 @@ For \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), our experimental protocol a
     \begin{itemize}
         \item \textbf{\(\mu_{\text{same}}\)}: We computed \(\mu_{\text{same}}\) by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the intra-individual comparisons, which furnished us with the following probability:
 
-        \[ \mu_{\text{same}} \approx 0.2302 = 23.02\%\] 
+        \[ \mu_{\text{same}} \approx 0.2302 = 23.02\%\]
         
         \item \textbf{\(\mu_{\text{diff}}\)}: Similarly, \(\mu_{\text{diff}}\) was determined by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the inter-individual comparisons, which furnished us with the following probability:
 
         \[ \mu_{\text{diff}} \approx 0.0772 = 7.72\% \]
+
+        \begin{figure}[H]
+            \centering
+            \begin{minipage}[b]{0.48\linewidth}
+                \centering
+                \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/mu_same.png}
+                \caption{Hamming Distances for Same, Aligned Biometric Samples with Single Index PreHashing}
+                \label{mu_same}
+            \end{minipage}
+            \hfill
+            \begin{minipage}[b]{0.48\linewidth}
+                \centering
+                \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/mu_diff.png}
+                \caption{Hamming Distances for Different, Aligned Biometric Samples with Single Index PreHashing}
+                \label{mu_diff}
+            \end{minipage}
+        \end{figure}
+        
+        
+
     \end{itemize}
 \end{enumerate}
 

@@ -90,10 +90,10 @@ Based on the range of possible values for \(d\), we have computed several specif
         \hline
         & $q_{same}$ & $q_{diff}$ & $q_{indep}$\\
         \hline
-        m = 1 d = 1 & $??\%$ & $??\%$ & $??\%$\\
-        m = 1 d = 2 & $??\%$ & $??\%$ & $??\%$\\
-        m = 1 d = 3 & $??\%$ & $??\%$ & $??\%$\\
-        m = 1 d = 4 & $??\%$ & $??\%$ & $??\%$\\
+        \(m = 1\) \(d = 1\) & $??\%$ & $??\%$ & $??\%$\\
+        \(m = 1\) \(d = 2\) & $??\%$ & $??\%$ & $??\%$\\
+        \(m = 1\) \(d = 3\) & $??\%$ & $??\%$ & $??\%$\\
+        \(m = 1\) \(d = 4\) & $??\%$ & $??\%$ & $??\%$\\
         \hline
     \end{tabular}
 \caption{Comparison of Distributions: $q_{same}$, $q_{diff}$, and $q_{indep}$}
@@ -206,7 +206,9 @@ In the context of compressed fuzzy hashing, domain scrambling aims to reorder th
     \item There is no known algorithm that can find an optimal solution to NP-complete problems in polynomial time for all general cases.
 \end{enumerate}
 
-Given the NP-completeness of the partition problem, programming an optimal solution for domain scrambling — which is akin to a continuous partitioning challenge — is impractical. Theoretically, while it is feasible to verify if a given distribution of indices across hash buckets is optimal, finding that distribution algorithmically cannot be guaranteed to be efficient for all possible cases. However, we did try to implement this algorithm and observe the results for the case where the hash depth is \(d=4\), resulting in \(D=16\) possible hash values. The program written is designed to distribute a sequence of integers (1 to 96,500) across predefined buckets (0 to 15) to achieve a target probability distribution based on our geometric decay model~\ref{eq:GeomFormula}. This process begins by mapping each integer to a bucket using a calculated index derived from the geometric formula, adjusted by a scaling factor. Initial bucket assignments aim to approximate a uniform distribution of probabilities. The program then iteratively adjusts these assignments: integers are moved between buckets to better align with the target probabilities, ensuring that the sum of probabilities within each bucket remains close to the desired uniform distribution. This adjustment process continues until the distribution of probabilities across all buckets falls within an acceptable error margin, or until no further beneficial adjustments can be made.
+Given the NP-completeness of the partition problem, programming an optimal solution for domain scrambling — which is akin to a continuous partitioning challenge — is impractical. Theoretically, while it is feasible to verify if a given distribution of indices across hash buckets is optimal, finding that distribution algorithmically cannot be guaranteed to be efficient for all possible cases. However, we did try to implement this algorithm and observe the results for the case where the hash depth is \(d=4\), resulting in \(D=16\) possible hash values. The program written is designed to distribute a sequence of integers (1 to 96,500) across predefined buckets (0 to 15) to achieve a target probability distribution based on our geometric decay model~\ref{eq:GeomFormula}. This process begins by mapping each integer to a bucket using a calculated index derived from the geometric formula, adjusted by a scaling factor. Initial bucket assignments aim to approximate a uniform distribution of probabilities. The program then iteratively adjusts these assignments: integers are moved between buckets to better align with the target probabilities, ensuring that the sum of probabilities within each bucket remains close to the desired uniform distribution. This adjustment process continues until the distribution of probabilities across all buckets falls within an acceptable error margin, or until no further beneficial adjustments can be made. The following lookup table illustrates the distribution of indices across each bucket, including the count of indices falling within each bucket and the range of indices encompassed by it.
+
+
 
 \renewcommand{\arraystretch}{1.25}
 \[
@@ -269,25 +271,25 @@ This manual approach allowed us to control the distribution directly and ensure 
 Utilizing these derived lookup tables, alongside our established PreHash function(\(~\ref{preHash Algorithm}\)) and the newly implemented PostHash function (\(~\ref{postHash Algorithm}\)), we are equipped to conduct experiments on our dataset to assess \(q_{same}\) and \(q_{diff}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the PreHash function directly into the PostHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the PreHash and PostHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
 
 \begin{enumerate}
-    \item \textbf{d = 1 and m = 1}:
+    \item \text{\(d = 1\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and binary postHash indices (\(d=1\)).
     \begin{itemize}
         \item \(q_{same} = ??\%\)
         \item \(q_{diff} = ??\%\)
     \end{itemize}
     
-    \item \textbf{\(d = 2\) and \(m = 1\)}:
+    \item \text{\(d = 2\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Quaternary postHash indices (\(d=2\)).
     \begin{itemize}
         \item \(q_{same} = ??\%\)
         \item \(q_{diff} = ??\%\)
     \end{itemize}
     
-    \item \textbf{\(d = 3\) and \(m = 1\)}:
+    \item \text{\(d = 3\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Octal postHash indices (\(d=3\)).
     \begin{itemize}
         \item \(q_{same} = ??\%\)
         \item \(q_{diff} = ??\%\)
     \end{itemize}
     
-    \item \textbf{\(d = 4\) and \(m = 1\)}:
+    \item \text{\(d = 4\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Hexa-Decimal postHash indices (\(d=4\)).
     \begin{itemize}
         \item \(q_{same} = ??\%\)
         \item \(q_{diff} = ??\%\)

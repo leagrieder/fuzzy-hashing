@@ -17,7 +17,7 @@ Subsequently, the Hamming distance between the resulting hash values of two biom
 
 This expression quantifies the instances "i" where the outputs of the \textit{PreHash} function differ between samples \(X\) and \(Y\).
 
-One notable advantage of this approach is the reduction in size of the stored biometric template. Rather than storing \textit{n} pixels, \textit{ml} integers are stored. Additionally, the key renders the reference \textit{PreHash} less privacy-sensitive compared to a biometric template. Specifically, if the key is known, each integer in the hash discloses about \(\frac{1}{p}\) pixels, revealing \(\frac{ml}{p}\) pixels at worst.
+One notable advantage of this approach is the reduction in size of the stored biometric template. Rather than storing \textit{n} pixels, \textit{ml} integers are stored. Additionally, the key renders the reference \textit{PreHash} less privacy-sensitive compared to a biometric template. Specifically, if the key is known, each integer in the hash discloses about \(\frac{1}{p}\) pixels, revealing \(\frac{ml}{p}\) pixels at worst. This disclosure occurs because, with the keys, the hash values can potentially be reverse-engineered to reveal characteristics of the original biometric pattern. The term \(p\)​ reflects the information entropy associated with each bit being a vein (\('1'\)) and thus quantifies the average information content each disclosed pixel conveys when the hash is decoded.
 
 Similarly, when employing the Hamming distance for biometric matching through the iterative generation of \textit{l} iterations of the \textit{PostHash} function, analogous advantages arise. Here, the stored biometric template is condensed to \textit{mld} integers instead of \textit{n} pixels. Furthermore, the key diminishes the sensitivity of the reference \textit{PostHash} in terms of privacy, exposing \(\frac{mld}{p}\) pixels at most if known. Additionally, \textit{PostHash} contributes to leakage reduction.
 
@@ -25,18 +25,27 @@ It's crucial to note that for both scenarios, additional privacy safeguards can 
 
 \subsection{Theoretical Foundations of FPR and FNR within Fuzzy Hashing Systems}
 
-The transformation of biometric data into a hash, whether through the \textit{PreHash} method or its compressed counterpart, \textit{PostHash}, is significant in shaping the system's operational efficiency and security. The inherent privacy preservation achieved by either methodology significantly impacts the system's performance metrics, notably the \hyperref[def:FNR]{False Negative Rate (FNR)} and \hyperref[def:FPR]{False Positive Rate (FPR)}. By encapsulating biometric information into a condensed form, the system not only optimizes storage but also diminishes the potential for unauthorized access to sensitive data. This strategic conversion process not only ensures data integrity but also fosters a robust defense against potential security breaches. Furthermore, the judicious selection of hash generation techniques bolsters the system's discrimination capabilities, thereby minimizing the occurrence of false rejections and acceptances, consequently enhancing the overall accuracy and reliability of biometric matching.
+Transforming biometric data into a hash, using methods like \textit{PreHash} or its more compact version, \textit{PostHash}, plays a key role in enhancing the system's efficiency and security. This process helps protect privacy, which in turn influences important aspects of the system's performance, such as the \hyperref[def:FNR]{False Negative Rate (FNR)} and the \hyperref[def:FPR]{False Positive Rate (FPR)}. By converting detailed biometric data into a simpler, hashed format, the system not only uses storage space more efficiently but also reduces the chances of unauthorized access to sensitive information. This transformation is crucial for maintaining the integrity of the data and provides a strong line of defense against potential security threats. Additionally, choosing the right techniques for generating these hashes can greatly improve the system's ability to distinguish between authorized and unauthorized users. This means fewer mistakes in the form of false rejections or acceptances, leading to a more accurate and dependable biometric verification process.
 
-We establish a threshold \(t\) to evaluate the match between two biometric samples, \(X\) and \(Y\), by analyzing the Hamming distance between their hash values. A match is confirmed if the difference between \(l\) (the total iterations) and the Hamming distance is equal to or exceeds the threshold \(t\), expressed as: \[l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) \geq t\]
-By leveraging the approximation to a normal distribution, we establish the False Negative Rate (FNR) as:
+We establish a threshold \(t\) to evaluate the match between two biometric samples, \(X\) and \(Y\), by analyzing the Hamming distance between their hash values.
+We define that a match is confirmed if the difference between \(l\) (the total iterations) and the Hamming distance is equal to or exceeds the threshold \(t\), expressed as: \[l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) \geq t\]
+In contrast, we define there being no match if the following equation holds: \[l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) < t\]
 
-\[FNR = \Phi\left( \frac{t - l\mu_{\text{same}}^m}{\sqrt{l\mu_{\text{same}}^m}} \right)\]
+To further refine our understanding, we use statistical methods to approximate this comparison to a normal distribution, allowing us to more accurately calculate the False Negative Rate (FNR). This measure helps us assess how often the system incorrectly fails to recognize a match between the biometric samples when there actually is one. We define:
 
-Here, \(\Phi\) denotes the Cumulative Distribution Function (CDF) of \(\mathcal{N}(0, 1)\).
+\begin{equation}
+    \label{eq:fnr}
+    FNR = \Phi\left( \frac{t - l\mu_{\text{same}}^m}{\sqrt{l\mu_{\text{same}}^m}} \right)
+\end{equation}
 
-In contrast, we define the False Positive Rate (FPR) as:
+Here, \(\Phi\) denotes the Cumulative Distribution Function (CDF) of the standard normal distribution, denoted as \(\mathcal{N}(0, 1)\).
 
-\[FPR = \Phi\left( \frac{t - l\mu_{\text{diff}}^m}{\sqrt{l\mu_{\text{diff}}^m}} \right)\]
+In contrast, the False Positive Rate (FPR), the proportion of non-matching biometric samples incorrectly identified as matches by the system, is defined as:
+
+\begin{equation}
+    \label{eq:fpr}
+    FPR = \Phi\left( \frac{t - l\mu_{\text{diff}}^m}{\sqrt{l\mu_{\text{diff}}^m}} \right)
+\end{equation}
 
 These formulations allow for the evaluation of false match rates based on the standard deviation and mean of the distributions for same and different samples, respectively. The upper bound \(\mu_{same}\) and \(\mu_{diff}\) are defined in Equation \ref{eq:mu}.
 
@@ -63,4 +72,5 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
 \end{table}
 
 
-\subsection{Experimental Derivation of the FPR and FNR for m=1 and d=4 (?)}
+\subsection{Experimental Derivation of the FPR and FNR for \(m = 1\) and \(d = 4\)}
+In this subsection, we will experimentally evaluate the False Positive Rate (FPR) using compression techniques implemented through \textit{PostHash}, specifically compressing to \(D = 16\) (\(d=4\)). The introduction of compression slightly modifies the equations for false positive and false negative rates (Equations \ref{eq:fnr} and \ref{eq:fpr}), necessitating the use of \(q\) in place of \(\mu^m\). Our methodology involves processing our image dataset through a pipeline that initially applies \textit{PreHash} to generate a single index hash (\(m=1\)) for each of the \(l=637\) iterations. Subsequently, \textit{PostHash} compresses these indexes into 4-bit integers. We then compute the normalized Hamming distance between each image pair, with each image represented by \(l \times d\) bits. Lastly, we determine matches based on a specific threshold (\(t\)) tailored to the combined parameters of \(m=1\) and \(l=637\). To facilitate this experiment, we will derive the threshold \(t\) accordingly.

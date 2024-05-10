@@ -72,5 +72,6 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
 \end{table}
 
 
+
 \subsection{Experimental Derivation of the FPR and FNR for \(m = 1\) and \(d = 4\)}
 In this subsection, we will experimentally evaluate the False Positive Rate (FPR) using compression techniques implemented through \textit{PostHash}, specifically compressing to \(D = 16\) (\(d=4\)). The introduction of compression slightly modifies the equations for false positive and false negative rates (Equations \ref{eq:fnr} and \ref{eq:fpr}), necessitating the use of \(q\) in place of \(\mu^m\). Our methodology involves processing our image dataset through a pipeline that initially applies \textit{PreHash} to generate a single index hash (\(m=1\)) for each of the \(l=637\) iterations. Subsequently, \textit{PostHash} compresses these indexes into 4-bit integers. We then compute the normalized Hamming distance between each image pair, with each image represented by \(l \times d\) bits. Lastly, we determine matches based on a specific threshold (\(t\)) tailored to the combined parameters of \(m=1\) and \(l=637\). To facilitate this experiment, we will derive the threshold \(t\) accordingly.

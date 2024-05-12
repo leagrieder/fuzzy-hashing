@@ -90,10 +90,10 @@ Based on the range of possible values for \(d\), we have computed several specif
         \hline
         & $q_{same}$ & $q_{diff}$ & $q_{indep}$\\
         \hline
-        \(m = 1\) \(d = 1\) & $??\%$ & $??\%$ & $??\%$\\
-        \(m = 1\) \(d = 2\) & $??\%$ & $??\%$ & $??\%$\\
-        \(m = 1\) \(d = 3\) & $??\%$ & $??\%$ & $??\%$\\
-        \(m = 1\) \(d = 4\) & $??\%$ & $??\%$ & $??\%$\\
+        \(m = 1\) \(d = 1\) & $62\%\%\%$ & $54\%\%$ & $??\%$\\
+        \(m = 1\) \(d = 2\) & $42\%\%$ & $31\%\%$ & $??\%$\\
+        \(m = 1\) \(d = 3\) & $33\%\%$ & $19\%\%$ & $??\%$\\
+        \(m = 1\) \(d = 4\) & $28\%\%$ & $13\%\%$ & $??\%$\\
         \hline
     \end{tabular}
 \caption{Comparison of Distributions: $q_{same}$, $q_{diff}$, and $q_{indep}$}
@@ -271,27 +271,95 @@ This manual approach allowed us to control the distribution directly and ensure 
 Utilizing these derived lookup tables, alongside our established PreHash function(\(~\ref{preHash Algorithm}\)) and the newly implemented PostHash function (\(~\ref{postHash Algorithm}\)), we are equipped to conduct experiments on our dataset to assess \(q_{same}\) and \(q_{diff}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the PreHash function directly into the PostHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the PreHash and PostHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
 
 \begin{enumerate}
-    \item \text{\(d = 1\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and binary postHash indices (\(d=1\)).
+    \item \text{\(d = 1\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and binary PostHash indices (\(d=1\)).
     \begin{itemize}
-        \item \(q_{same} = ??\%\)
-        \item \(q_{diff} = ??\%\)
+        \item \(q_{same} = 66\%\)
+        \item \(q_{diff} = 56\%\)
     \end{itemize}
+
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.48\linewidth}
+            \centering
+            \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/d1same.png}
+            \caption{Hamming Distances for Same, Aligned Biometric Samples with Single Index Hashing and Binary PostHash Indices}
+            \label{mu_same}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.48\linewidth}
+            \centering
+            \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/d1diff.png}
+            \caption{Hamming Distances for Different, Aligned Biometric Samples with Single Index Hashing and Binary PostHash Indices}
+            \label{mu_diff}
+        \end{minipage}
+    \end{figure}
     
-    \item \text{\(d = 2\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Quaternary postHash indices (\(d=2\)).
+    \item \text{\(d = 2\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Quaternary PostHash indices (\(d=2\)).
     \begin{itemize}
-        \item \(q_{same} = ??\%\)
-        \item \(q_{diff} = ??\%\)
+        \item \(q_{same} = 47\%\)
+        \item \(q_{diff} = 31\%\)
     \end{itemize}
+
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.48\linewidth}
+            \centering
+            \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/d2same.png}
+            \caption{Hamming Distances for Same, Aligned Biometric Samples with Single Index Hashing and Quaternary PostHash Indices}
+            \label{mu_same}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.48\linewidth}
+            \centering
+            \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/d2diff.png}
+            \caption{Hamming Distances for Different, Aligned Biometric Samples with Single Index Hashing and Quaternary PostHash Indices}
+            \label{mu_diff}
+        \end{minipage}
+    \end{figure}
     
-    \item \text{\(d = 3\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Octal postHash indices (\(d=3\)).
+    \item \text{\(d = 3\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Octal PostHash indices (\(d=3\)).
     \begin{itemize}
-        \item \(q_{same} = ??\%\)
-        \item \(q_{diff} = ??\%\)
+        \item \(q_{same} = 35\%\)
+        \item \(q_{diff} = 18\%\)
     \end{itemize}
+
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.48\linewidth}
+            \centering
+            \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/d3same.png}
+            \caption{Hamming Distances for Same, Aligned Biometric Samples with Single Index Hashing and Octal PostHash Indices}
+            \label{mu_same}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.48\linewidth}
+            \centering
+            \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/d3diff.png}
+            \caption{Hamming Distances for Different, Aligned Biometric Samples with Single Index Hashing and Octal PostHash Indices}
+            \label{mu_diff}
+        \end{minipage}
+    \end{figure}
     
-    \item \text{\(d = 4\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Hexa-Decimal postHash indices (\(d=4\)).
+    \item \text{\(d = 4\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Hexa-Decimal PostHash indices (\(d=4\)).
     \begin{itemize}
-        \item \(q_{same} = ??\%\)
-        \item \(q_{diff} = ??\%\)
+        \item \(q_{same} = 29\%\)
+        \item \(q_{diff} = 12\%\)
     \end{itemize}
+
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.48\linewidth}
+            \centering
+            \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/d4same.png}
+            \caption{Hamming Distances for Same, Aligned Biometric Samples with Single Index Hashing and Hexa-Decimal PostHash Indices}
+            \label{mu_same}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.48\linewidth}
+            \centering
+            \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/d4diff.png}
+            \caption{Hamming Distances for Different, Aligned Biometric Samples with Single Index Hashing and Hexa-Decimal PostHash Indices}
+            \label{mu_diff}
+        \end{minipage}
+    \end{figure}
 \end{enumerate}

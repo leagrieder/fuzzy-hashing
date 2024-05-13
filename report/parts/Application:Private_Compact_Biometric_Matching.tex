@@ -57,21 +57,32 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
         \hline
         \textit{m} & \textit{l} & \textit{t} & \textit{l}\(\mu_{\text{same}}^m\) & \textit{l}\(\mu_{\text{diff}}^m\) & \textit{FNR} & \textit{FPR} \\
         \hline
-        1 & 637 & 118 & 146.6 & 49.2 & 1\% & \(2^{-37}\) \\
-        2 & 961 & 34 & 50.0 & 5.7 & 1\% & \(2^{-38}\) \\
-        3 & 2569 & 18 & 31.3 & 1.2 & 1\% & \(2^{-41}\) \\
-        4 & 8481 & 12 & 23.8 & 0.3 & 1\% & \(2^{-43}\) \\
-        5 & 32 999 & 11 & 21.3 & 0.1 & 1\% & \(2^{-51}\) \\
-        6 & 140 090 & 10 & 20.8 & 0.0 & 1\% & \(2^{-67}\) \\
-        7 & 568 315 & 9 & 19.5 & 0.0 & 1\% & \(2^{-51}\) \\
-        8 & 2 841 573 & 11 & 22.4 & 0.0 & 1\% & \(2^{-120}\) \\
+        1 & 637 & 118 & 146.5 & 49 & 1.0\% & \(2^{-74}\) \\
+        %1 & 637 & 118 & 146.5 & 49 & 2^⁻6\% & \(2^{-74}\) \\
+        2 & 961 & 34 & 50.8 & 5.7 & 1.0\% & \(2^{-106}\) \\
+        %2 & 961 & 34 & 50.8 & 5.7 & 2^⁻6\% & \(2^⁻106\) \\
+        3 & 2569 & 18 & 31.3 & 1.2 & 1.0\% &\(2^{-179}\) \\
+        %3 & 2569 & 18 & 31.3 & 1.2 & 2^⁻6\% &\(2^{-179}\) \\
+        4 & 8481 & 12 & 23.7 & 0.3 & 1.0\% & \(2^{-377}\) \\
+        %4 & 8481 & 12 & 23.7 & 0.3 & 2^⁻6\% &\(2^{-377}\) \\
+        5 & 32 999 & 11 & 21.2 & 0.1 & 1.0\% & \(2^{-967}\) \\
+        %5 & 32 999 & 11 & 21.2 & 0.1 & 2^⁻6\% &\(2^{-967}\) \\
+        6 & 140 090 & 10 & 20.7 & 0.0 & 1.0\% & \(2^{-\infty}\) \\
+        %6 & 140 090 & 10 & 20.7 & 0.0 & 2^⁻6\% &\(2^{-\infty}\) \\
+        7 & 568 315 & 9 & 19.4 & 0.0 & 1.0\% & \(2^{-\infty}\) \\
+        %7 & 568 315 & 9 & 19.4 & 0.0 & 2^⁻6\% &\(??\) \\
+        8 & 2 841 573 & 11 & 22.3 & 0.0 & 1.0\% & \(2^{-\infty}\) \\
+        %8 & 2 841 573 & 11 & 22.3 & 0.0 & 2^⁻6\% &\(??\) \\
         \hline
     \end{tabular}
     \caption{Parameterization Results for FNR and FPR Calculation}
     \label{tab:parameterization}
 \end{table}
 
+\subsection{Experimental Derivation of the FPR and FNR for different (\(m, l\)) Parameter Configurations}
+% Only PreHash
 
+\subsection{Experimental Derivation of the FPR and FNR for different (\(m, l\)) Parameter Configurations with Compression}
+% Post Hash
 
-\subsection{Experimental Derivation of the FPR and FNR for \(m = 1\) and \(d = 4\)}
-In this subsection, we will experimentally evaluate the False Positive Rate (FPR) using compression techniques implemented through \textit{PostHash}, specifically compressing to \(D = 16\) (\(d=4\)). The introduction of compression slightly modifies the equations for false positive and false negative rates (Equations \ref{eq:fnr} and \ref{eq:fpr}), necessitating the use of \(q\) in place of \(\mu^m\). Our methodology involves processing our image dataset through a pipeline that initially applies \textit{PreHash} to generate a single index hash (\(m=1\)) for each of the \(l=637\) iterations. Subsequently, \textit{PostHash} compresses these indexes into 4-bit integers. We then compute the normalized Hamming distance between each image pair, with each image represented by \(l \times d\) bits. Lastly, we determine matches based on a specific threshold (\(t\)) tailored to the combined parameters of \(m=1\) and \(l=637\). To facilitate this experiment, we will derive the threshold \(t\) accordingly.
+In this subsection, we will experimentally evaluate the False Positive Rate (FPR) using compression techniques implemented through \textit{PostHash}, specifically compressing to \(D = 16\) (\(d=4\)). The introduction of compression slightly modifies the equations for false positive and false negative rates (Equations \ref{eq:fnr} and \ref{eq:fpr}), necessitating the use of \(q\) in place of \(\mu^m\). Our methodology involves processing our image dataset through a pipeline that initially applies \textit{PreHash} to generate a single index hash (\(m=1\)) for each of the \(l=1107\) iterations. Subsequently, \textit{PostHash} compresses these indexes into 4-bit integers. We then compute the normalized Hamming distance between each image pair, with each image represented by \(l \times d\) bits. Lastly, we determine matches based on a specific threshold (\(t\)) tailored to the combined parameters of \(m=1\) and \(l=1107\). To facilitate this experiment, we will derive the threshold \(t\) accordingly.

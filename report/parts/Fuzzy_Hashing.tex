@@ -133,7 +133,7 @@ The following figures are provided:
         \hline
         $\mu_{same}$ & $\mu_{diff}$ & $\mu_{indep}$\\
         \hline
-        $23.02\%$ & $7.72\%$ & $1.38\%$\\
+        $18.8\%$ & $4.6\%$ & $1.4\%$\\
         \hline
     \end{tabular}
 \caption{Comparison of Distributions: $\mu_{same}$, $\mu_{diff}$, and $\mu_{indep}$}
@@ -148,7 +148,7 @@ Finally, it is observed that
 where equality is reached for the optimal offset translations.
 
 %This includes determining the upper limits for the probabilities of similarity between different finger veins processed through the same fuzzy hashing parameters. 
-\subsection{Experimental Derivation of the Probabilities \(\mu_{\text{same}}, \mu_{\text{diff}}, \mu_{\text{indep}}\)}
+\subsection{Experimental Derivation of the Probabilities \(\mu_{\text{same}}^{obs}, \mu_{\text{diff}}^{obs}, \mu_{\text{indep}}^{obs}\)}
 
 In Section~\ref{sec:mu}, we have laid out the mathematical framework that defines the upper bound \(\mu\). This probability is crucial in our fuzzy hashing approach, as it quantifies the matching likelihood after applying the optimal offset translations to the biometric captures. The application of these optimal offsets is an important preprocessing step before hashing the dataset, ensuring that the biometric features are accurately aligned for comparison.
 
@@ -156,13 +156,13 @@ We will proceed to evaluate these theoretical results experimentally, leveraging
 
 In the experimental setup, \(\mu_{\text{same}}\) refers to the probability that a hash function, when applied to two biometric captures of the same finger, will yield the same index. This is the measure of success in correctly identifying matches within the same individual's biometric captures. Conversely, \(\mu_{\text{diff}}\) denotes the probability that the same hash function will produce different indices for biometric captures from different individuals, representing the ability to distinguish between different people's biometric data. Lastly, \(\mu_{\text{indep}}\) indicates the probability of a match in the case where the biometric captures are completely independent, serving as a baseline for random chance.
 
-The computation of \( \mu_{\text{indep}} \) is relatively straightforward, having determined the value of \( p \) and \(\delta_{\text{indep}}\). The formula for \( \mu_{\text{indep}} \) relies solely on \( p \) and \(\delta_{\text{indep}}\), allowing us to express it as:
+The computation of \( \mu_{\text{indep}}^{obs} \) is relatively straightforward, having determined the value of \( p^{obs} \) and \(\delta_{\text{indep}}^{obs}\). The formula for \( \mu_{\text{indep}}^{obs} \) relies solely on \( p^{obs} \) and \(\delta_{\text{indep}}^{obs}\), allowing us to express it as:
 
 \[
-    \mu_{\text{indep}} = \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} \approx 0.0138 = 1.38\%
+    \mu_{\text{indep}}^{obs} = \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} \approx 0.014 = 1.4\%
 \]
 
-For \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), our experimental protocol adhered to the established optimal pipeline (refer to Figure~\ref{pipeline_simon}) to process the images in our dataset. Following the alignment of images through the computation of optimal offsets (referred to as Miura Matching), our fuzzy hashing function was applied to the extraced features. In alignment with the premise that \(\mu\) is computed under the condition where the hash function's output is a single index (\(m=1\)).
+For \(\mu_{\text{same}}^{obs}\) and \(\mu_{\text{diff}}^{obs}\), our experimental protocol adhered to the established optimal pipeline (refer to Figure~\ref{pipeline_simon}) to process the images in our dataset. Following the alignment of images through the computation of optimal offsets (referred to as Miura Matching), our fuzzy hashing function was applied to the extraced features. In alignment with the premise that \(\mu\) is computed under the condition where the hash function's output is a single index (\(m=1\)).
 
 \begin{enumerate}
     \item \textbf{Pairwise Comparison}: We performed a pairwise comparison for each image pair within the dataset after applying the optimal offsets to ensure proper alignment. The fuzzy hashing function, tailored to output a single index per image, was utilized to hash the images.
@@ -175,13 +175,13 @@ For \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), our experimental protocol a
     
     \item \textbf{Statistical Analysis and Probability Computation}:
     \begin{itemize}
-        \item \textbf{\(\mu_{\text{same}}\)}: We computed \(\mu_{\text{same}}\) by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the intra-individual comparisons, which furnished us with the following probability:
+        \item \textbf{\(\mu_{\text{same}}^{obs}\)}: We computed \(\mu_{\text{same}}^{obs}\) by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the intra-individual comparisons, which furnished us with the following probability:
 
-        \[ \mu_{\text{same}} \approx 0.2302 = 23.02\%\]
+        \[ \mu_{\text{same}}^{obs} \approx 0.23 = 23\%\]
         
-        \item \textbf{\(\mu_{\text{diff}}\)}: Similarly, \(\mu_{\text{diff}}\) was determined by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the inter-individual comparisons, which furnished us with the following probability:
+        \item \textbf{\(\mu_{\text{diff}}^{obs}\)}: Similarly, \(\mu_{\text{diff}}^{obs}\) was determined by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the inter-individual comparisons, which furnished us with the following probability:
 
-        \[ \mu_{\text{diff}} \approx 0.0772 = 7.72\% \]
+        \[ \mu_{\text{diff}}^{obs} \approx 0.077 = 7.7\% \]
 
         \begin{figure}[H]
             \centering

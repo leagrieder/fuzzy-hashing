@@ -100,15 +100,15 @@ Based on the range of possible values for \(d\), we have computed several specif
 \caption{Comparison of Distributions: $q_{same}$, $q_{diff}$, and $q_{indep}$}
 \end{table}
 
-\subsection{Experimental Derivation of the probabilities $q_{same}$, $q_{diff}$, and $q_{indep}$ for different \(m\), \(d\) parameter combinations}
+\subsection{Experimental Derivation of the probabilities $q_{same}^{obs}$, $q_{diff}^{obs}$, and $q_{indep}^{obs}$ for different \(m\), \(d\) parameter combinations}
 
-In the subsequent section, we explore enhancements to data compression techniques within our fuzzy hashing framework, emphasizing the use of various \(m\) and \(d\) parameter combinations. We initiate our analysis by conducting experiments to determine \(q_{same}\), \(q_{diff}\), and \(q_{indep}\).
+In the subsequent section, we explore enhancements to data compression techniques within our fuzzy hashing framework, emphasizing the use of various \(m\) and \(d\) parameter combinations. We initiate our analysis by conducting experiments to determine \(q_{same}^{obs}\), \(q_{diff}^{obs}\), and \(q_{indep}^{obs}\).
 
-Building on the foundational calculations for \(q_{\text{indep}}\), which we derived using Formula ~\ref{eq:q_formula} from the diverse \( \mu_{\text{indep}} \) values previously identified in Section \ref{sec:Fuzzy Hashing}, our exploration extended to \(q_{\text{same}}\) and \(q_{\text{diff}}\). To evaluate these parameters, we initiated a series of experiments. Integral to this implementation and the following ones, is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table and all subsequent ones, is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
+Building on the foundational calculations for \(q_{\text{indep}}\), which we derived using Formula ~\ref{eq:q_formula} from the diverse \( \mu_{\text{indep}^{obs}} \) values previously identified in Section \ref{sec:Fuzzy Hashing}, our exploration extended to \(q_{\text{same}^{obs}}\) and \(q_{\text{diff}}^{obs}\). To evaluate these parameters, we initiated a series of experiments. Integral to this implementation and the following ones, is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table and all subsequent ones, is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
 
 \[
     \label{eq:GeomFormula}
-\text{postHash}(i) = \left\lfloor 2^d \left(1 - p\right)^i \right\rfloor
+\text{\textit{PostHash}}(i) = \left\lfloor 2^d \left(1 - p\right)^i \right\rfloor
 \]
 
 Leveraging the above formula, we have developed lookup tables that convert a single index (\(m = 1\)) into various bit representations (\(d=1\), \(d=2\), \(d=3\), and \(d=4\)). Each entry in these tables represents an integer, denoted by \(i\), and includes a corresponding hash output and the probability of that output occurring.
@@ -116,7 +116,7 @@ Leveraging the above formula, we have developed lookup tables that convert a sin
 Binary Hash Output Distribution Table (\(d=1\))
 {\renewcommand{\arraystretch}{1.25}
 \[
-\text{postHash}(i) = \left\{
+\text{\textit{PostHash}}(i) = \left\{
     \begin{array}{lll}
         \text{1}  & \text{if } 1 \leq i \leq 20 & (\text{Pr} = 48.78\%)
         \\
@@ -130,7 +130,7 @@ Binary Hash Output Distribution Table (\(d=1\))
 Quaternary Hash Output Distribution Table (\(d=2\)):
 {\renewcommand{\arraystretch}{1.25}
 \[
-\text{postHash}(i) = \left\{
+\text{\textit{PostHash}}(i) = \left\{
     \begin{array}{lll}
         \text{3}  & \text{if } 1 \leq i \leq 8 & (\text{Pr} = 23.48\%)
         \\
@@ -147,7 +147,7 @@ Quaternary Hash Output Distribution Table (\(d=2\)):
 Octal Hash Output Distribution Table (\(d=3\)):
 {\renewcommand{\arraystretch}{1.25}
 \[
-\text{postHash}(i) = \left\{
+\text{\textit{PostHash}}(i) = \left\{
     \begin{array}{lll}
         \text{7}  & \text{if } 1 \leq i \leq 3 & (\text{Pr} = 9.55\%)
         \\
@@ -174,7 +174,7 @@ Hexadecimal Hash Output Distribution Table \(d=4\)
 {
 \renewcommand{\arraystretch}{1.25}
 \[
-\text{postHash}(i) = \left\{
+\text{\textit{PostHash}}(i) = \left\{
 \begin{array}{lll}
     \text{15} & \text{if } i = 1 & (\text{Pr} = 3.29\%), \\
     \text{14} & \text{if } 2 \leq i \leq 3 & (\text{Pr} = 6.26\%) \\
@@ -235,7 +235,7 @@ Given the NP-completeness of the partition problem, programming an optimal solut
 \right.
 \]
 
-The distribution of probabilities and counts across buckets demonstrates a commendable effort towards achieving uniformity. However, the variations observed, particularly in buckets \(14\) and \(13\) with their notably lower probabilities of \(5.981\%\) and \(6.092\), indicate potential areas for further optimization. To address this, we have decided to try implementing a close to optimal solution by manually scrambling the domain to achieve a desirable uniform distribution. This manual method involved:
+The distribution of probabilities and counts across buckets demonstrates a commendable effort towards achieving uniformity. However, the variations observed, particularly in buckets \(13\) and \(14\) with their notably lower probabilities of \(5.981\%\) and \(6.092\), indicate potential areas for further optimization. To address this, we have decided to try implementing a close to optimal solution by manually scrambling the domain to achieve a desirable uniform distribution. This manual method involved:
 
 \begin{itemize}
     \item Assigning indices to buckets (hash values) initially based on heuristic insights and preliminary analysis to ensure a rough balance.
@@ -246,7 +246,7 @@ This manual approach allowed us to control the distribution directly and ensure 
 
 \renewcommand{\arraystretch}{1.25}{
 \[
-\text{postHash}(i) = \left\{
+\text{\textit{PostHash}}(i) = \left\{
 \begin{array}{lll}
     15 & \text{if } i \in \{1\} \cup \{4\} & (\text{Pr} = 6.27\%), \\
     14 & \text{if } i \in \{2, 3\} & (\text{Pr} = 6.26\%), \\
@@ -274,8 +274,8 @@ Utilizing these derived lookup tables, alongside our established PreHash functio
 \begin{enumerate}
     \item \text{\(d = 1\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and binary PostHash indices (\(d=1\)).
     \begin{itemize}
-        \item \(q_{same} = 66\%\)
-        \item \(q_{diff} = 56\%\)
+        \item \(q_{same}^{obs} = 66\%\)
+        \item \(q_{diff}^{obs} = 56\%\)
     \end{itemize}
 
     \begin{figure}[H]
@@ -297,8 +297,8 @@ Utilizing these derived lookup tables, alongside our established PreHash functio
     
     \item \text{\(d = 2\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Quaternary PostHash indices (\(d=2\)).
     \begin{itemize}
-        \item \(q_{same} = 47\%\)
-        \item \(q_{diff} = 31\%\)
+        \item \(q_{same}^{obs} = 47\%\)
+        \item \(q_{diff}^{obs} = 31\%\)
     \end{itemize}
 
     \begin{figure}[H]
@@ -320,8 +320,8 @@ Utilizing these derived lookup tables, alongside our established PreHash functio
     
     \item \text{\(d = 3\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Octal PostHash indices (\(d=3\)).
     \begin{itemize}
-        \item \(q_{same} = 35\%\)
-        \item \(q_{diff} = 18\%\)
+        \item \(q_{same}^{obs} = 35\%\)
+        \item \(q_{diff}^{obs} = 18\%\)
     \end{itemize}
 
     \begin{figure}[H]
@@ -343,8 +343,8 @@ Utilizing these derived lookup tables, alongside our established PreHash functio
     
     \item \text{\(d = 4\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Hexa-Decimal PostHash indices (\(d=4\)).
     \begin{itemize}
-        \item \(q_{same} = 29\%\)
-        \item \(q_{diff} = 12\%\)
+        \item \(q_{same}^{obs} = 29\%\)
+        \item \(q_{diff}^{obs} = 12\%\)
     \end{itemize}
 
     \begin{figure}[H]

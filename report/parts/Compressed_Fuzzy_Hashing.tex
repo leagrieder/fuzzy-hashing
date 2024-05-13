@@ -80,6 +80,7 @@ where equality is reached for the optimal offset translations.
 The overall probability \( q \) of a matching hash index under random inputs \( X \) and \( Y \), reflecting their distribution, is denoted by:
 
 \[
+\label{eq:q_formula}
 q = \mu^m(1 - \frac{1}{D}) + \frac{1}{D}
 \]
 
@@ -90,10 +91,10 @@ Based on the range of possible values for \(d\), we have computed several specif
         \hline
         & $q_{same}$ & $q_{diff}$ & $q_{indep}$\\
         \hline
-        \(m = 1\) \(d = 1\) & $62\%\%\%$ & $54\%\%$ & $??\%$\\
-        \(m = 1\) \(d = 2\) & $42\%\%$ & $31\%\%$ & $??\%$\\
-        \(m = 1\) \(d = 3\) & $33\%\%$ & $19\%\%$ & $??\%$\\
-        \(m = 1\) \(d = 4\) & $28\%\%$ & $13\%\%$ & $??\%$\\
+        \(m = 1\) \(d = 1\) & $66\%$ & $56\%$ & $51\%$\\
+        \(m = 1\) \(d = 2\) & $47\%$ & $31\%\%$ & $26\%$\\
+        \(m = 1\) \(d = 3\) & $35\%$ & $18\%$ & $14\%$\\
+        \(m = 1\) \(d = 4\) & $29\%$ & $12\%$ & $8\%$\\
         \hline
     \end{tabular}
 \caption{Comparison of Distributions: $q_{same}$, $q_{diff}$, and $q_{indep}$}
@@ -103,7 +104,7 @@ Based on the range of possible values for \(d\), we have computed several specif
 
 In the subsequent section, we explore enhancements to data compression techniques within our fuzzy hashing framework, emphasizing the use of various \(m\) and \(d\) parameter combinations. We initiate our analysis by conducting experiments to determine \(q_{same}\), \(q_{diff}\), and \(q_{indep}\).
 
-Integral to this implementation and the following ones, is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table and all subsequent ones, is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
+Building on the foundational calculations for \(q_{\text{indep}}\), which we derived using Formula ~\ref{eq:q_formula} from the diverse \( \mu_{\text{indep}} \) values previously identified in Section \ref{sec:Fuzzy Hashing}, our exploration extended to \(q_{\text{same}}\) and \(q_{\text{diff}}\). To evaluate these parameters, we initiated a series of experiments. Integral to this implementation and the following ones, is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table and all subsequent ones, is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
 
 \[
     \label{eq:GeomFormula}

@@ -8,10 +8,10 @@ We begin by delving into the representation of the biometric data. Finger images
 
 In the biometric context, each finger serves as a biometric subject, with a corresponding biometric capture represented as a bitstring \(X\) of length \(n\). This capture encapsulates the specific vein pixel information extracted from the finger image, while the biometric template serves as a reference mode derived from these images. 
 
-Each of the \(n\) bits of the biometric capture is designated as \(X_1\),..., \(X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. In the case where \(i\) is a \hyperref[def:Uniform Distribution]{uniformly distributed} random index and \(X\) is randomly chosen, the probability of pixel \(X_i\) being a vein is defined as follows:
+Each of the \(n\) bits of the biometric capture is designated as \(X_1\),..., \(X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. In the case where \(i\) is a \hyperref[def:Uniform Distribution]{uniformly distributed} random index and \(X\) is randomly chosen, the probability \(p^{obs}\)\footnote{Throughout this report, experimentally derived variables are denoted with the superscript "obs" (e.g., \( \text{var}^{\text{obs}} \)), and theoretical variables with "th" (e.g., \( \text{var}^{\text{th}} \)).} of pixel \(X_i\) being a vein is defined as follows:
 
 \begin{equation} \label{eq:proba}
-    Pr[X_i = 1] = p \approx 3.29 \% 
+    Pr[X_i = 1] = p^{obs} \approx 3.29 \% 
 \end{equation}
 
 In biometric authentication and identification, the uniqueness of each biometric capture is encoded in its bits. The objective revolves around discerning the similarity between two biometric captures to verify or identify two individuals. Therefore, the scoring mechansim plays a crucial role in quantatively determining the similarity between biometric captures. This similarity score holds significance in verifying the identity of an individual (authentication) or identifying potential matches in a database (identification). A higher score indicates a greater ressemblance between captures, while a lower score suggests less similarity. This scoring mechanism is indispensable for ensuring the accuracy and reliability of biometric systems. The score of (\(X\), \(Y\)) is computed as
@@ -45,13 +45,13 @@ The probability of the \(i\)-th pixel of two captures not being the same after a
     \end{aligned}
 \end{equation}
 
-Distinguishing between the types of distributions associated with the two captures is crucial. When both captures originate from the same biometric subject, it is referred to as the $\delta_{same}$. Conversely, if the captures are from different subjects, it is labeled as $\delta_{diff}$. Additionally, when \(X\) and \(Y\) consist of \(2n\) independent random bits with an expected value of \(p\) and no optimal offset is applied, it is classified as $\delta_{indep}$ In this scenario, \(\delta_{indep}\) = \(2p(1-p)\). These distinctions produce the following figures: 
+Distinguishing between the types of distributions associated with the two captures is crucial. When both captures originate from the same biometric subject, it is referred to as the $\delta_{same}$. Conversely, if the captures are from different subjects, it is labeled as $\delta_{diff}$. Additionally, when \(X\) and \(Y\) consist of \(2n\) independent random bits with an expected value of \(p\) and no optimal offset is applied, it is classified as $\delta_{indep}$. In this scenario, \(\delta_{indep}\) = \(2p(1-p)\). As developed in Section~\ref{sec:delta}, the experimental results produce the following figures: 
 
 \begin{table}[H]
     \centering
     \renewcommand{\arraystretch}{1.25}\begin{tabular}{|c|c|c|}
         \hline
-        $\delta_{same}$ & $\delta_{diff}$ & $\delta_{indep}$\\
+        $\delta_{same}^{obs}$ & $\delta_{diff}^{obs}$ & $\delta_{indep}^{th}$\\
         \hline
         $4.5\%$ & $6\%$ & $6.4\%$\\
         \hline
@@ -122,11 +122,11 @@ Concluding the analysis of the vein pixel distribution across different camera c
 
 The findings from this analysis revealed the following probabilities:
 \begin{enumerate}
-    \item For Camera 1, the probability \(p = Pr[X_i = 1]\) was calculated to be 0.0342, indicating a 3.42\% chance that any given pixel in images from Camera 1 represents a vein.
+    \item For Camera 1, the probability \(p^{obs} = Pr[X_i = 1]\) was calculated to be \(0.0342\), indicating a \(3.42\)\% chance that any given pixel in images from Camera 1 represents a vein.
 
-    \item For Camera 2, the probability \(p = Pr[X_i = 1]\) was slightly lower at 0.0315, translating to a 3.15\% chance for vein representation in its images.
+    \item For Camera 2, the probability \(p^{obs} = Pr[X_i = 1]\) was slightly lower at \(0.0315\), translating to a \(3.15\)\% chance for vein representation in its images.
 
-    \item When considering the datasets from Both Cameras combined, the probability \(p = Pr[X_i = 1]\) averaged out to 0.0329, suggesting a 3.29\% likelihood of a pixel depicting a vein across the entire dataset.
+    \item When considering the datasets from Both Cameras combined, the probability \(p^{obs} = Pr[X_i = 1]\) averaged out to \(0.0329\), suggesting a \(3.29\)\% likelihood of a pixel depicting a vein across the entire dataset.
     
 \end{enumerate}
 
@@ -193,7 +193,7 @@ In Table \ref{tab:joint_distribution}, we explain each entry:
             P[\bar{X}_i = 1, \bar{Y}_i = 0] = P[\bar{X}_i = 0, \bar{Y}_i = 1] = \frac{\delta}{2}
         \end{aligned}
     \end{equation*}
-    \item To determine the probability\(P[\bar{X}_i = 0, \bar{Y}_i = 0]\), we consider the following relationships and utilize the law of total:
+    \item To determine the probability\(P[\bar{X}_i = 0, \bar{Y}_i = 0]\), we consider the following relationships and utilize the law of total probability:
     \begin{equation*}
         \begin{aligned}
             P[\bar{X}_i = 0] = 1-p = P[\bar{X}_i = 0, \bar{Y}_i = 0] + P[\bar{X}_i = 0, \bar{Y}_i = 1]

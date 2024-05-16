@@ -79,8 +79,10 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
     \label{tab:parameterization}
 \end{table}
 
-\subsection{Experimental Derivation of the FPR and FNR for different (\(m, l\)) Parameter Configurations}
+\subsection{Experimental Derivation of the FNR and FPR for different (\(m, l\)) Parameter Configurations}
 % Only PreHash
+%1. Comment on compute le hamming distance (algorithme + raisonnement) et pourquoi on le fait -> afin de vérifier s'il y a un match
+In order to derive experimentally the FNR and FPR for different (\(m, l\)) parameter configurations. We first start by computing the hamming distance between \(Hash_{key}(offset_X*X)\) and \(Hash_{key}(offset_Y*Y)\). %These results will be compared to the threshold (\(t\)) previously found in order to determine if there is a match: \(l - d_H(Hash_{key}(offset_X*X), Hash_{key}(offset_Y*Y)) \geq t\). After keeping count of the number of FNRs and FPRs we will be able to calculate en moyenne.  
 
 \subsection{Experimental Derivation of the FPR and FNR for different (\(m, l\)) Parameter Configurations with Compression}
 % Post Hash

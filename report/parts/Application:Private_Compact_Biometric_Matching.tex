@@ -102,7 +102,7 @@ The compressed hash requires \( mld = 1388 \) bits (\( 174 \) bytes).
 Using compression to \( D = 2 \) (\( d = 1 \)), we obtain:
 \begin{equation}
 \small
-m = 1 \quad l = 3597 \quad t = 76 \quad lq_{\text{same}} = 99.6 \quad lq_{\text{diff}} = 40.9 \quad \text{FNR} = 1.0\% \quad \text{FPR} = 2^{-488}
+m = 1 \quad l = 3597 \quad t = 957 \quad lq_{\text{same}} = 99.6 \quad lq_{\text{diff}} = 40.9 \quad \text{FNR} = 1.0\% \quad \text{FPR} = 2^{-488}
 \end{equation}
 
 
@@ -115,7 +115,21 @@ To calculate the FNR, we sum the instances where there is no match between image
 
 \begin{enumerate}
     \item \textbf{m = 1, l = 637 and t = 118}
-    ...
+    results
+    \item \textbf{m = 2, l = 961 and t = 34}
+    results
+    \item \textbf{m = 3, l = 2569 and t = 18}
+    results
+    \item \textbf{m = 4, l = 8481 and t = 12}
+    results
+    \item \textbf{m = 5, l = 32'999 and t = 11}
+    results
+    \item \textbf{m = 6, l = 140'090 and t = 10}
+    results
+    \item \textbf{m = 7, l = 568'315 and t = 9}
+    results
+    \item \textbf{m = 8, l = 2'841'573 and t = 11}
+    results
 \end{enumerate}
 
 \textbf{Summary of the FNR and FPR results obtained}
@@ -147,9 +161,17 @@ To calculate the FNR, we sum the instances where there is no match between image
     \label{tab:experimental_parameterization}
 \end{table}
 
-
+\newpage
 \subsection{Experimental Derivation of the FNR and FPR for different (\(m, l\)) Parameter Configurations with Compression}
 In this subsection, we will experimentally evaluate the False Negative Rate (FNR) and False Positive Rate (FPR) through the \(l\) iterations of \textit{PostHash}. As in the previous section, the initial step involves computing the Hamming distance between \(Hash_{\text{key}}(X)\) and \(Hash_{\text{key}}(Y)\). To generate the \(Hash_{\text{key}}\) of an image, which consists of the \(l\) iterations of \textit{PreHash}, we designed the \textit{Iterative\_PostHash} algorithm to accept the same multiple inputs as previously described. For testing purposes, the \(l\) keys are derived in the same way as specified earlier. For an image, the algorithm first generates a list of the \(l\) iterations of \textit{PreHash} and then applies the \textit{PostHash} algorithm to each output of the \textit{PreHash} algorithm. The \textit{Iterative\_PostHash} algorithm then produces \(l\) iterations for the image. After both images pass through this algorithm, each iteration is compared; yielding 1 if the iterations differ and 0 if they are the same. Summing these comparison results allows us to calculate the total number of ones, effectively computing the Hamming distance between the iterations.
 
-
-%Our methodology involves processing our image dataset through a pipeline that initially applies \textit{PreHash} to generate a single index hash (\(m=1\)) for each of the \(l=1107\) iterations. Subsequently, \textit{PostHash} compresses these indexes into 4-bit integers. We then compute the normalized Hamming distance between each image pair, with each image represented by \(l \times d\) bits. Lastly, we determine matches based on a specific threshold (\(t\)) tailored to the combined parameters of \(m=1\) and \(l=1107\). To facilitate this experiment, we will derive the threshold \(t\) accordingly.
+\begin{enumerate}
+    \item \textbf{d = 4, m = 1, l = 1107 and t = 276}
+    results
+    \item \textbf{d = 4, m = 1, l = 217 and t = 33}
+    results
+    \item \textbf{d = 4, m = 1, l = 347 and t = 76}
+    results
+    \item \textbf{d = 1, m = 1, l = 3'597 and t = 957}
+    results
+\end{enumerate}

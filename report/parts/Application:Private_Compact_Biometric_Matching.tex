@@ -13,7 +13,12 @@ This section delves into the practical application of fuzzy hashing within the r
 
 Subsequently, the Hamming distance between the resulting hash values of two biometric samples \(X\) and \(Y\) is calculated as:
 
-\[d_H(Hash_{key}(X), Hash_{key}(Y)) = \# \{i: PreHash_{key_i}(X) \neq PreHash_{key_i}(Y)\}\]
+\begin{equation}
+    \begin{aligned}
+        \label{eq:HammingDist}
+        d_H(Hash_{key}(X), Hash_{key}(Y)) = \# \{i: PreHash_{key_i}(X) \neq PreHash_{key_i}(Y)\}
+    \end{aligned}
+\end{equation}
 
 This expression quantifies the instances "i" where the outputs of the \textit{PreHash} function differ between samples \(X\) and \(Y\).
 
@@ -81,55 +86,97 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
 
 Using compression techniques implemented through \textit{PostHash}, specifically compressing to \( D = 16 \) (\( d = 4 \)), we calculate the threshold (\( t \)) from parameters \( m = 1 \) and \( l \) to achieve an FNR of \(1\%\) and an FPR \(\leq 2^{-36} \). The introduction of compression slightly modifies the equations for FNR (\ref{eq:fnr}) and FPR (\ref{eq:fpr}), necessitating the use of \( q \) in place of \(\mu^m\). The theoretical resulting set of parameters is as follows:
 \begin{equation}
+    \label{config:1}
 \small
-m = 1 \quad l = 1107 \quad t = 276 \quad lq_{\text{same}} = 317.7 \quad lq_{\text{diff}} = 130.6 \quad \text{FNR} = 1.0\% \quad \text{FPR} = 2^{-121}
+m = 1 \quad d = 4 \quad l = 1107 \quad t = 276 \quad lq_{\text{same}} = 317.7 \quad lq_{\text{diff}} = 130.6 \quad \text{FNR} = 1.0\% \quad \text{FPR} = 2^{-121}
 \end{equation}
 The compressed hash requires \( mld = 4428 \) bits (\( 553 \) bytes).
 
 Recomputing to obtain an FPR \(\leq 1\%\), we derive the following parameters without compression:
 \begin{equation}
+    \label{config:2}
 \small
 m = 1 \quad l = 217 \quad t = 33 \quad l\mu_{\text{same}}^m = 50 \quad l\mu_{\text{diff}}^m = 16.8 \quad \text{FNR} = 1.0\% \quad \text{FPR} = 2^{-14}
 \end{equation}
 
 With compression, the parameters are:
 \begin{equation}
+    \label{config:3}
 \small
-m = 1 \quad l = 347 \quad t = 76 \quad lq_{\text{same}} = 99.6 \quad lq_{\text{diff}} = 40.9 \quad \text{FNR} = 1.0\% \quad \text{FPR} = 2^{-25}
+m = 1 \quad d = 4 \quad l = 347 \quad t = 76 \quad lq_{\text{same}} = 99.6 \quad lq_{\text{diff}} = 40.9 \quad \text{FNR} = 1.0\% \quad \text{FPR} = 2^{-25}
 \end{equation}
 The compressed hash requires \( mld = 1388 \) bits (\( 174 \) bytes).
 
 Using compression to \( D = 2 \) (\( d = 1 \)), we obtain:
 \begin{equation}
+    \label{config:4}
 \small
-m = 1 \quad l = 3597 \quad t = 957 \quad lq_{\text{same}} = 1032.3 \quad lq_{\text{diff}} = 424.4 \quad \text{FNR} = 1.0\% \quad \text{FPR} = 2^{-488}
+m = 1 \quad d = 4 \quad l = 3597 \quad t = 957 \quad lq_{\text{same}} = 1032.3 \quad lq_{\text{diff}} = 424.4 \quad \text{FNR} = 1.0\% \quad \text{FPR} = 2^{-488}
 \end{equation}
 
 
 \subsection{Experimental Derivation of the FNR and FPR for different (\(m, l\)) Parameter Configurations}
-To experimentally derive the False Negative Rate (FNR) and False Positive Rate (FPR) for different \((m, l)\) parameter configurations, the initial step involves computing the Hamming distance between \( Hash_{\text{key}}(X) \) and \( Hash_{\text{key}}(Y) \). To generate the \( Hash_{\text{key}} \) of an image, which consists of the \( l \) iterations of \textit{PreHash}, we designed the \textit{Iterative\_PreHash} algorithm to accept multiple inputs, including a list of \( l \) keys and the parameter \( m \), which denotes the number of indices each call to \textit{PreHash} should generate per key. For testing purposes, the \( l \) keys are simply integers ranging from 0 to \( l-1 \), converted into a two-byte binary format. We then process the generated iterations of \textit{PreHash} for both images, comparing each iteration. Each comparison results in a 1 if the iterations differ and a 0 if they are the same. Summing the comparison results allows us to calculate the total number of ones, effectively computing the Hamming distance between the iterations.
 
-Next, we utilize the theoretical parameter configurations (\ref{tab:theoretical_parameterization}) to determine if two images, \(X\) and \(Y\), are a match, defined as \(l - d_H(Hash_{key}(X), Hash_{key}(Y)) \geq t \). Two types of comparisons are being performed on our data: (1) comparing images from the same person and the same finger, which should result in a match, and (2) comparing images from different people and/or different fingers. For the first type of comparison, if two finger images from the same person and finger do not result in a match (i.e., \( l - d_H(Hash_{key}(X), Hash_{key}(Y)) < t \)), this contributes to the FNR. Conversely, for the second type of comparison, if two finger images from different people or fingers do match, this contributes to the FPR.
+To experimentally determine the False Negative Rate (FNR) and the False Positive Rate (FPR) for various \((m, l)\) parameter configurations, the initial step is to compute the Hamming distance between \( Hash_{\text{key}}(X) \) and \( Hash_{\text{key}}(Y) \). The \( Hash_{\text{key}} \) of an extracted feature vector is generated using \( l \) iterations of \textit{PreHash}. We designed an algorithm that accepts a list of \( l \) keys (since each \textit{PreHash} iteration requires a new key) and the parameter \( m \), which indicates the number of indices each call to \textit{PreHash} should generate per key. For testing purposes, the \( l \) keys are simply integers from 0 to \( l-1 \), converted into a two-byte binary format. We then calculate the Hamming distance between the resulting hash values for pairs of images. The Hamming distance between \( Hash_{\text{key}}(X) \) and \( Hash_{\text{key}}(Y) \) is defined as the number of positions at which the corresponding iterations of \textit{PreHash} are different, as defined in Equation \ref{eq:HammingDist}. In this formula, the expression \( \# \{ i : PreHash_{\text{key}_i}(X) \neq PreHash_{\text{key}_i}(Y) \} \) counts the number of iterations \( i \) where the pre-hash values of \( X \) and \( Y \) differ. Each comparison results in a \(1\) if the iterations differ and a \(0\) if they are the same. Summing these comparison results gives the total number of differing positions, thereby computing the Hamming distance between the hash values of the iterations.
 
-To calculate the FNR, we sum the instances where there is no match between images that should match and calculate the mean. Similarly, for the FPR, we sum the instances where there is a match between images that should not match and calculate the mean.
+
+Each experiment we conducted uses a different row from Table \ref{tab:theoretical_parameterization} or uses configuration \ref{config:2}. In each experiment, we generate \( l \) \textit{PreHash} iterations for all image pairs and then determine if two images, \(X\) and \(Y\), are a match, defined as \( l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) \geq t \). We perform two types of comparisons on our data:
 
 \begin{enumerate}
+    \item \textbf{Same Person, Same Finger Comparisons}: This involves comparing different trials of images from the same person and the same finger. These comparisons should theoretically result in a match. If two such images do not match (i.e., \( l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) < t \)), this contributes to the FNR.
+    \item \textbf{Different People or Fingers Comparisons}: This involves comparing images from different people and/or different fingers. These comparisons should theoretically not result in a match. If two such images do match, this contributes to the FPR.
+\end{enumerate}
+
+To calculate the False Negative Rate (FNR), we count the instances where images that should match do not, and then compute the mean of these instances. Similarly, for the False Positive Rate (FPR), we count the instances where images that should not match do, and then compute the mean of these instances.
+
+For the experiments from Table \ref{tab:theoretical_parameterization}, we obtain the following results:
+
+\begin{enumerate}
+    \item \textbf{m = 1, l = 217 and t = 33}
+        \begin{itemize}
+            \item FPR: 
+            \item FNR: 
+        \end{itemize}
     \item \textbf{m = 1, l = 637 and t = 118}
-    results
+        \begin{itemize}
+            \item FPR: 
+            \item FNR: 
+        \end{itemize}
     \item \textbf{m = 2, l = 961 and t = 34}
-    results
+        \begin{itemize}
+            \item FPR: 
+            \item FNR: 
+        \end{itemize}
     \item \textbf{m = 3, l = 2569 and t = 18}
-    results
+        \begin{itemize}
+            \item FPR: 
+            \item FNR: 
+        \end{itemize}
     \item \textbf{m = 4, l = 8481 and t = 12}
-    results
+        \begin{itemize}
+            \item FPR: 
+            \item FNR: 
+        \end{itemize}
     \item \textbf{m = 5, l = 32'999 and t = 11}
-    results
+        \begin{itemize}
+            \item FPR: 
+            \item FNR: 
+        \end{itemize}
     \item \textbf{m = 6, l = 140'090 and t = 10}
-    results
+        \begin{itemize}
+            \item FPR: 
+            \item FNR: 
+        \end{itemize}
     \item \textbf{m = 7, l = 568'315 and t = 9}
-    results
+        \begin{itemize}
+            \item FPR: 
+            \item FNR: 
+        \end{itemize}
     \item \textbf{m = 8, l = 2'841'573 and t = 11}
-    results
+        \begin{itemize}
+            \item FPR: 
+            \item FNR: 
+        \end{itemize}
 \end{enumerate}
 
 \textbf{Summary of the FNR and FPR results obtained}
@@ -162,16 +209,26 @@ To calculate the FNR, we sum the instances where there is no match between image
 \end{table}
 
 \newpage
-\subsection{Experimental Derivation of the FNR and FPR for different (\(m, l\)) Parameter Configurations with Compression}
-In this subsection, we will experimentally evaluate the False Negative Rate (FNR) and False Positive Rate (FPR) through the \(l\) iterations of \textit{PostHash}. As in the previous section, the initial step involves computing the Hamming distance between \(Hash_{\text{key}}(X)\) and \(Hash_{\text{key}}(Y)\). To generate the \(Hash_{\text{key}}\) of an image, which consists of the \(l\) iterations of \textit{PreHash}, we designed the \textit{Iterative\_PostHash} algorithm to accept the same multiple inputs as previously described. For testing purposes, the \(l\) keys are derived in the same way as specified earlier. For an image, the algorithm first generates a list of the \(l\) iterations of \textit{PreHash} and then applies the \textit{PostHash} algorithm to each output of the \textit{PreHash} algorithm. The \textit{Iterative\_PostHash} algorithm then produces \(l\) iterations for the image. After both images pass through this algorithm, each iteration is compared; yielding 1 if the iterations differ and 0 if they are the same. Summing these comparison results allows us to calculate the total number of ones, effectively computing the Hamming distance between the iterations.
+\subsection{Experimental Derivation of the FNR and FPR for different (\(m, l, d\)) Parameter Configurations with Compression}
+
+In this subsection, we will experimentally evaluate the False Negative Rate (FNR) and False Positive Rate (FPR) with compression. We designed an algorithm that uses the previously defined method to generate \( l \) iterations of \textit{PreHash} and then compresses each hash value generated depending on the value of \(D = d²\). For an image, the algorithm generates a list of the \( l \) iterations of \textit{PreHash} and then applies the \textit{PostHash} algorithm to each \textit{PreHash} output.
+
+After both images pass through this process, each iteration of each image is compared, resulting in a 1 if the iterations differ and a 0 if they are the same. Summing these comparison results gives the total number of ones, effectively computing the Hamming distance between the compressed and hashed images.
 
 \begin{enumerate}
     \item \textbf{d = 4, m = 1, l = 1107 and t = 276}
-    results
-    \item \textbf{d = 4, m = 1, l = 217 and t = 33}
-    results
+        \begin{itemize}
+            \item FPR: 
+            \item FNR: 
+        \end{itemize}
     \item \textbf{d = 4, m = 1, l = 347 and t = 76}
-    results
+        \begin{itemize}
+            \item FPR: 
+            \item FNR: 
+        \end{itemize}
     \item \textbf{d = 1, m = 1, l = 3'597 and t = 957}
-    results
+        \begin{itemize}
+            \item FPR: 
+            \item FNR: 
+        \end{itemize}
 \end{enumerate}

@@ -211,7 +211,7 @@ For the experiments from Table \ref{tab:theoretical_parameterization}, we obtain
 \newpage
 \subsection{Experimental Derivation of the FNR and FPR for different (\(m, l, d\)) Parameter Configurations with Compression}
 
-In this subsection, we will experimentally evaluate the False Negative Rate (FNR) and False Positive Rate (FPR) with compression. We designed an algorithm that uses the previously defined method to generate \( l \) iterations of \textit{PreHash} and then compresses each hash value generated depending on the value of \(D = d²\). For an image, the algorithm generates a list of the \( l \) iterations of \textit{PreHash} and then applies the \textit{PostHash} algorithm to each \textit{PreHash} output.
+In this subsection, we will experimentally evaluate the False Negative Rate (FNR) and False Positive Rate (FPR) with compression. We designed an algorithm that uses the previously defined method to generate \( l \) iterations of \textit{PreHash} and then compresses each hash value generated depending on the value of \(D = 2^d\). For an image, the algorithm generates a list of the \( l \) iterations of \textit{PreHash} and then applies the \textit{PostHash} algorithm to each \textit{PreHash} output.
 
 After both images pass through this process, each iteration of each image is compared, resulting in a 1 if the iterations differ and a 0 if they are the same. Summing these comparison results gives the total number of ones, effectively computing the Hamming distance between the compressed and hashed images.
 

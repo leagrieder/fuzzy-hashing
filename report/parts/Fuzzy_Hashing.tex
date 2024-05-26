@@ -80,10 +80,10 @@ After the finger images are processed through the pipeline described in Pipeline
 
 In the context of a simplified scenario where the hash length parameter (\(m\)) is set to \(1\), implying the generation of a single-index hash, and assuming a randomly chosen key for the \textit{preHash} algorithm, along with \(k\) representing a uniformly distributed random index, the probability that the \textit{preHash} operation yields the same index for two different fixed inputs \(X\) and \(Y\) can be mathematically delineated as follows:
 
+
 \begin{equation} \label{eq:preHash1}
     \begin{aligned}
-        Pr[preHash_{key}^1(X) = preHash_{key}^1(Y)] &= \sum_{i > 0} Pr[preHash_{key}^1(X)]\\
-        &= preHash_{key}^1(Y)\\
+        Pr[preHash_{key}^1(X) = preHash_{key}^1(Y)] &= \sum_{i > 0} Pr[preHash_{key}^1(X) = preHash_{key}^1(Y) = i]\\
         &= \sum_{i > 0} Pr[X_k = Y_k = 0]^{i - 1} Pr[X_k = Y_k = 1]\\
         &= \frac{Pr[X_k = Y_k = 1]}{1 - Pr[X_k = Y_k = 0]}\\
         &= \frac{HW(X \land Y)}{HW(X) + HW(Y) - HW(X \land Y)}\\
@@ -98,34 +98,99 @@ It is noticed that there is a direct link with the Miura matching score that is 
 \begin{equation} \label{eq:preHash2}
     \begin{aligned}
         Pr[preHash_{key}^1(\bar{X}) = preHash_{key}^1(\bar{Y})] &= \frac{Pr[\bar{X}_k = \bar{Y}_k = 1]}{1 - Pr[\bar{X}_k = \bar{Y}_k = 0]}\\
-        &= \frac{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} - \frac{1}{2}Pr[\bar{X}_l \neq \bar{Y}_k]}{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} + \frac{1}{2}Pr[\bar{X}_l \neq \bar{Y}_k]}\\
+        &= \frac{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} - \frac{1}{2}Pr[\bar{X}_k \neq \bar{Y}_k]}{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} + \frac{1}{2}Pr[\bar{X}_k \neq \bar{Y}_k]}\\
     \end{aligned}
 \end{equation}
 
-The following approximations are made, inspired by equations p (\ref{eq:proba}) and $\delta$ (\ref{eq:delta}):
+The following approximations are made, inspired by equations \(p\) (\ref{eq:p}) and $\delta$ (\ref{eq:delta}):
 
 \begin{equation}
-    E\left(\frac{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} - \frac{1}{2}Pr[\bar{X}_l \neq \bar{Y}_k]}{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} + \frac{1}{2}Pr[\bar{X}_l \neq \bar{Y}_k]}\right) \approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}}
+    \mathbb{E}\left(\frac{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} - \frac{1}{2}Pr[\bar{X}_k \neq \bar{Y}_k]}{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} + \frac{1}{2}Pr[\bar{X}_k \neq \bar{Y}_k]}\right) \approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}}
 \end{equation}
 
-The core of this approximation revolves around the expectation formula, which integrates probabilities of feature presence \(Pr[X_k=1]+Pr[Y_k=1]\) and the likelihood of discrepancies between \(X\) and \(Y\), \(Pr[\bar{X}_l \neq \bar{Y}_k]\). This formula essentially aims to quantify the similarity between two biometric samples by considering both the concurrence of features and the instances where they diverge.
+The core of this approximation revolves around the expectation formula, which integrates probabilities of feature presence \(Pr[X_k=1]+Pr[Y_k=1]\) and the likelihood of discrepancies between \(X\) and \(Y\), \(Pr[\bar{X}_k \neq \bar{Y}_k]\). This formula essentially aims to quantify the similarity between two biometric samples by considering both the concurrence of features and the instances where they diverge.
+
+To achieve a more accurate approximation of the expected value of equation \ref{eq:preHash2}, we define the following parameters and employ a Taylor series expansion of the function \(f(A,B,C) = \frac{A + B - C}{A + B + C}\) around the point \((p, p, \delta)\). This method allows us to incorporate not only the means but also the variances and covariances of the variables involved.
+
+\[
+A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = d_H(\bar{X}, \bar{Y})
+\]
+where \(HW(\cdot)\) denotes the Hamming weight and \(d_H(\cdot, \cdot)\) represents the Hamming distance. Given these definitions, we know the expected values and variances from Section~\ref{sec:bio_setting} :
+\[
+    \mathbb{E}(A) = \mathbb{E}(B) = p^\text{obs}, \quad \mathbb{E}(C) = \delta^\text{obs}, \quad \text{Var}(A) = \text{Var}(B) = {\sigma^\text{obs}_p}^2, \quad \text{Var}(C) = {\sigma^\text{obs}_\delta}^2
+\]
+
+Next, we perform a Taylor series expansion of \(f(A,B,C)\) up to the second order around the point \((p, p, \delta)\). The first-order partial derivatives are calculated as follows:
+\[
+f'_A = \frac{2C}{(A + B + C)^2}, \quad f'_B = \frac{2C}{(A + B + C)^2}, \quad f'_C = \frac{-2(A + B)}{(A + B + C)^2}
+\]
+
+The second-order partial derivatives are:
+\[
+f''_{AA} = f''_{BB} = f''_{AB} = \frac{-4C}{(A + B + C)^3}, \quad f''_{CC} = \frac{4(A + B)}{(A + B + C)^3}, \quad f''_{AC} = f''_{BC} = \frac{-2(A + B - C)}{(A + B + C)^3}
+\]
+
+By substituting \(A = p\), \(B = p\), and \(C = \delta\) into these second order derivatives, we obtain:
+
+\[
+f''_{AA} = f''_{BB} = f''_{AB} = \frac{-4\delta}{(2p + \delta)^3}, \quad f''_{CC} = \frac{8p}{(2p + \delta)^3}, \quad f''_{AC} = f''_{BC} = \frac{2(2p - \delta)}{(2p + \delta)^3}
+\]
+
+Finally, the second order Taylor expansion of \(f(A,B,C)\) around \((p,p,\delta)\) is given by:
+\[
+f(A,B,C) \approx f(p,p,\delta) + f'_A(p,p,\delta)(A - p) + f'_B(p,p,\delta)(B - p) + f'_C(p,p,\delta)(C - \delta)
+\]
+\[
++ \frac{1}{2} \left[ f''_{AA}(p,p,\delta)(A - p)^2 + f''_{BB}(p,p,\delta)(B - p)^2 + f''_{CC}(p,p,\delta)(C - \delta)^2 \right.
+\]
+\[
++ 2f''_{AB}(p,p,\delta)(A - p)(B - p) + 2f''_{AC}(p,p,\delta)(A - p)(C - \delta) + 2f''_{BC}(p,p,\delta)(B - p)(C - \delta)
+\]\\
+To approximate the expected value \( E(f(A,B,C)) \), we use the following relations:
+\[
+    \mathbb{E}(A - p) = 0, \quad \mathbb{E}(B - p) = 0, \quad \mathbb{E}(C - \delta) = 0
+\]
+\[
+    \text{Var}(A) = \text{Var}(B) = \mathbb{E}((A - p)²), \quad \text{Var}(C) = \mathbb{E}((C - \delta)²)
+\]
+\[
+    \text{Cov}(A, B) = \mathbb{E}((A - p)(B - p)), \quad \text{Cov}(B, C) = \mathbb{E}((B - p)(C - \delta))
+\]
+\[
+    \text{Cov}(A, C) = \mathbb{E}((A - p)(C - \delta))
+\]
+
+And we hence have:
+\[
+    \mathbb{E}(f(A,B,C)) \approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ f''_{AA}(p,p,\delta)\text{Var}(A) + f''_{BB}(p,p,\delta)\text{Var}(B) + f''_{CC}(p,p,\delta)\text{Var}(C) \right.
+\]
+\[
++ 2f''_{AB}(p,p,\delta) \text{Cov}(A,B) + 2f''_{AC}(p,p,\delta) \text{Cov}(A,C) + 2f''_{BC}(p,p,\delta) \text{Cov}(B,C)]
+\]\\
+Let us denote that \(\mathcal{F}(p, \delta, \sigma_p, \sigma_\delta) = \mathbb{E}(f(A,B,C))\). Simplifying with our values and notations we get:
+\[
+    \mathcal{F}(p, \delta, \sigma_p, \sigma_\delta) \approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot{\sigma^\text{obs}_p}² + \frac{-4\delta}{(2p + \delta)^3}\cdot{\sigma^\text{obs}_p}² + \frac{8p}{(2p + \delta)^3}\cdot{\sigma^\text{obs}_\delta}² \right.
+\]
+\[
++ 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C)]
+\]\\
 
 Hence for (\(X\), \(Y\)) random,
-
 \begin{equation}
     \label{eq:mu_leq}
-    Pr[preHash_{key}^1(offset_X * X) = preHash_{key}^1(offset_Y * Y)] \leq \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}}
+    Pr[preHash_{key}^1(offset_X * X) = preHash_{key}^1(offset_Y * Y)] \leq \mathcal{F}(p, \delta, \sigma_p, \sigma_\delta)
 \end{equation}
-
-where equality is reached for the optimal offset translations. 
+where equality is reached for the optimal offset translations.\\
 
 Depending on the distribution of (\(X\), \(Y\)), it is denoted
 
 \begin{equation} \label{eq:mu}
-    \mu = \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}}
+    \mu = \mathcal{F}(p, \delta, \sigma_p, \sigma_\delta)
 \end{equation}
 
+
 The following figures are provided:
+NEED TO CHANGE THESE!!
 
 \begin{table}[H]
     \centering
@@ -147,7 +212,6 @@ Finally, it is observed that
 
 where equality is reached for the optimal offset translations.
 
-%This includes determining the upper limits for the probabilities of similarity between different finger veins processed through the same fuzzy hashing parameters. 
 \subsection{Experimental Derivation of the Probabilities \(\mu_{\text{same}}^{\text{obs}}, \mu_{\text{diff}}^{\text{obs}}, \mu_{\text{indep}}^{\text{obs}}\)}
 
 In Section~\ref{sec:mu}, we have laid out the mathematical framework that defines the upper bound \(\mu\). This probability is crucial in our fuzzy hashing approach, as it quantifies the matching likelihood after applying the optimal offset translations to the biometric captures. The application of these optimal offsets is an important preprocessing step before hashing the dataset, ensuring that the biometric features are accurately aligned for comparison.
@@ -188,14 +252,14 @@ For \(\mu_{\text{same}}^{obs}\) and \(\mu_{\text{diff}}^{obs}\), our experimenta
             \begin{minipage}[b]{0.48\linewidth}
                 \centering
                 \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/mu_same.png}
-                \caption{Hamming Distances for Same, Aligned Biometric Samples with Single Index PreHashing}
+                \caption{Count of the number of matches for Same, Aligned Biometric Samples with Single Index PreHashing}
                 \label{mu_same}
             \end{minipage}
             \hfill
             \begin{minipage}[b]{0.48\linewidth}
                 \centering
                 \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/mu_diff.png}
-                \caption{Hamming Distances for Different, Aligned Biometric Samples with Single Index PreHashing}
+                \caption{Count of the number of matches for Different, Aligned Biometric Samples with Single Index PreHashing}
                 \label{mu_diff}
             \end{minipage}
         \end{figure}

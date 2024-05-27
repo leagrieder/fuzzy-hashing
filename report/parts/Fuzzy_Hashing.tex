@@ -117,7 +117,7 @@ A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = d_H(\bar{X
 \]
 where \(HW(\cdot)\) denotes the Hamming weight and \(d_H(\cdot, \cdot)\) represents the Hamming distance. Given these definitions, we know the expected values and variances from Section~\ref{sec:bio_setting} :
 \[
-    \mathbb{E}(A) = \mathbb{E}(B) = p^\text{obs}, \quad \mathbb{E}(C) = \delta^\text{obs}, \quad \text{Var}(A) = \text{Var}(B) = {\sigma^\text{obs}_p}^2, \quad \text{Var}(C) = {\sigma^\text{obs}_\delta}^2
+    \mathbb{E}(A) = \mathbb{E}(B) = p^\text{obs}, \quad \mathbb{E}(C) = \delta^\text{obs}, \quad \mathbb{V}(A) = \mathbb{V}(B) = ({\sigma^\text{obs}_p})^2, \quad \mathbb{V}(C) = ({\sigma^\text{obs}_\delta})^2
 \]
 
 Next, we perform a Taylor series expansion of \(f(A,B,C)\) up to the second order around the point \((p, p, \delta)\). The first-order partial derivatives are calculated as follows:
@@ -151,7 +151,7 @@ To approximate the expected value \( E(f(A,B,C)) \), we use the following relati
     \mathbb{E}(A - p) = 0, \quad \mathbb{E}(B - p) = 0, \quad \mathbb{E}(C - \delta) = 0
 \]
 \[
-    \text{Var}(A) = \text{Var}(B) = \mathbb{E}((A - p)²), \quad \text{Var}(C) = \mathbb{E}((C - \delta)²)
+    \mathbb{V}(A) = \mathbb{V}(B) = \mathbb{E}((A - p)²), \quad \mathbb{V}(C) = \mathbb{E}((C - \delta)²)
 \]
 \[
     \text{Cov}(A, B) = \mathbb{E}((A - p)(B - p)), \quad \text{Cov}(B, C) = \mathbb{E}((B - p)(C - \delta))
@@ -162,30 +162,33 @@ To approximate the expected value \( E(f(A,B,C)) \), we use the following relati
 
 And we hence have:
 \[
-    \mathbb{E}(f(A,B,C)) \approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ f''_{AA}(p,p,\delta)\text{Var}(A) + f''_{BB}(p,p,\delta)\text{Var}(B) + f''_{CC}(p,p,\delta)\text{Var}(C) \right.
+    \mathbb{E}(f(A,B,C)) \approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ f''_{AA}(p,p,\delta)\mathbb{V}(A) + f''_{BB}(p,p,\delta)\mathbb{V}(B) + f''_{CC}(p,p,\delta)\mathbb{V}(C) \right.
 \]
 \[
 + 2f''_{AB}(p,p,\delta) \text{Cov}(A,B) + 2f''_{AC}(p,p,\delta) \text{Cov}(A,C) + 2f''_{BC}(p,p,\delta) \text{Cov}(B,C)]
 \]\\
-Let us denote that \(\mathcal{F}(p, \delta, \sigma_p, \sigma_\delta) = \mathbb{E}(f(A,B,C))\). Simplifying with our values and notations we get:
+
+Simplifying with our values and notations we get:
 \[
-    \mathcal{F}(p, \delta, \sigma_p, \sigma_\delta) \approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot{\sigma^\text{obs}_p}² + \frac{-4\delta}{(2p + \delta)^3}\cdot{\sigma^\text{obs}_p}² + \frac{8p}{(2p + \delta)^3}\cdot{\sigma^\text{obs}_\delta}² \right.
+\mathbb{E}(f(A,B,C)) \approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 
+\right.
 \]
 \[
-+ 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C)]
+\left.
++ 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]
 \]\\
 
 Hence for (\(X\), \(Y\)) random,
 \begin{equation}
     \label{eq:mu_leq}
-    Pr[preHash_{key}^1(offset_X * X) = preHash_{key}^1(offset_Y * Y)] \leq \mathcal{F}(p, \delta, \sigma_p, \sigma_\delta)
+    Pr[preHash_{key}^1(offset_X * X) = preHash_{key}^1(offset_Y * Y)] \leq \mathbb{E}(f(A,B,C))
 \end{equation}
 where equality is reached for the optimal offset translations.\\
 
 Depending on the distribution of (\(X\), \(Y\)), it is denoted
 
 \begin{equation} \label{eq:mu}
-    \mu = \mathcal{F}(p, \delta, \sigma_p, \sigma_\delta)
+    \mu = \mathbb{E}(f(A,B,C))
 \end{equation}
 
 

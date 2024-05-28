@@ -17,7 +17,7 @@ Each of the \(n\) bits of the biometric capture is designated as \(X_1, \ldots, 
     \end{aligned}
 \end{equation}
 
-In the case where \(i\) is a uniformly distributed random index and \(X\) is randomly chosen, the mean (\(p\))\footnote{Throughout this report, experimentally derived variables are denoted with the superscript "obs" (e.g., \(\text{var}^{\text{obs}}\)), while theoretical variables are presented without any superscript.}, along with the variance (\(\sigma²\)) and standard deviation (\(\sigma\)) of the random variable \(\frac{\text{HW}(X)}{n}\) across all images are quantified as follows:
+In the case where \(i\) is a uniformly distributed random index and \(X\) is randomly chosen, the mean (\(p\))\footnote{Throughout this report, experimentally derived variables are denoted with the superscript "obs" (e.g., \(\text{var}^{\text{obs}}\)), while theoretical variables are presented without any superscript.}, along with the variance (\(\sigma²\)) and standard deviation (\(\sigma\)) of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) across all images are quantified as follows:
 
 \begin{equation} \label{eq:proba1}
     p^{\text{obs}} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right) = 3.29\%
@@ -32,7 +32,7 @@ In the case where \(i\) is a uniformly distributed random index and \(X\) is ran
     (\sigma^{\text{obs}})² = \mathbb{V}\left( \frac{\text{HW}(X)}{n} \right)  \approx 2.20 \times 10^{-5}
 \end{equation}
 
-where \( \sigma \) and \( \sigma^2 \) represent the standard deviation and variance of the random variable \(\frac{\text{HW}(X)}{n}\) respectively.
+where \( \sigma \) and \( \sigma^2 \) represent the standard deviation and variance of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) respectively.
 
 In biometric authentication and identification, the uniqueness of each biometric capture is encoded in its bits. The objective revolves around discerning the similarity between two biometric captures to verify or identify two individuals. Therefore, the scoring mechansim plays a crucial role in quantatively determining the similarity between biometric captures. This similarity score holds significance in verifying the identity of an individual (authentication) or identifying potential matches in a database (identification). A higher score indicates a greater ressemblance between captures, while a lower score suggests less similarity. This scoring mechanism is indispensable for ensuring the accuracy and reliability of biometric systems. The score of (\(X\), \(Y\)) is computed as
 
@@ -92,7 +92,7 @@ Distinguishing between the types of distributions associated with the two captur
         \text{Different-Finger Distribution} & 5.99\% & \(4.58 \times 10^{-5}\) & \(6.76 \times 10^{-3}\) \\
         \hline
     \end{tabular}
-    \caption{Comparison of Distributions: Mean, Variance, and Standard Deviation of \(\frac{d_H(\bar{X}, \bar{Y})}{n}\) when both captures originate from the same finger and from different fingers}
+    \caption{Comparison of Distributions: Mean, Variance, and Standard Deviation of \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\) when both captures originate from the same finger and from different fingers}
 \end{table}
 
 
@@ -163,7 +163,7 @@ The findings from this analysis revealed the following probabilities:
 
     \item For Camera 2, the probability \(p^{obs} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) was slightly lower at \(0.032\), translating to a \(3.15\)\% chance for vein representation in its images.
 
-    \item When considering the datasets from Both Cameras combined, the probability \(p^{obs} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) averaged out to \(0.0329\), suggesting a \(3.29\)\% likelihood of a pixel depicting a vein across the entire dataset. Moreover, the variance (\( \sigma^{2}_p \)) and the standard deviation (\( \sigma_p \)) of the random variable \(\frac{\text{HW}(X)}{n}\) provide insights into the the random variable's spread and consistency. The observed variance is low at approximately \( 2.20 \times 10^{-5} \), indicating minimal fluctuation in the random variables' values among different feature vectors. This suggests that the feature extraction method is highly reliable and consistent across different images. Furthermore, the standard deviation, calculated as approximately \( 4.69 \times 10^{-3} \), reinforces the idea of minimal dispersion around the mean probability (\(p\)) of detecting a vein. 
+    \item When considering the datasets from Both Cameras combined, the probability \(p^{obs} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) averaged out to \(0.0329\), suggesting a \(3.29\)\% likelihood of a pixel depicting a vein across the entire dataset. Moreover, the variance (\( \sigma^{2}_p \)) and the standard deviation (\( \sigma_p \)) of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) provide insights into the the random variable's spread and consistency. The observed variance is low at approximately \( 2.20 \times 10^{-5} \), indicating minimal fluctuation in the random variables' values among different feature vectors. This suggests that the feature extraction method is highly reliable and consistent across different images. Furthermore, the standard deviation, calculated as approximately \( 4.69 \times 10^{-3} \), reinforces the idea of minimal dispersion around the mean probability (\(p\)) of detecting a vein. 
     
 \end{enumerate}
 

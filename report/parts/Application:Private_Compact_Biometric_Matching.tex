@@ -78,49 +78,36 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
         %7 & 568 315 & 9 & 19.4 & 0.0 & 2^⁻6\% &\(??\) \\
         8 & 2 841 573 & 11 & 22.3 & 0.0 & 1.0\% & \(2^{-\infty}\) \\
         %8 & 2 841 573 & 11 & 22.3 & 0.0 & 2^⁻6\% &\(??\) \\
+        1 & 217 & 33 & 50 & 16.8 & \(\leq\)1\% & \(2^{-14}\)\\
         \hline
     \end{tabular}
-    \caption{Theoretical Parameterization Results for FNR and FPR Calculation}
-    \label{tab:theoretical_parameterization}
+    \caption{Theoretical Parameterization Results for FNR and FPR Calculation, using $l$ Iterations of PreHash}
+    \label{tab:theoretical_parameterization_PreHash}
 \end{table}
 
 Using compression techniques implemented through \textit{PostHash}, specifically compressing to \( D = 16 \) (\( d = 4 \)), we calculate the threshold (\( t \)) from parameters \( m = 1 \) and \( l \) to achieve an FNR of \(1\%\) and an FPR \(\leq 2^{-36} \). The introduction of compression slightly modifies the equations for FNR (\ref{eq:fnr}) and FPR (\ref{eq:fpr}), necessitating the use of \( q \) in place of \(\mu^m\). The theoretical resulting set of parameters is as follows:
-\begin{equation}
-    \label{config:1}
-\small
-m = 1 \quad d = 4 \quad l = 1107 \quad t = 276 \quad lq_{\text{same}} = 317.7 \quad lq_{\text{diff}} = 130.6 \quad \text{FNR} = 1.0\% \quad \text{FPR} = 2^{-121}
-\end{equation}
-The compressed hash requires \( mld = 4428 \) bits (\( 553 \) bytes).
 
-Recomputing to obtain an FPR \(\leq 1\%\), we derive the following parameters without compression:
-\begin{equation}
-    \label{config:2}
-\small
-m = 1 \quad l = 217 \quad t = 33 \quad l\mu_{\text{same}}^m = 50 \quad l\mu_{\text{diff}}^m = 16.8 \quad \text{FNR} = 1.0\% \quad \text{FPR} = 2^{-14}
-\end{equation}
-
-With compression, the parameters are:
-\begin{equation}
-    \label{config:3}
-\small
-m = 1 \quad d = 4 \quad l = 347 \quad t = 76 \quad lq_{\text{same}} = 99.6 \quad lq_{\text{diff}} = 40.9 \quad \text{FNR} = 1.0\% \quad \text{FPR} = 2^{-25}
-\end{equation}
-The compressed hash requires \( mld = 1388 \) bits (\( 174 \) bytes).
-
-Using compression to \( D = 2 \) (\( d = 1 \)), we obtain:
-\begin{equation}
-    \label{config:4}
-\small
-m = 1 \quad d = 4 \quad l = 3597 \quad t = 957 \quad lq_{\text{same}} = 1032.3 \quad lq_{\text{diff}} = 424.4 \quad \text{FNR} = 1.0\% \quad \text{FPR} = 2^{-488}
-\end{equation}
-
+\begin{table}[htbp] 
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+        \hline
+        \textit{m} & \textit{d} & \textit{l} & \textit{t} & \textit{l}\(q_{\text{same}}^m\) & \textit{l}\(q_{\text{diff}}^m\) & \textit{FNR} & \textit{FPR} \\
+        \hline
+        1 & 4 & 1107 & 276 & 317.7 & 130.6 & 1.0\% & \(2^{-121}\) \\
+        1 & 4 & 347 & 76 & 99.6 & 40.9 & \(\leq\)1.0\% & \(2^{-14}\)\\
+        1 & 1 & 3597 & 957 & 1032.3 & 424.4 & \(\leq\)1.0\% & \(2^{-488}\)\\
+        \hline
+    \end{tabular}
+    \caption{Theoretical Parameterization Results for FNR and FPR Calculation, using $l$ Iterations of PostHash}
+    \label{tab:theoretical_parameterization_PostHash}
+\end{table}
 
 \subsection{Experimental Derivation of the FNR and FPR for different (\(m, l\)) Parameter Configurations}
 
 To experimentally determine the False Negative Rate (FNR) and the False Positive Rate (FPR) for various \((m, l)\) parameter configurations, the initial step is to compute the Hamming distance between \( Hash_{\text{key}}(X) \) and \( Hash_{\text{key}}(Y) \). The \( Hash_{\text{key}} \) of an extracted feature vector is generated using \( l \) iterations of \textit{PreHash}. We designed an algorithm that accepts a list of \( l \) keys (since each \textit{PreHash} iteration requires a new key) and the parameter \( m \), which indicates the number of indices each call to \textit{PreHash} should generate per key. For testing purposes, the \( l \) keys are simply integers from 0 to \( l-1 \), converted into a two-byte binary format. We then calculate the Hamming distance between the resulting hash values for pairs of images. The Hamming distance between \( Hash_{\text{key}}(X) \) and \( Hash_{\text{key}}(Y) \) is defined as the number of positions at which the corresponding iterations of \textit{PreHash} are different, as defined in Equation \ref{eq:HammingDist}. In this formula, the expression \( \# \{ i : PreHash_{\text{key}_i}(X) \neq PreHash_{\text{key}_i}(Y) \} \) counts the number of iterations \( i \) where the pre-hash values of \( X \) and \( Y \) differ. Each comparison results in a \(1\) if the iterations differ and a \(0\) if they are the same. Summing these comparison results gives the total number of differing positions, thereby computing the Hamming distance between the hash values of the iterations.
 
 
-Each experiment we conducted uses a different row from Table \ref{tab:theoretical_parameterization} or uses configuration \ref{config:2}. In each experiment, we generate \( l \) \textit{PreHash} iterations for all image pairs and then determine if two images, \(X\) and \(Y\), are a match, defined as \( l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) \geq t \). We perform two types of comparisons on our data:
+Each experiment we conducted uses a different row from Table \ref{tab:P} or uses configuration \ref{config:2}. In each experiment, we generate \( l \) \textit{PreHash} iterations for all image pairs and then determine if two images, \(X\) and \(Y\), are a match, defined as \( l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) \geq t \). We perform two types of comparisons on our data:
 
 \begin{enumerate}
     \item \textbf{Same Person, Same Finger Comparisons}: This involves comparing different trials of images from the same person and the same finger. These comparisons should theoretically result in a match. If two such images do not match (i.e., \( l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) < t \)), this contributes to the FNR.
@@ -129,7 +116,7 @@ Each experiment we conducted uses a different row from Table \ref{tab:theoretica
 
 To calculate the False Negative Rate (FNR), we count the instances where images that should match do not, and then compute the mean of these instances. Similarly, for the False Positive Rate (FPR), we count the instances where images that should not match do, and then compute the mean of these instances.
 
-For the experiments from Table \ref{tab:theoretical_parameterization}, we obtain the following results:
+For the experiments from Table \ref{tab:P}, we obtain the following results:
 
 \begin{enumerate}
     \item \textbf{m = 1, l = 217 and t = 33}
@@ -180,7 +167,7 @@ For the experiments from Table \ref{tab:theoretical_parameterization}, we obtain
         \end{itemize}
 \end{enumerate}
 
-\textbf{Summary of the FNR and FPR results obtained}
+\textbf{Summary of the FNR and FPR results obtained, using $l$ iterations of PreHash}
 \begin{table}[htbp] 
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -233,3 +220,19 @@ After both images pass through this process, each iteration of each image is com
             \item FNR: 
         \end{itemize}
 \end{enumerate}
+
+\textbf{Summary of the FNR and FPR results obtained, using $l$ iterations of PostHash}
+\begin{table}[htbp] 
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+        \hline
+        \textit{m} & \textit{d} & \textit{l} & \textit{t} & \textit{l}\(q_{\text{same}}^m\) & \textit{l}\(q_{\text{diff}}^m\) & \textit{FNR} & \textit{FPR} \\
+        \hline
+        1 & 4 & 1107 & 276 & 317.7 & 130.6 & 1.0\% & \(2^{-121}\) \\
+        1 & 4 & 347 & 76 & 99.6 & 40.9 & \(\leq\)1.0\% & \(2^{-14}\)\\
+        1 & 1 & 3597 & 957 & 1032.3 & 424.4 & \(\leq\)1.0\% & \(2^{-488}\)\\
+        \hline
+    \end{tabular}
+    \caption{Theoretical Parameterization Results for FNR and FPR Calculation, using $l$ Iterations of PostHash}
+    \label{tab:theoretical_parameterization_PostHash}
+\end{table}

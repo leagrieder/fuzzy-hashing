@@ -85,13 +85,12 @@ Distinguishing between the types of distributions associated with the two captur
     \renewcommand{\arraystretch}{1.25}
     \begin{tabular}{|c|c|c|c|}
         \hline
-        & \textbf{\(\delta^{\text{obs}}\)} & \textbf{\({\sigma^2_{\delta}}^{\text{obs}}\)} & \textbf{\(\sigma_{\delta}^{\text{obs}}\)} \\
+        & \text{\(\delta^{\text{obs}}\)} & \text{\(({\sigma_{\delta}}^{\text{obs}})²\)} & \text{\(\sigma_{\delta}^{\text{obs}}\)} \\
         \hline
         \text{Same-Finger Distribution} & 4.55\% & \(1.06 \times 10^{-4}\) & \(1.03 \times 10^{-2}\) \\
         \hline
         \text{Different-Finger Distribution} & 5.99\% & \(4.58 \times 10^{-5}\) & \(6.76 \times 10^{-3}\) \\
         \hline
-        \text{Independent Feature Vectors} & 5.99\% & \(4.58 \times 10^{-5}\) & \(6.76 \times 10^{-3}\) \\
     \end{tabular}
     \caption{Comparison of Distributions: Mean, Variance, and Standard Deviation of \(\frac{d_H(\bar{X}, \bar{Y})}{n}\) when both captures originate from the same finger and from different fingers}
 \end{table}
@@ -180,6 +179,7 @@ The observed value of \( p \) is given, so we compute the mean as:
 
 Next, to find the variance and the standard deviation of the normalized Hamming distance we have:
 
+
 \[ (\sigma_{\delta_{indep}})² = \mathbb{V}\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right) = \frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n} \approx 1.23 \times 10^{-6} \]
 
 \[ \sigma_{\delta_{indep}} = \sqrt{\mathbb{E} \left[ \left( \frac{d_H(\bar{X}, \bar{Y})}{n} - \delta_{\text{indep}} \right)^2 \right]} = \sqrt{\frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n}} \approx 1.11 \times 10^{-3} \]\\
@@ -199,8 +199,8 @@ To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \)
         \item For \( \delta_{\text{same}} \), we calculated the average normalized distances from intra-individual comparisons. This analysis provided the following results, quantifying the observed differences between captures from the same individual after alignment:
 
         \[ \delta_{\text{same}}^{obs} \approx 4.55\% \]
-        \[ \sigma_{\delta_{same}} \approx 1.03 \times 10^{-2} \]
-        \[ \sigma²_{\delta_{same}} \approx 1.06 \times 10^{-4} \]
+        \[ \sigma^{obs}_{\delta_{same}} \approx 1.03 \times 10^{-2} \]
+        \[ (\sigma^{obs}_{\delta_{same}})² \approx 1.06 \times 10^{-4} \]
 
         \begin{figure}[H]
             \centering
@@ -212,8 +212,8 @@ To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \)
         \item For \( \delta_{\text{diff}} \), we performed a similar averaging of the normalized distances from the inter-individual comparisons, which furnished us with the following results for observing a difference between captures from the different individuals after alignment:
 
         \[ \delta_{\text{diff}}^{obs} \approx 5.99\% \]
-        \[ \sigma_{\delta_{diff}} \approx 6.76 \times 10^{-3} \]
-        \[ \sigma²_{\delta_{diff}} \approx 4.58 \times 10^{-5} \]
+        \[ \sigma^{obs}_{\delta_{diff}} \approx 6.76 \times 10^{-3} \]
+        \[ (\sigma^{obs}_{\delta_{diff}})² \approx 4.58 \times 10^{-5} \]
 
         \begin{figure}[H]
             \centering

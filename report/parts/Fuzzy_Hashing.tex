@@ -169,17 +169,15 @@ And we hence have:
 \]\\
 
 Simplifying with our values and notations we get:
-\[
-\mathbb{E}(f(A,B,C)) \approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 
-\right.
-\]
-\[
-\left.
-+ 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]
-\]\\
 
-In order to derive the respective covariances needed to calculate this expectation, we needed needed the 
-
+\begin{equation}
+    \begin{aligned}
+    \mathbb{E}(f(A,B,C)) &\approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 \right. \\
+    & \left. + \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 + 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) \right. \\
+    & \left. + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]\\
+    \end{aligned}
+    \label{eq:mu_approximation}
+\end{equation}
 
 Hence for (\(X\), \(Y\)) random,
 \begin{equation}
@@ -204,13 +202,13 @@ NEED TO CHANGE THESE!!
         \hline
         $\mu_{same}$ & $\mu_{diff}$ & $\mu_{indep}$\\
         \hline
-        $18.8\%$ & $4.6\%$ & $1.4\%$\\
+        $18.8\%$ & $4.6\%$ & $1.14\%$\\
         \hline
     \end{tabular}
 \caption{Comparison of Distributions: $\mu_{same}$, $\mu_{diff}$, and $\mu_{indep}$}
 \end{table}
 
-Finally, it is observed that
+Finally, it is observed that:
 
 \begin{equation}
     Pr[preHash_{key}^m(offset_X * X) = preHash_{key}^m(offset_Y * Y)] \leq \mu^m
@@ -226,10 +224,10 @@ We will proceed to evaluate these theoretical results experimentally, leveraging
 
 In the experimental setup, \(\mu_{\text{same}}\) refers to the probability that a hash function, when applied to two biometric captures of the same finger, will yield the same index. This is the measure of success in correctly identifying matches within the same individual's biometric captures. Conversely, \(\mu_{\text{diff}}\) denotes the probability that the same hash function will produce different indices for biometric captures from different individuals, representing the ability to distinguish between different people's biometric data. Lastly, \(\mu_{\text{indep}}\) indicates the probability of a match in the case where the biometric captures are completely independent, serving as a baseline for random chance.
 
-The computation of \( \mu_{\text{indep}}^{obs} \) is relatively straightforward, having determined the value of \( p^{obs} \) and \(\delta_{\text{indep}}^{obs}\). The formula for \( \mu_{\text{indep}}^{obs} \) relies solely on \( p^{obs} \) and \(\delta_{\text{indep}}^{obs}\), allowing us to express it as:
+The computation of \( \mu_{\text{indep}}^{obs} \) is relatively straightforward, having determined the value of \( p^{obs} \), \(\delta_{\text{indep}}^{obs}\) and their respective variances. Moreover, because of independence between \(X\) and \(Y\), the covariances that appear in Equation~\ref{eq:mu_approximation} are \(0\), allowing us to express \( \mu_{\text{indep}}^{obs} \) as:
 
 \[
-    \mu_{\text{indep}}^{obs} = \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} \approx 0.014 = 1.4\%
+    \mu_{\text{indep}}^{obs}  \approx 0.01136 = 1.14\%
 \]
 
 For \(\mu_{\text{same}}^{obs}\) and \(\mu_{\text{diff}}^{obs}\), our experimental protocol adhered to the established optimal pipeline (refer to Figure~\ref{pipeline_simon}) to process the images in our dataset. Following the alignment of images through the computation of optimal offsets (referred to as Miura Matching), our fuzzy hashing function was applied to the extraced features. In alignment with the premise that \(\mu\) is computed under the condition where the hash function's output is a single index (\(m=1\)).

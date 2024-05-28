@@ -74,7 +74,7 @@ The probability of the \(i\)-th pixel of two captures not being the same after a
 
 \begin{equation}
     \begin{aligned}
-        \sigma^2_{\delta} = {Var}\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)
+        (\sigma_{\delta})² = {Var}\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)
     \end{aligned}
 \end{equation}
 
@@ -91,6 +91,7 @@ Distinguishing between the types of distributions associated with the two captur
         \hline
         \text{Different-Finger Distribution} & 5.99\% & \(4.58 \times 10^{-5}\) & \(6.76 \times 10^{-3}\) \\
         \hline
+        \text{Independent Feature Vectors} & 5.99\% & \(4.58 \times 10^{-5}\) & \(6.76 \times 10^{-3}\) \\
     \end{tabular}
     \caption{Comparison of Distributions: Mean, Variance, and Standard Deviation of \(\frac{d_H(\bar{X}, \bar{Y})}{n}\) when both captures originate from the same finger and from different fingers}
 \end{table}
@@ -171,11 +172,17 @@ The findings from this analysis revealed the following probabilities:
 \subsection{Experimental Derivation of the Probabilities \(\delta_{\text{same}}, \delta_{\text{diff}}, \delta_{\text{indep}}\)}
 \label{sec:delta}
 
-To assess the probability that the i-th pixel of two captures diverges after applying the optimal offset translations \( d_X \) and \( d_Y \) (Equation (\ref{eq:delta})), we undertake additional experimental analysis. This investigation continues to utilize the same dataset comprising 20 distinct individuals. Here, the post-alignment process, specifically Miura Matching, is included in our examination as the calculation formula integrates this step. As detailed in Section~\ref{Bio_data_sim_scores}, our objective is to evaluate three distinct delta values: \(\delta_{\text{same}}, \delta_{\text{diff}}, \delta_{\text{indep}}\). The computation of \( \delta_{\text{indep}} \) is relatively straightforward, having determined the value of \( p \). The formula for \( \delta_{\text{indep}} \) relies solely on \( p \), allowing us to express it as:
+To assess the probability that the i-th pixel of two captures diverges after applying the optimal offset translations \( d_X \) and \( d_Y \) (Equation (\ref{eq:delta})), we undertake additional experimental analysis. This investigation continues to utilize the same dataset comprising 20 distinct individuals. Here, the post-alignment process, specifically Miura Matching, is included in our examination as the calculation formula integrates this step. As detailed in Section~\ref{Bio_data_sim_scores}, our objective is to evaluate three distinct delta values: \(\delta_{\text{same}}, \delta_{\text{diff}}, \delta_{\text{indep}}\). The computation of \( \delta_{\text{indep}} \) is relatively straightforward, having determined the value of \( p \). In order to calculate the mean, the standard deviation, and the variance of the random variable \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\) when \(X\) and \(Y\) are made up of \(2n\) independent random bits of expected value \(p\) and without applying the optimal offset to get \(\bar{X}\) and \(\bar{Y}\), we can do the following:
 
-\[ \delta_{\text{indep}}^{obs} = 2p^{obs}(1 - p^{obs}) = 2 \times 0.033 \times (1 - 0.033) \approx 6.4\% \]
+The observed value of \( p \) is given, so we compute the mean as:
 
-This result provides an estimated \(6.4\)\% independent delta value.
+\[ \delta_{\text{indep}} = 2p^{obs}(1 - p^{obs}) = 2 \times 0.0329 \times (1 - 0.0329) \approx 6.36\% \]
+
+Next, to find the variance and the standard deviation of the normalized Hamming distance we have:
+
+\[ (\sigma_{\delta_{indep}})² = \mathbb{V}\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right) = \frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n} \approx 1.23 \times 10^{-6} \]
+
+\[ \sigma_{\delta_{indep}} = \sqrt{\mathbb{E} \left[ \left( \frac{d_H(\bar{X}, \bar{Y})}{n} - \delta_{\text{indep}} \right)^2 \right]} = \sqrt{\frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n}} \approx 1.11 \times 10^{-3} \]\\
 
 To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \), a meticulous procedure was executed on our dataset, which involves 20 unique individuals, each having multiple biometric captures. Below is an outline of the methodology applied:
 

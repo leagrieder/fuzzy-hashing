@@ -178,6 +178,9 @@ Simplifying with our values and notations we get:
 + 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]
 \]\\
 
+In order to derive the respective covariances needed to calculate this expectation, we needed needed the 
+
+
 Hence for (\(X\), \(Y\)) random,
 \begin{equation}
     \label{eq:mu_leq}
@@ -244,11 +247,11 @@ For \(\mu_{\text{same}}^{obs}\) and \(\mu_{\text{diff}}^{obs}\), our experimenta
     \begin{itemize}
         \item \textbf{\(\mu_{\text{same}}^{obs}\)}: We computed \(\mu_{\text{same}}^{obs}\) by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the intra-individual comparisons, which furnished us with the following probability:
 
-        \[ \mu_{\text{same}}^{obs} \approx 0.23 = 23\%\]
+        \[ \mu_{\text{same}}^{obs} \approx 0.22047 = 22.05\%\]
         
         \item \textbf{\(\mu_{\text{diff}}^{obs}\)}: Similarly, \(\mu_{\text{diff}}^{obs}\) was determined by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the inter-individual comparisons, which furnished us with the following probability:
 
-        \[ \mu_{\text{diff}}^{obs} \approx 0.077 = 7.7\% \]
+        \[ \mu_{\text{diff}}^{obs} \approx 0.08249 = 8.25\% \]
 
         \begin{figure}[H]
             \centering
@@ -272,7 +275,7 @@ For \(\mu_{\text{same}}^{obs}\) and \(\mu_{\text{diff}}^{obs}\), our experimenta
     \end{itemize}
 \end{enumerate}
 
-In our analysis of the dataset at hand featuring biometric data from 20 unique individuals, we have quantified the performance of the preHash function in distinguishing between identical and different biometric subjects. Specifically, when evaluating samples from the same individual, the probability that the preHash function will produce the same index is approximately \(23\%\). Conversely, when the function is applied to samples from different individuals, the probability of a match in the indices drops to roughly \(7.7\%\). This indicates that the likelihood of mistakenly identifying different individuals as the same is about three times lower than correctly matching samples from the same individual, demonstrating the preHash function's relative efficacy in biometric differentiation within this specific dataset.
+In our analysis of the dataset at hand featuring biometric data from 20 unique individuals, we have quantified the performance of the preHash function in distinguishing between identical and different biometric subjects. Specifically, when evaluating samples from the same individual, the probability that the preHash function will produce the same index is approximately \(22.05\%\). Conversely, when the function is applied to samples from different individuals, the probability of a match in the indices drops to roughly \(8.25\%\). This indicates that the likelihood of mistakenly identifying different individuals as the same is about three times lower than correctly matching samples from the same individual, demonstrating the preHash function's relative efficacy in biometric differentiation within this specific dataset.
 
 It would be valuable to conduct an experimental investigation to determine the effect of omitting the Miura Matching step (finding optimal offsets before comparing images), which serves as a post-alignment phase in our pipeline, on the coincidence probabilities of the indices. Our interest in conducting this verification stems from the contents of Equation~\ref{eq:mu_leq}. Should some other non-optimal offsets be used, or should the Miura Matching phase be excluded entirely from our process, it is anticipated that the probabilities of matching indices should be less than or equal to the values determined for \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), respectively.
 

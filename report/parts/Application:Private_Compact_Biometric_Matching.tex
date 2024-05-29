@@ -62,6 +62,7 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
         \hline
         \textit{m} & \textit{l} & \textit{t} & \textit{l}\(\mu_{\text{same}}^m\) & \textit{l}\(\mu_{\text{diff}}^m\) & \textit{FNR} & \textit{FPR} \\
         \hline
+        1 & 217 & 33 & 50 & 16.8 & \(\leq\)1\% & \(2^{-14}\)\\
         1 & 637 & 118 & 146.5 & 49 & 1.0\% & \(2^{-74}\) \\
         %1 & 637 & 118 & 146.5 & 49 & 2^⁻6\% & \(2^{-74}\) \\
         2 & 961 & 34 & 50.8 & 5.7 & 1.0\% & \(2^{-106}\) \\
@@ -78,7 +79,6 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
         %7 & 568 315 & 9 & 19.4 & 0.0 & 2^⁻6\% &\(??\) \\
         8 & 2 841 573 & 11 & 22.3 & 0.0 & 1.0\% & \(2^{-\infty}\) \\
         %8 & 2 841 573 & 11 & 22.3 & 0.0 & 2^⁻6\% &\(??\) \\
-        1 & 217 & 33 & 50 & 16.8 & \(\leq\)1\% & \(2^{-14}\)\\
         \hline
     \end{tabular}
     \caption{Theoretical Parameterization Results for FNR and FPR Calculation, using $l$ Iterations of PreHash}
@@ -107,7 +107,7 @@ Using compression techniques implemented through \textit{PostHash}, specifically
 To experimentally determine the False Negative Rate (FNR) and the False Positive Rate (FPR) for various \((m, l)\) parameter configurations, the initial step is to compute the Hamming distance between \( Hash_{\text{key}}(X) \) and \( Hash_{\text{key}}(Y) \). The \( Hash_{\text{key}} \) of an extracted feature vector is generated using \( l \) iterations of \textit{PreHash}. We designed an algorithm that accepts a list of \( l \) keys (since each \textit{PreHash} iteration requires a new key) and the parameter \( m \), which indicates the number of indices each call to \textit{PreHash} should generate per key. For testing purposes, the \( l \) keys are simply integers from 0 to \( l-1 \), converted into a two-byte binary format. We then calculate the Hamming distance between the resulting hash values for pairs of images. The Hamming distance between \( Hash_{\text{key}}(X) \) and \( Hash_{\text{key}}(Y) \) is defined as the number of positions at which the corresponding iterations of \textit{PreHash} are different, as defined in Equation \ref{eq:HammingDist}. In this formula, the expression \( \# \{ i : PreHash_{\text{key}_i}(X) \neq PreHash_{\text{key}_i}(Y) \} \) counts the number of iterations \( i \) where the pre-hash values of \( X \) and \( Y \) differ. Each comparison results in a \(1\) if the iterations differ and a \(0\) if they are the same. Summing these comparison results gives the total number of differing positions, thereby computing the Hamming distance between the hash values of the iterations.
 
 
-Each experiment we conducted uses a different row from Table \ref{tab:P} or uses configuration \ref{config:2}. In each experiment, we generate \( l \) \textit{PreHash} iterations for all image pairs and then determine if two images, \(X\) and \(Y\), are a match, defined as \( l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) \geq t \). We perform two types of comparisons on our data:
+Each experiment we conducted uses a different row from Table \ref{tab:theoretical_parameterization_PostHash}. In each experiment, we generate \( l \) \textit{PreHash} iterations for all image pairs and then determine if two images, \(X\) and \(Y\), are a match, defined as \( l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) \geq t \). We perform two types of comparisons on our data:
 
 \begin{enumerate}
     \item \textbf{Same Person, Same Finger Comparisons}: This involves comparing different trials of images from the same person and the same finger. These comparisons should theoretically result in a match. If two such images do not match (i.e., \( l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) < t \)), this contributes to the FNR.
@@ -116,7 +116,7 @@ Each experiment we conducted uses a different row from Table \ref{tab:P} or uses
 
 To calculate the False Negative Rate (FNR), we count the instances where images that should match do not, and then compute the mean of these instances. Similarly, for the False Positive Rate (FPR), we count the instances where images that should not match do, and then compute the mean of these instances.
 
-For the experiments from Table \ref{tab:P}, we obtain the following results:
+For the experiments from Table \ref{tab:theoretical_parameterization_PostHash}, we obtain the following results:
 
 \begin{enumerate}
     \item \textbf{m = 1, l = 217 and t = 33}

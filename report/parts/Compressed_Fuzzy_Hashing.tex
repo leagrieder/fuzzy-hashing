@@ -79,12 +79,13 @@ where equality is reached for the optimal offset translations.
 
 The overall probability \( q \) of a matching hash index under random inputs \( X \) and \( Y \), reflecting their distribution, is denoted by:
 
-\[
-\label{eq:q_formula}
-q = \mu^m(1 - \frac{1}{D}) + \frac{1}{D}
-\]
+\begin{equation}
+    q = \mu^m\left(1 - \frac{1}{D}\right) + \frac{1}{D}
+    \label{eq:q_formula}
+\end{equation}
+    
 
-Based on the range of possible values for \(d\), we have computed several specific instances of \(q\):
+Based on the range of possible values for \(d\), we have computed several specific instances of \(q\) (theoretical values given by the above equation):
 \begin{table}[H]
     \centering
     \renewcommand{\arraystretch}{1.25}\begin{tabular}{|c|c|c|c|}
@@ -104,12 +105,13 @@ Based on the range of possible values for \(d\), we have computed several specif
 
 In the subsequent section, we explore enhancements to data compression techniques within our fuzzy hashing framework, emphasizing the use of various \(m\) and \(d\) parameter combinations. We initiate our analysis by conducting experiments to determine \(q_{same}^{obs}\), \(q_{diff}^{obs}\), and \(q_{indep}^{obs}\).
 
-Building on the foundational calculations for \(q_{\text{indep}}\), which we derived using Formula ~\ref{eq:q_formula} from the diverse \( \mu_{\text{indep}^{obs}} \) values previously identified in Section \ref{sec:Fuzzy Hashing}, our exploration extended to \(q_{\text{same}^{obs}}\) and \(q_{\text{diff}}^{obs}\). To evaluate these parameters, we initiated a series of experiments. Integral to this implementation and the following ones, is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table and all subsequent ones, is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
+Building on the foundational calculations for \(q_{\text{indep}}\), which we derived using Formula ~\ref{eq:q_formula} with \( \mu^{obs}_{\text{indep}} \) previously identified in Section \ref{sec:Fuzzy Hashing}, our exploration extended to \(q^{obs}_{\text{same}}\) and \(q^{obs}_\text{diff}\). To evaluate these parameters, we initiated a series of experiments. Integral to this implementation and the following ones, is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table and all subsequent ones, is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
 
-\[
+\begin{equation}
+    \text{\textit{PostHash}}(i) = \left\lfloor 2^d \left(1 - p\right)^i \right\rfloor
     \label{eq:GeomFormula}
-\text{\textit{PostHash}}(i) = \left\lfloor 2^d \left(1 - p\right)^i \right\rfloor
-\]
+\end{equation}
+    
  
 Leveraging the above formula, we have developed lookup tables that convert a single index (\(m = 1\)) into various bit representations (\(d=1\), \(d=2\), \(d=3\), and \(d=4\)). Each entry in these tables represents an integer, denoted by \(i\), and includes a corresponding hash output and the probability of that output occurring.
 

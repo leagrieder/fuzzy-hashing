@@ -76,7 +76,7 @@ The algorithm, preHash, illustrated in Figure~\ref{preHash Algorithm} generates 
 \subsection{Assessing Similarity of Biometric Inputs After PreHash Application}
 \label{sec:mu}
 
-After the finger images are processed through the pipeline described in Pipeline~\ref{pipeline_simon} to extract their feature vectors, and the \textit{preHash} algorithm is applied, the outcome is a set of indices that fall within the inclusive range \(\text{PRNG}[i] \in (0, n] \text{ for } i \in [0, m]\), effectively mapping each selected feature to a unique index within the feature vector's length.
+After the finger images are processed through the pipeline described in Figure~\ref{pipeline_simon} to extract their feature vectors, and the \textit{preHash} algorithm is applied, the outcome is a set of indices that fall within the inclusive range \(\text{PRNG}[i] \in (0, n] \text{ for } i \in [0, m]\), effectively mapping each selected feature to a unique index within the feature vector's length.
 
 In the context of a simplified scenario where the hash length parameter (\(m\)) is set to \(1\), implying the generation of a single-index hash, and assuming a randomly chosen key for the \textit{preHash} algorithm, along with \(k\) representing a uniformly distributed random index, the probability that the \textit{preHash} operation yields the same index for two different fixed inputs \(X\) and \(Y\) can be mathematically delineated as follows:
 
@@ -172,8 +172,8 @@ Simplifying with our values and notations we get:
 
 \begin{equation}
     \begin{aligned}
-    \mathbb{E}(f(A,B,C)) &\approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 \right. \\
-    & \left. + \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 + 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) \right. \\
+    \mathbb{E}(f(A,B,C)) &\approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 \right. \\[2mm]
+    & \left. + \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 + 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) \right. \\[2mm]
     & \left. + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]\\
     \end{aligned}
     \label{eq:mu_approximation}
@@ -192,9 +192,7 @@ Depending on the distribution of (\(X\), \(Y\)), it is denoted
     \mu = \mathbb{E}(f(A,B,C))
 \end{equation}\\
 
-In order to assess the theoretical approximations of $\mu_{same}$, $\mu_{diff}$, and the value of $\mu_{indep}$, we can easily replace the different values in Equation~\ref{eq:mu_approximation} with the corresponding values calculated in the previous sections. We demonstrate how this is done for \( \mu_{\text{indep}}^{obs} \).
-
-Once we have determined the value of \( p^{obs} \), \(\delta_{\text{indep}}^{obs}\), and their respective variances, we aim to calculate \(\mathbb{E}(f(A,B,C))\). This calculation is based on \(X\) and \(Y\) comprising \(2n\) independent random bits with an expected value of \(p\), without applying the optimal offset to obtain \(\bar{X}\) and \(\bar{Y}\). The expectation \(\mathbb{E}(f(A,B,C))\) is simplified because the covariances between the different random variables are zero in Equation~\ref{eq:mu_approximation}. For clarity, note that in the following equation, \(p\) corresponds to \(p^{obs}\), \(\delta\) corresponds to \(\delta_{\text{indep}}^{obs}\), \(\sigma_p\) corresponds to \(\sigma_p^{obs}\), and \(\sigma_\delta\) corresponds to \(\sigma_{\delta_{\text{indep}}}^{\text{obs}}\). This allows us to express \( \mu_{\text{indep}}^{obs} \) as follows:
+In order to assess the theoretical approximations of $\mu_{same}$, $\mu_{diff}$, and the value of $\mu_{indep}$, we can easily replace the different values in Equation~\ref{eq:mu_approximation} with the corresponding values calculated in the previous sections. We demonstrate how this is done for \( \mu_{\text{indep}}^{obs} \). Using \( p^{obs} \), \(\delta_{\text{indep}}^{obs}\), and their respective standard deviations, we aim to calculate \(\mathbb{E}(f(A,B,C))\). This calculation is based on \(X\) and \(Y\) comprising \(2n\) independent random bits with an expected value of \(p\), without applying the optimal offset to obtain \(\bar{X}\) and \(\bar{Y}\). The expectation \(\mathbb{E}(f(A,B,C))\) is simplified because the covariances between the different random variables are zero in Equation~\ref{eq:mu_approximation}. For clarity, note that in the following equation, \(p\) corresponds to \(p^{obs}\), \(\delta\) corresponds to \(\delta_{\text{indep}}^{obs}\), \(\sigma_p\) corresponds to \(\sigma_p^{obs}\), and \(\sigma_\delta\) corresponds to \(\sigma_{\delta_{\text{indep}}}^{\text{obs}}\). This allows us to express \( \mu_{\text{indep}}^{obs} \) as follows:
 
 \begin{equation}
     \begin{aligned}
@@ -205,17 +203,18 @@ Once we have determined the value of \( p^{obs} \), \(\delta_{\text{indep}}^{obs
     \label{eq:mu_indep}
 \end{equation}\\
 
-We proceed in a similar way to assess the theoretical values of $\mu_{same}$, $\mu_{diff}$, except in this case the covariances are not \(0\) and have been calculated by observing the correlation between the different random variables (\(A\), \(B\), \(C\)) in the experimental results obtained in Section~\ref{sec:bio_setting}. That is, we calculated the covariance matrix between the following random variables:
+We proceed in a similar way to assess the theoretical values of $\mu_{same}$ and $\mu_{diff}$, except in this case the covariances are not \(0\) and have been calculated by observing the correlation between the different random variables (\(A\), \(B\), \(C\)) in the experimental results obtained in Section~\ref{sec:bio_setting}. That is, we calculated the covariance matrix between the following random variables:
 \[
 A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = d_H(\bar{X}, \bar{Y})
 \]
 
 We obtained the following covariance matrix:
 
+INSERT COVARIANCE MATRIX BETWEEN A, B AND C
 
 
 
-The following theoretical approximations are provided:
+Finally, the following figure is provided:
 
 \begin{table}[H]
     \centering
@@ -226,7 +225,8 @@ The following theoretical approximations are provided:
         $18.8\%$ & $4.6\%$ & $1.45\%$\\
         \hline
     \end{tabular}
-\caption{Comparison of Distributions: $\mu_{same}$, $\mu_{diff}$, and $\mu_{indep}$}
+\caption{Comparison of Theoretical Approximations: $\mu_{same}$, $\mu_{diff}$, and $\mu_{indep}$}
+\label{tab:mu_approx}
 \end{table}
 
 Finally, it is observed that:
@@ -241,9 +241,9 @@ where equality is reached for the optimal offset translations.
 
 In Section~\ref{sec:mu}, we have laid out the mathematical framework that defines the upper bound \(\mu\). This probability is crucial in our fuzzy hashing approach, as it quantifies the matching likelihood after applying the optimal offset translations to the biometric captures. The application of these optimal offsets is an important preprocessing step before hashing the dataset, ensuring that the biometric features are accurately aligned for comparison.
 
-We will proceed to evaluate these theoretical results experimentally, leveraging the same comprehensive database that has been utilized in our prior research, as explained in Section~\ref{sec:delta}. This experimental assessment will enable us to substantiate the theoretical predictions of \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\).
+We will proceed to evaluate these theoretical approximations (Table~\ref{tab:mu_approx}) experimentally, leveraging the same comprehensive database that has been utilized in our prior research, as explained in Section~\ref{sec:delta}. This experimental assessment will enable us to substantiate the theoretical predictions of \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\).
 
-In the experimental setup, \(\mu_{\text{same}}\) refers to the probability that a hash function, when applied to two biometric captures of the same finger, will yield the same index. This is the measure of success in correctly identifying matches within the same individual's biometric captures. Conversely, \(\mu_{\text{diff}}\) denotes the probability that the same hash function will produce different indices for biometric captures from different individuals, representing the ability to distinguish between different people's biometric data. Lastly, \(\mu_{\text{indep}}\) indicates the probability of a match in the case where the biometric captures are completely independent, serving as a baseline for random chance.
+In the experimental setup, \(\mu^{obs}_{\text{same}}\) refers to the probability that a hash function, when applied to two biometric captures of the same finger, will yield the same index. This is the measure of success in correctly identifying matches within the same individual's biometric captures. Conversely, \(\mu^{obs}_{\text{diff}}\) denotes the probability that the same hash function will produce different indices for biometric captures from different individuals, representing the ability to distinguish between different people's biometric data. Lastly, \(\mu^{obs}_{\text{indep}}\) indicates the probability of a match in the case where the biometric captures are completely independent, serving as a baseline for random chance, which has already been calculated (see Equation~\ref{eq:mu_indep})
 
 For \(\mu_{\text{same}}^{obs}\) and \(\mu_{\text{diff}}^{obs}\), our experimental protocol adhered to the established optimal pipeline (refer to Figure~\ref{pipeline_simon}) to process the images in our dataset. Following the alignment of images through the computation of optimal offsets (referred to as Miura Matching), our fuzzy hashing function was applied to the extraced features. In alignment with the premise that \(\mu\) is computed under the condition where the hash function's output is a single index (\(m=1\)).
 
@@ -290,7 +290,6 @@ In our analysis of the dataset at hand featuring biometric data from 20 unique i
 
 
 \subsubsection{Experimental Derivation of the Probabilities \(\mu_{same}\) and \(\mu_{diff}\) Excluding the Post-Alignment Step}
-%It would be valuable to conduct an experimental investigation to determine the effect of omitting the Miura Matching step (finding optimal offsets before comparing images), which serves as a post-alignment phase in our pipeline, on the coincidence probabilities of the indices. Our interest in conducting this verification stems from the contents of Equation~\ref{eq:mu_leq}. Should some other non-optimal offsets be used, or should the Miura Matching phase be excluded entirely from our process, it is anticipated that the probabilities of matching indices should be less than or equal to the values determined for \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), respectively.
 
 We conducted an experimental investigation to determine the impact of omitting the Miura Marching step, which optimizes offsets before comparing images, on the coincidence probabilities of the indices. The Miura Matching step serves as a post-alignment phase in the current pipeline. According to Equation~\ref{eq:mu_leq}, excluding the Miura Matching phase should result in the probabilities of matching indices being less than or equal to the previous values determined for \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), respectively.
 Following the setup and conductin the experiment as described in the previous section, we obtained the following statistical analysis and probability computations:
@@ -324,5 +323,5 @@ Following the setup and conductin the experiment as described in the previous se
     \end{figure}
 \end{itemize}
 
-As expected, omitting the Miura Matching step resulted in \(\mu_{\text{same}} = 11.87\%\) and \(\mu_{\text{diff}} = 5.65\%\), which are indeed less than or equal to the previously determined values of \(\mu_{\text{same}} = 22.05\%\) and \(\mu_{\text{diff}} = 8.25\%\).
+As expected, omitting the Miura Matching step resulted in \(\mu_{\text{same}} = 11.87\%\) and \(\mu_{\text{diff}} = 5.65\%\), which are indeed less than the previously determined values of \(\mu_{\text{same}} = 22.05\%\) and \(\mu_{\text{diff}} = 8.25\%\).
 

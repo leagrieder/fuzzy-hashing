@@ -9,17 +9,11 @@ Choosing the right authentication mechanism requires careful consideration of va
 
 While advanced biometric systems typically rely on externally visible physical attributes, finger-vein authentication focuses on internal anatomical features, adding a unique layer of security, as they are less prone to replication or theft compared to external characteristics. Nevertheless, it is important to note that finger-vein authentication does not completely eliminate challenges. Despite its emphasis on internal features, attackers can exploit inherent structures in finger veins, such as common patterns among individuals and predictability in acquired data, which poses risks to the authentication process.
 
-%-> Mentionner que biometric should be combined with other security mechanisms?
-
 In light of these considerations, this project is dedicated to authentication using finger-vein features.
 This involves utilizing a specialized scanner equipped with two infrared cameras to capture finger veins from different angles.
 The registration process involves capturing an image, termed the model image, while the authentication process involves capturing another image, known as the probe image. These images undergo processing through a pipeline designed to extract and align the finger-vein patterns.
 The pipeline outputs a feature vector, which is essentially a bitstring, where 0's represent where there are no finger veins, and 1's show where veins are present.
 Following this process, the system evaluates whether the feature vector extracted from the probe image sufficiently matches the feature vector of the model image associated with the individual attempting authentication.
-
-%-> Si on a des question on peut contacter BioId!
-%This project focuses on authentication using finger-vein features, employing a scanner equipped with two infrared cameras to capture finger veins from distrinct angles. These cameras can perform local computations and communicate with a server infrastructure. Upon registration, the captured image referred to as the model image, is encrypted and transmitted to a secure database. During authentication, another image of the finger, known as the probe image, is acquired. Subsequently, either the model or the probe image is transmitted over the network and then realigned to enable computation of a similarity score between them. 
-
 
 \subsection{Extraction Pipeline}\label{sec:extraction-pipeline}
 
@@ -91,8 +85,6 @@ The process of our Fuzzy hashing algorithm, that we will detail in Section~\ref{
 
 Upon generating the fuzzy hash, the next step involves further compressing this hash to prepare it for storage. This compression is achieved through a function, postHash, which maps the tuple to a bitstring of a defined length. The output, essentially a compressed fuzzy hash, exhibits nearly uniform distribution when both the input data and the key are random, enhancing security and storage efficiency.
 
-To further bolster the security of the stored biometric data, our implementation incorporates \hyperref[def:Fuzzy_Extractors]{Fuzzy Extractors}. The fuzzy extractor framework ensures that even if the stored data (in the form of compressed fuzzy hashes) is compromised, reconstructing the original biometric data or compromising individual privacy remains computationally infeasible. This is accomplished by generating a secure, random key from the biometric input using a generation process (Gen) and allowing for the reliable reproduction of this key from an approximation of the original input using a reproduction process (Rep), without directly storing the biometric data itself.
+To further bolster the security of the stored biometric data, this system incorporates \hyperref[def:Fuzzy_Extractors]{Fuzzy Extractors}. The fuzzy extractor framework ensures that even if the stored data is compromised, reconstructing the original biometric data or compromising individual privacy remains computationally infeasible. This is accomplished by generating a secure, random key from the biometric input using a generation process (Gen) and allowing for the reliable reproduction of this key from an approximation of the original input using a reproduction process (Rep), without directly storing the biometric data itself.
 
-In essence, we aim to store the output of the fuzzy extractor alongside the compressed fuzzy hash. This method ensures that the stored biometric data is not only compact and efficiently stored but also securely obfuscated, requiring the correct biometric input for any form of decryption or matching to occur.
-
-%Explain how our report will be structured -> Explain how we needed to start by understanding and retesting (as asked from Serge) what had been done before us (the software part as we have already covered what has been done on a high level in the introduction). We also needed to assess again the efficiency of the algorithms developped by Simon and Burcu. Then, explain that we will start by going through the theoretical concepts that we need to understand in order to implement everything (sections 1-5 from fuzzyhash). Then we will move onto the actual software implementation, 1:N matching (etc...) -> on doit update ceci à la fin et expliquer ce qu'on a actually réussi à faire
+In essence, we aim to store the output of the fuzzy extractor, which includes the reproducible cryptographic key and the helper data, instead of the raw biometric data or its direct hash. This method ensures that the stored biometric data is not only compact and efficiently stored but also securely obfuscated, requiring the correct biometric input for any form of decryption or matching to occur.

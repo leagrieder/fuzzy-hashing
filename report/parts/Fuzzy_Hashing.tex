@@ -208,11 +208,29 @@ We proceed in a similar way to assess the theoretical values of $\mu_{same}$ and
 A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = d_H(\bar{X}, \bar{Y})
 \]
 
-We obtained the following covariance matrix:
+We obtained the following covariance matrices from the experiments held to find \(\delta^{obs}_{diff}\) and \(\delta^{obs}_{same}\):
 
-INSERT COVARIANCE MATRIX BETWEEN A, B AND C
+Covariance Matrix for Same Distribution:
+\[
+\begin{array}{c|ccc}
+           & \text{A} & \text{B} & \text{C} \\
+\hline
+\text{A} & 0.000025 & 0.000022 & 0.000036 \\
+\text{B} & 0.000022 & 0.000025 & 0.000036 \\
+\text{C}  & 0.000036 & 0.000036 & 0.000106 \\
+\end{array}
+\]
 
-
+Covariance Matrix for Different Distribution:
+\[
+\begin{array}{c|ccc}
+           & \text{A} & \text{B} & \text{C} \\
+\hline
+\text{A} & 0.000025 & 0.000006 & 0.000026 \\
+\text{B} & 0.000006 & 0.000026 & 0.000027 \\
+\text{C}  & 0.000026 & 0.000027 & 0.000046 \\
+\end{array}
+\]\\
 
 Finally, the following figure is provided:
 
@@ -220,9 +238,9 @@ Finally, the following figure is provided:
     \centering
     \renewcommand{\arraystretch}{1.25}\begin{tabular}{|c|c|c|}
         \hline
-        $\mu_{same}$ & $\mu_{diff}$ & $\mu^{obs}_{indep}$\\
+        $\mu_{same}$ & $\mu_{diff}$ & $\mu_{indep}$\\
         \hline
-        $18.8\%$ & $4.6\%$ & $1.45\%$\\
+        $18.88\%$ & $4.69\%$ & $1.45\%$\\
         \hline
     \end{tabular}
 \caption{Comparison of Theoretical Approximations: $\mu_{same}$, $\mu_{diff}$, and $\mu_{indep}$}

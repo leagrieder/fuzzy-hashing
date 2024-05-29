@@ -179,10 +179,9 @@ The computation of \( \delta_{\text{indep}} \) is relatively straightforward, ha
 
 Next, the variance and the standard deviation of the normalized Hamming distance are given as:
 
+\[ ({\sigma^{\text{obs}}_{\delta_{indep}}})² = \mathbb{V}\left( \frac{d_H(X, Y)}{n} \right) = \frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n} \approx 1.23 \times 10^{-6} \]
 
-\[ ({\sigma^{\text{obs}}_{\delta_{indep}}})² = \mathbb{V}\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right) = \frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n} \approx 1.23 \times 10^{-6} \]
-
-\[ {\sigma^{\text{obs}}_{\delta_{indep}}} = \sqrt{\mathbb{E} \left[ \left( \frac{d_H(\bar{X}, \bar{Y})}{n} - \delta_{\text{indep}} \right)^2 \right]} = \sqrt{\frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n}} \approx 1.11 \times 10^{-3} \]\\
+\[ {\sigma^{\text{obs}}_{\delta_{indep}}} = \sqrt{\mathbb{E} \left[ \left( \frac{d_H(X, Y)}{n} - \delta_{\text{indep}} \right)^2 \right]} = \sqrt{\frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n}} \approx 1.11 \times 10^{-3} \]\\
 
 To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \), a meticulous procedure was executed on our dataset, which involves 20 unique individuals, each having multiple biometric captures. Below is an outline of the methodology applied:
 

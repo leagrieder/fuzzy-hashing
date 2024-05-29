@@ -268,33 +268,61 @@ For \(\mu_{\text{same}}^{obs}\) and \(\mu_{\text{diff}}^{obs}\), our experimenta
 
         \begin{figure}[H]
             \centering
-            \begin{minipage}[b]{0.48\linewidth}
+            \begin{subfigure}[b]{0.48\linewidth}
                 \centering
                 \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/mu_same.png}
                 \caption{Count of the number of matches for Same, Aligned Biometric Samples with Single Index PreHashing}
                 \label{mu_same}
-            \end{minipage}
+            \end{subfigure}
             \hfill
-            \begin{minipage}[b]{0.48\linewidth}
+            \begin{subfigure}[b]{0.48\linewidth}
                 \centering
                 \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/mu_diff.png}
                 \caption{Count of the number of matches for Different, Aligned Biometric Samples with Single Index PreHashing}
                 \label{mu_diff}
-            \end{minipage}
+            \end{subfigure}
+            \caption{Comparison of match counts for Same and Different Aligned Biometric Samples}
         \end{figure}
-        
-        
-
     \end{itemize}
 \end{enumerate}
 
 In our analysis of the dataset at hand featuring biometric data from 20 unique individuals, we have quantified the performance of the preHash function in distinguishing between identical and different biometric subjects. Specifically, when evaluating samples from the same individual, the probability that the preHash function will produce the same index is approximately \(22.05\%\). Conversely, when the function is applied to samples from different individuals, the probability of a match in the indices drops to roughly \(8.25\%\). This indicates that the likelihood of mistakenly identifying different individuals as the same is about three times lower than correctly matching samples from the same individual, demonstrating the preHash function's relative efficacy in biometric differentiation within this specific dataset.
 
-It would be valuable to conduct an experimental investigation to determine the effect of omitting the Miura Matching step (finding optimal offsets before comparing images), which serves as a post-alignment phase in our pipeline, on the coincidence probabilities of the indices. Our interest in conducting this verification stems from the contents of Equation~\ref{eq:mu_leq}. Should some other non-optimal offsets be used, or should the Miura Matching phase be excluded entirely from our process, it is anticipated that the probabilities of matching indices should be less than or equal to the values determined for \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), respectively.
 
-% A faire cette experience!!! Juste enlever le miura matching complètement et observer mu_same et mu_diff
+\subsubsection{Experimental Derivation of the Probabilities \(\mu_{same}\) and \(\mu_{diff}\) Excluding the Post-Alignment Step}
+%It would be valuable to conduct an experimental investigation to determine the effect of omitting the Miura Matching step (finding optimal offsets before comparing images), which serves as a post-alignment phase in our pipeline, on the coincidence probabilities of the indices. Our interest in conducting this verification stems from the contents of Equation~\ref{eq:mu_leq}. Should some other non-optimal offsets be used, or should the Miura Matching phase be excluded entirely from our process, it is anticipated that the probabilities of matching indices should be less than or equal to the values determined for \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), respectively.
+
+We conducted an experimental investigation to determine the impact of omitting the Miura Marching step, which optimizes offsets before comparing images, on the coincidence probabilities of the indices. The Miura Matching step serves as a post-alignment phase in the current pipeline. According to Equation~\ref{eq:mu_leq}, excluding the Miura Matching phase should result in the probabilities of matching indices being less than or equal to the previous values determined for \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), respectively.
+Following the setup and conductin the experiment as described in the previous section, we obtained the following statistical analysis and probability computations:
 
 
+\begin{itemize}
+    \item \textbf{\(\mu_{\text{same}}^{obs}\)}: 
+    
+    \[ \mu_{\text{same}}^{obs} \approx 0.11871 = 11.87\%\]
+    
+    \item \textbf{\(\mu_{\text{diff}}^{obs}\)}:
+    
+    \[ \mu_{\text{diff}}^{obs} \approx 0.05651 = 5.65\% \]
 
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{0.48\linewidth}
+            \centering
+            \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/mu_same_without_postAlignment.png}
+            \caption{Count of the number of matches for Same, Non-Aligned Biometric Samples with Single Index PreHashing}
+            \label{mu_same_without_postAlignement}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.48\linewidth}
+            \centering
+            \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/mu_diff_without_postAlignment.png}
+            \caption{Count of the number of matches for Different, Non-Aligned Biometric Samples with Single Index PreHashing}
+            \label{mu_diff_without_postAlignement}
+        \end{minipage}
+        \caption{Comparison of match counts for Same and Different Non-Aligned Biometric Samples}
+    \end{figure}
+\end{itemize}
 
+As expected, omitting the Miura Matching step resulted in \(\mu_{\text{same}} = 11.87\%\) and \(\mu_{\text{diff}} = 5.65\%\), which are indeed less than or equal to the previously determined values of \(\mu_{\text{same}} = 22.05\%\) and \(\mu_{\text{diff}} = 8.25\%\).
 

@@ -80,25 +80,26 @@ The probability of the \(i\)-th pixel of two captures not being the same after a
     \end{aligned}
 \end{equation}
 
-Distinguishing between the types of distributions associated with the two captures is crucial. When both captures originate from the same biometric subject, it is referred to as \(\delta_{\text{same}}\). Conversely, if the captures are from different subjects, it is labeled as \(\delta_{\text{diff}}\). Additionally, when \(\bar{X}\) and \(\bar{Y}\) consist of \(2n\) independent random bits with an expected value of \(p\) and no optimal offset is applied, it is classified as \(\delta_{\text{indep}}\). In this scenario, \(\delta_{\text{indep}}^{\text{obs}} = 2p(1-p) = 6.36\%\). As developed in Section~\ref{sec:delta}, the experimental results produce the following figures:
+
+Distinguishing between the types of distributions associated with the two captures is crucial. When both captures originate from the same biometric subject, it is referred to as \(\delta_{\text{same}}\). Conversely, if the captures are from different subjects, it is labeled as \(\delta_{\text{diff}}\). Additionally, when \(\bar{X}\) and \(\bar{Y}\) consist of \(2n\) independent random bits with an expected value of \(p\) and no optimal offset is applied (so \(\bar{X}\) =  \(X\) and \(Y\) = \(\bar{Y}\)), it is classified as \(\delta_{\text{indep}}\). In this scenario, \(\delta_{\text{indep}}^{\text{obs}} = 2p^{obs}(1-p^{obs}) = 6.36\%\). As we will explain in Section~\ref{sec:delta}, the experimental results that were conducted produce the following figures:
 
 \begin{table}[H]
     \centering
     \renewcommand{\arraystretch}{1.25}
     \begin{tabular}{|c|c|c|c|}
         \hline
-        & \text{\(\delta^{\text{obs}}\)} & \text{\(({\sigma_{\delta}}^{\text{obs}})²\)} & \text{\(\sigma_{\delta}^{\text{obs}}\)} \\
+        & \text{\(\delta^{\text{obs}}\)} & \text{\(({\sigma^{\text{obs}}_{\delta}})²\)} & \text{\(\sigma_{\delta}^{\text{obs}}\)} \\
         \hline
-        \text{Same-Finger Distribution} & 4.55\% & \(1.06 \times 10^{-4}\) & \(1.03 \times 10^{-2}\) \\
+        \text{Same Biometric Subjects} & 4.55\% & \(1.06 \times 10^{-4}\) & \(1.03 \times 10^{-2}\) \\
         \hline
-        \text{Different-Finger Distribution} & 5.99\% & \(4.58 \times 10^{-5}\) & \(6.76 \times 10^{-3}\) \\
+        \text{Different Biometric Subjects} & 5.99\% & \(4.58 \times 10^{-5}\) & \(6.76 \times 10^{-3}\) \\
         \hline
     \end{tabular}
-    \caption{Comparison of Distributions: Mean, Variance, and Standard Deviation of \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\) when both captures originate from the same finger and from different fingers}
+    \caption{Comparison of Distributions: Mean, Variance, and Standard Deviation of the random variable \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\) when both captures originate from the same and from different biometric subjects}
 \end{table}
 
 
-Utilizing \(p\) (\ref{eq:p}) and $\delta$ (\ref{eq:delta}), the joint distribution for (\(\bar{X}_j\), \(\bar{Y}_j\)) across \(j\) random instances is derived:
+Utilizing the formulas for \(p\) (\ref{eq:p}) and $\delta$ (\ref{eq:delta}), the joint distribution for (\(\bar{X}_j\), \(\bar{Y}_j\)) across \(j\) random instances is derived:
 
 \begin{table}[H]
     \centering
@@ -118,9 +119,9 @@ Utilizing \(p\) (\ref{eq:p}) and $\delta$ (\ref{eq:delta}), the joint distributi
 
 \subsection{Experimental Derivation of the Probability \(p\)}
 
-In order to derive the probability that a distributed random pixel is a vein, \(p\) (\ref{eq:p}), a dataset of 20 unique individuals was utilized. Each individual contributed images of both right and left index/middle fingers, with 5 trials per finger, captured using 2 different cameras. This methodology resulted in a comprehensive dataset of 800 images. Following the approach in Section~\ref{sec:extraction-pipeline}, Simon's optimal pipeline was implemented to extract the feature vectors from each image in the dataset (refer to Figure~\ref{pipeline_simon}). Subsequently, statistical analysis was performed on these feature vectors to gain insights into vein patterns, building on the preliminary work by Burcu. It's important to note that the calculation of the probability \(p\) does not take into account any postalignment method, like Miura Matching, even though the code might seem like it does.
+In order to derive the probability that a distributed random pixel is a vein (\(p\)), a dataset of 20 unique individuals was utilized. Each individual contributed images of both right and left index/middle fingers, with 5 trials per finger, captured using 2 different cameras. This methodology resulted in a comprehensive dataset of 800 images. Following the approach in Section~\ref{sec:extraction-pipeline}, Simon's optimal pipeline was implemented to extract the feature vectors from each image in the dataset (refer to Figure~\ref{pipeline_simon}). Subsequently, statistical analysis was performed on these feature vectors to gain insights into vein patterns, building on the preliminary work by Burcu. It's important to note that the calculation of the probability \(p\) does not take into account any postalignment method yet.
 
-We have carried out this analysis by implementing an algorithm which processes the dataset's feature vectors, performing two main functions:
+In order to derive the mean of \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\), \(p\), we have implemented an algorithm which processes the dataset's feature vectors, performing two main functions:
 \begin{enumerate}
     \item For each pixel position, it updates a \textit{veins[i]} array, which accumulates detections of veins across all images for each camera \(i={1,2}\).
     \item It maintains a count of the number of images analyzed per camera \(i={1,2}\) in a \textit{image\_count[i]} array.
@@ -154,7 +155,6 @@ Following the processing of all feature vectors, the algorithm computes the prob
         \caption{Aggregate Vein Pixel Distribution Analysis: Combined Histogram and Gaussian Fit from Both Cameras \(X_i \sim \mathcal{N}(3171.16, 204935.79)\)}
         \label{distribution_veins_bothcams}
     \end{figure}
-
 \end{enumerate}
 
 Concluding the analysis of the vein pixel distribution across different camera captures and their aggregate dataset, the average probability \(p\) that a given pixel corresponds to a vein was computed. This involved summing up all vein-identifying pixels within the datasets for Camera 1, Camera 2, and the combined dataset. Subsequently, this sum was divided by the total number of pixels processed, multiplying the count of images by the total pixels per image, to ascertain the average likelihood \(p\) that any randomly selected pixel is part of a vein pattern.
@@ -165,7 +165,7 @@ The findings from this analysis revealed the following probabilities:
 
     \item For Camera 2, the probability \(p^{obs} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) was slightly lower at \(0.032\), translating to a \(3.15\)\% chance for vein representation in its images.
 
-    \item When considering the datasets from Both Cameras combined, the probability \(p^{obs} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) averaged out to \(0.0329\), suggesting a \(3.29\)\% likelihood of a pixel depicting a vein across the entire dataset. Moreover, the variance (\( (\sigma^{obs}_p)² \)) and the standard deviation (\( \sigma_p \)) of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) provide insights into the the random variable's spread and consistency. The observed variance is low at approximately \( 2.20 \times 10^{-5} \), indicating minimal fluctuation in the random variables' values among different feature vectors. This suggests that the feature extraction method is highly reliable and consistent across different images. Furthermore, the standard deviation, calculated as approximately \( 4.69 \times 10^{-3} \), reinforces the idea of minimal dispersion around the mean probability (\(p\)) of detecting a vein. 
+    \item When considering the datasets from Both Cameras combined, the probability \(p^{obs} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) averaged out to \(0.0329\), suggesting a \(3.29\)\% likelihood of a pixel depicting a vein across the entire dataset. Moreover, the variance (\( (\sigma^{obs}_p)² \)) and the standard deviation (\( \sigma^{obs}_p \)) of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) provide insights into the the random variable's spread and consistency. The observed variance is low, at approximately \( 2.20 \times 10^{-5} \), indicating minimal fluctuation in the random variables' values among different feature vectors. This suggests that the feature extraction method is highly reliable and consistent across different images. Furthermore, the standard deviation, calculated as approximately \( 4.69 \times 10^{-3} \), reinforces the idea of minimal dispersion around the mean probability (\(p\)) of detecting a vein. 
     
 \end{enumerate}
 

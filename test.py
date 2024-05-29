@@ -20,17 +20,17 @@ formula = term1 + term2
 # Substitute the values (initially all set to 0)
 values = {
     p: 0.0329,
-    delta: 0.0455,
+    delta: 0.0636,
     sigma_p_obs: 0.00469,
-    sigma_delta_obs: 0.0103,
-    Cov_AB: 181641,
-    Cov_AC: 5.4659,
-    Cov_BC: 5.5889
+    sigma_delta_obs: 0.00111,
+    Cov_AB: 0,
+    Cov_AC: 0,
+    Cov_BC: 0
 }
 
 # Evaluate the formula with the given values
 result = formula.evalf(subs=values)
 
-print("Result with initial values:", result)
+print("Result:", result)
 
 # To use this script, replace the values in the dictionary with the actual values you have.

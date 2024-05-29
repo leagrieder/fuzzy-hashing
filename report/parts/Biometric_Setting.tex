@@ -24,12 +24,12 @@ In the case where \(i\) is a uniformly distributed random index and \(X\) is ran
 \end{equation}
 
 \begin{equation} \label{eq:proba2}
-    \sigma^{\text{obs}} = \sqrt{\mathbb{E} \left[ \left( \frac{\text{HW}(X)}{n} - p^{\text{obs}} \right)^2 \right]} \approx 4.69 \times 10^{-3}
+    \sigma_{p}^{\text{obs}} = \sqrt{\mathbb{E} \left[ \left( \frac{\text{HW}(X)}{n} - p^{\text{obs}} \right)^2 \right]} \approx 4.69 \times 10^{-3}
 \end{equation}
 
 
 \begin{equation} \label{eq:proba3}
-    (\sigma^{\text{obs}})² = \mathbb{V}\left( \frac{\text{HW}(X)}{n} \right)  \approx 2.20 \times 10^{-5}
+    (\sigma_{p}^{\text{obs}})² = \mathbb{V}\left( \frac{\text{HW}(X)}{n} \right)  \approx 2.20 \times 10^{-5}
 \end{equation}
 
 where \( \sigma \) and \( \sigma^2 \) represent the standard deviation and variance of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) respectively.
@@ -175,14 +175,14 @@ To assess the probability that the i-th pixel of two captures diverges after app
 
 The observed value of \( p \) is given, so we compute the mean as:
 
-\[ \delta_{\text{indep}} = 2p^{obs}(1 - p^{obs}) = 2 \times 0.0329 \times (1 - 0.0329) \approx 6.36\% \]
+\[ \delta^{obs}_{\text{indep}} = 2p^{obs}(1 - p^{obs}) = 2 \times 0.0329 \times (1 - 0.0329) \approx 6.36\% \]
 
 Next, to find the variance and the standard deviation of the normalized Hamming distance we have:
 
 
-\[ (\sigma_{\delta_{indep}})² = \mathbb{V}\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right) = \frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n} \approx 1.23 \times 10^{-6} \]
+\[ ({\sigma^{\text{obs}}_{\delta_{indep}}})² = \mathbb{V}\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right) = \frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n} \approx 1.23 \times 10^{-6} \]
 
-\[ \sigma_{\delta_{indep}} = \sqrt{\mathbb{E} \left[ \left( \frac{d_H(\bar{X}, \bar{Y})}{n} - \delta_{\text{indep}} \right)^2 \right]} = \sqrt{\frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n}} \approx 1.11 \times 10^{-3} \]\\
+\[ {\sigma^{\text{obs}}_{\delta_{indep}}} = \sqrt{\mathbb{E} \left[ \left( \frac{d_H(\bar{X}, \bar{Y})}{n} - \delta_{\text{indep}} \right)^2 \right]} = \sqrt{\frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n}} \approx 1.11 \times 10^{-3} \]\\
 
 To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \), a meticulous procedure was executed on our dataset, which involves 20 unique individuals, each having multiple biometric captures. Below is an outline of the methodology applied:
 

@@ -113,9 +113,9 @@ The core of this approximation revolves around the expectation formula, which in
 To achieve a more accurate approximation of the expected value of equation \ref{eq:preHash2}, we define the following parameters and employ a Taylor series expansion of the function \(f(A,B,C) = \frac{A + B - C}{A + B + C}\) around the point \((p, p, \delta)\). This method allows us to incorporate not only the means but also the variances and covariances of the variables involved.
 
 \[
-A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = d_H(\bar{X}, \bar{Y})
+A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = \frac{d_H(\bar{X}, \bar{Y})}{n}
 \]
-where \(HW(\cdot)\) denotes the Hamming weight and \(d_H(\cdot, \cdot)\) represents the Hamming distance. Given these definitions, we know the expected values and variances from Section~\ref{sec:bio_setting} :
+where \(HW(\cdot)\) denotes the Hamming weight and \(d_H(\cdot, \cdot)\) represents the normalized Hamming distance. Given these definitions, we know the expected values and variances from Section~\ref{sec:bio_setting} :
 \[
     \mathbb{E}(A) = \mathbb{E}(B) = p^\text{obs}, \quad \mathbb{E}(C) = \delta^\text{obs}, \quad \mathbb{V}(A) = \mathbb{V}(B) = ({\sigma^\text{obs}_p})^2, \quad \mathbb{V}(C) = ({\sigma^\text{obs}_\delta})^2
 \]
@@ -205,7 +205,7 @@ In order to assess the theoretical approximations of $\mu_{same}$, $\mu_{diff}$,
 
 We proceed in a similar way to assess the theoretical values of $\mu_{same}$ and $\mu_{diff}$, except in this case the covariances are not \(0\) and have been calculated by observing the correlation between the different random variables (\(A\), \(B\), \(C\)) in the experimental results obtained in Section~\ref{sec:bio_setting}. That is, we calculated the covariance matrix between the following random variables:
 \[
-A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = d_H(\bar{X}, \bar{Y})
+A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = \frac{d_H(\bar{X}, \bar{Y})}{n}
 \]
 
 We obtained the following covariance matrices from the experiments held to find \(\delta^{obs}_{diff}\) and \(\delta^{obs}_{same}\):
@@ -315,11 +315,11 @@ Following the setup and conductin the experiment as described in the previous se
 
 
 \begin{itemize}
-    \item \textbf{\(\mu_{\text{same}}^{obs}\)}: 
+    \item \text{\(\mu_{\text{same}}^{obs}\)}: 
     
     \[ \mu_{\text{same}}^{obs} \approx 0.11871 = 11.87\%\]
     
-    \item \textbf{\(\mu_{\text{diff}}^{obs}\)}:
+    \item \text{\(\mu_{\text{diff}}^{obs}\)}:
     
     \[ \mu_{\text{diff}}^{obs} \approx 0.05651 = 5.65\% \]
 

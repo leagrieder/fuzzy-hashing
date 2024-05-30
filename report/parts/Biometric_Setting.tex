@@ -11,11 +11,11 @@ We begin by delving into the representation of the biometric data. Finger images
 
 In the biometric context, each finger serves as a biometric subject, with a corresponding biometric capture represented as a bitstring \(X\) of length \(n\). This bitstring encapsulates the specific vein pixel information extracted from the finger image, while the biometric template serves as a reference model derived from these images. 
 
-Each of the \(n\) bits of the biometric capture is designated as \(X_1, \ldots, X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. We define the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\), as the Hamming Weight of a feature vector\footnote{The terms "feature vector" and "bitstring" are used interchangeably throughout this report to refer to the vein pixel information extracted from the finger image.} \(X\) divided by the total number of bits in the vector. We define the value \(p\) \footnote{Throughout this report, experimentally derived variables are denoted with the superscript "obs" (e.g., \(\text{var}^{\text{obs}}\)), while theoretical variables are presented without any superscript.} as the mean of this random variable.
+Each of the \(n\) bits of the biometric capture is designated as \(X_1, \ldots, X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. We define the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\), as the Hamming Weight of a feature vector\footnote{The terms "feature vector" and "bitstring" are used interchangeably throughout this report to refer to the vein pixel information extracted from the finger image.} \(X\) divided by the total number of bits in the vector. We define the value \(p\)\footnote{Throughout this report, experimentally derived variables are denoted with the superscript "obs" (e.g., \(\text{var}^{\text{obs}}\)), while theoretical variables are presented without any superscript.} as the mean of this random variable.
 
 \begin{equation} \label{eq:p}
     \begin{aligned}
-        p = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right) = Pr\left(X_i = 1\right)
+        p = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right) = Pr\left[X_i = 1\right]
     \end{aligned}
 \end{equation}
 
@@ -26,15 +26,15 @@ In the case where \(i\) is a uniformly distributed random index and \(X\) is ran
 \end{equation}
 
 \begin{equation} \label{eq:proba2}
-    \sigma_{p}^{\text{obs}} = \sqrt{\mathbb{E} \left[ \left( \frac{\text{HW}(X)}{n} - p^{\text{obs}} \right)^2 \right]} \approx 4.69 \times 10^{-3}
+    \sigma_{p}^{\text{obs}} \text{\footnotemark} = \sqrt{\mathbb{E} \left[ \left( \frac{\text{HW}(X)}{n} - p^{\text{obs}} \right)^2 \right]} \approx 4.69 \times 10^{-3}
 \end{equation}
-
+\footnotetext{In this context, \( \sigma_{p}^{\text{obs}} \) denotes the observed standard deviation, and \( (\sigma_{p}^{\text{obs}})^2 \) represents the observed variance of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\), which has a mean \(p\). These notations will be used consistently throughout our report. Note that \(p\) is the mean of the random variable, not the variable itself.}
 
 \begin{equation} \label{eq:proba3}
     (\sigma_{p}^{\text{obs}})² = \mathbb{V}\left( \frac{\text{HW}(X)}{n} \right)  \approx 2.20 \times 10^{-5}
 \end{equation}
 
-In this context, \( \sigma_{p}^{\text{obs}} \) represents the observed standard deviation, and \( (\sigma_{p}^{\text{obs}})^2 \) represents the observed variance of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\), which has a mean value of \(p\). These notations will be used consistently throughout our report. It's important to note that \(p\) is not the random variable itself but rather the mean of the random variable for which we are calculating the mean and standard deviation.\\
+%In this context, \( \sigma_{p}^{\text{obs}} \) represents the observed standard deviation, and \( (\sigma_{p}^{\text{obs}})^2 \) represents the observed variance of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\), which has a mean value of \(p\). These notations will be used consistently throughout our report. It's important to note that \(p\) is not the random variable itself but rather the mean of the random variable for which we are calculating the mean and standard deviation.\\
 
 In biometric authentication and identification, the uniqueness of each biometric capture is encoded in its bits. The objective revolves around discerning the similarity between two biometric captures to verify or identify two individuals. Therefore, the scoring mechansim plays a crucial role in quantatively determining the similarity between biometric captures. This similarity score holds significance in verifying the identity of an individual (authentication) or identifying potential matches in a database (identification). A higher score indicates a greater ressemblance between captures, while a lower score suggests less similarity. This scoring mechanism is indispensable for ensuring the accuracy and reliability of biometric systems. The score of (\(X\), \(Y\)) is computed as
 
@@ -206,7 +206,7 @@ To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \)
         \begin{figure}[H]
             \centering
             \includegraphics[width=0.7\linewidth]{latex-img/delta_same.png}
-            \caption{Frequency Distribution of Normalized Hamming Distances for Identical Biometric Samples with Alignment \(\delta_{same} \sim \mathcal{N}(0.045, 0.000106)\)}
+            \caption{Frequency Distribution of Normalized Hamming Distances for Identical Biometric Samples with Alignment \(\delta_{same} \sim \mathcal{N}(0.05, 1.06 \times 10^{-4})\)}
             \label{delta_same}
         \end{figure}
         
@@ -219,7 +219,7 @@ To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \)
         \begin{figure}[H]
             \centering
             \includegraphics[width=0.7\linewidth]{latex-img/delta_diff.png}
-            \caption{Frequency Distribution of Normalized Hamming Distances for Different Biometric Samples with Alignment \(\delta_{diff} \sim \mathcal{N}(0.0599, 0.0000458)\)}
+            \caption{Frequency Distribution of Normalized Hamming Distances for Different Biometric Samples with Alignment \(\delta_{diff} \sim \mathcal{N}(0.06, 4.58 \times 10^{-5})\)}
             \label{delta_diff}
         \end{figure}
     \end{itemize}

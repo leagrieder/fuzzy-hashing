@@ -13,6 +13,7 @@ In the biometric context, each finger serves as a biometric subject, with a corr
 
 Each of the \(n\) bits of the biometric capture is designated as \(X_1, \ldots, X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. We define the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\), as the Hamming Weight of a feature vector\footnote{The terms "feature vector" and "bitstring" are used interchangeably throughout this report to refer to the vein pixel information extracted from the finger image.} \(X\) divided by the total number of bits in the vector. We define the value \(p\)\footnote{Throughout this report, experimentally derived variables are denoted with the superscript "obs" (e.g., \(\text{var}^{\text{obs}}\)), while theoretical variables are presented without any superscript.} as the mean of this random variable.
 
+
 \begin{equation} \label{eq:p}
     \begin{aligned}
         p = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right) = Pr\left[X_i = 1\right]
@@ -81,7 +82,7 @@ The probability of the \(i\)-th pixel of two captures not being the same after a
 \end{equation}
 
 
-Distinguishing between the types of distributions associated with the two captures is crucial. When both captures originate from the same biometric subject, it is referred to as \(\delta_{\text{same}}\). Conversely, if the captures are from different subjects, it is labeled as \(\delta_{\text{diff}}\). Additionally, when \(\bar{X}\) and \(\bar{Y}\) consist of \(2n\) independent random bits with an expected value of \(p\) and no optimal offset is applied (so \(\bar{X}\) =  \(X\) and \(Y\) = \(\bar{Y}\)), it is classified as \(\delta_{\text{indep}}\). In this scenario, \(\delta_{\text{indep}}^{\text{obs}} = 2p^{obs}(1-p^{obs}) = 6.36\%\). As we will explain in Section~\ref{sec:delta}, the experimental results that were conducted produce the following figures:
+Distinguishing between the types of distributions associated with the two captures is crucial. When both captures originate from the same biometric subject, it is referred to as \(\delta_{\text{same}}\). Conversely, if the captures are from different subjects, it is labeled as \(\delta_{\text{diff}}\). Additionally, when \(\bar{X}\) and \(\bar{Y}\) consist of \(2n\) independent random bits with an expected value of \(p\) and no optimal offset is applied, it is classified as \(\delta_{\text{indep}}\). In this scenario, \(\delta_{\text{indep}}^{\text{obs}} = 2p^{obs}(1-p^{obs}) = 6.36\%\). As we will explain in Section~\ref{sec:delta}, the experimental results that were conducted produce the following figures:
 
 \begin{table}[H]
     \centering

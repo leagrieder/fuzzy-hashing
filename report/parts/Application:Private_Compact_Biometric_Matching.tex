@@ -62,23 +62,16 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
         \hline
         \textit{m} & \textit{l} & \textit{t} & \textit{l}\(\mu_{\text{same}}^m\) & \textit{l}\(\mu_{\text{diff}}^m\) & \textit{FNR} & \textit{FPR} \\
         \hline
-        1 & 217 & 33 & 50 & 16.8 & \(\leq\)1\% & \(2^{-14}\)\\
-        1 & 637 & 118 & 146.5 & 49 & 1.0\% & \(2^{-74}\) \\
+        1 & 217 & 32 & 47.84 & 17.9 & \(\leq\)1\% & \(2^{-11}\)\\
+        1 & 637 & 113 & 140.44 & 52.55 & 1.0\% & \(2^{-54}\) \\
         %1 & 637 & 118 & 146.5 & 49 & 2^⁻6\% & \(2^{-74}\) \\
-        2 & 961 & 34 & 50.8 & 5.7 & 1.0\% & \(2^{-106}\) \\
+        2 & 961 & 31 & 46.71 & 6.54 & 1.0\% & \(2^{-70}\) \\
         %2 & 961 & 34 & 50.8 & 5.7 & 2^⁻6\% & \(2^⁻106\) \\
-        3 & 2569 & 18 & 31.3 & 1.2 & 1.0\% &\(2^{-179}\) \\
+        3 & 2569 & 15 & 27.53 & 1.44 & 1.0\% &\(2^{-96}\) \\
         %3 & 2569 & 18 & 31.3 & 1.2 & 2^⁻6\% &\(2^{-179}\) \\
-        4 & 8481 & 12 & 23.7 & 0.3 & 1.0\% & \(2^{-377}\) \\
+        4 & 8481 & 10 & 20.04 & 0.39 & 1.0\% & \(2^{-174}\) \\
         %4 & 8481 & 12 & 23.7 & 0.3 & 2^⁻6\% &\(2^{-377}\) \\
-        5 & 32 999 & 11 & 21.2 & 0.1 & 1.0\% & \(2^{-967}\) \\
-        %5 & 32 999 & 11 & 21.2 & 0.1 & 2^⁻6\% &\(2^{-967}\) \\
-        6 & 140 090 & 10 & 20.7 & 0.0 & 1.0\% & \(2^{-\infty}\) \\
-        %6 & 140 090 & 10 & 20.7 & 0.0 & 2^⁻6\% &\(2^{-\infty}\) \\
-        7 & 568 315 & 9 & 19.4 & 0.0 & 1.0\% & \(2^{-\infty}\) \\
-        %7 & 568 315 & 9 & 19.4 & 0.0 & 2^⁻6\% &\(??\) \\
-        8 & 2 841 573 & 11 & 22.3 & 0.0 & 1.0\% & \(2^{-\infty}\) \\
-        %8 & 2 841 573 & 11 & 22.3 & 0.0 & 2^⁻6\% &\(??\) \\
+        5 & 32 999 & 8 & 17.19 & 0.13 & 1.0\% & \(2^{-360}\) \\
         \hline
     \end{tabular}
     \caption{Theoretical Parameterization Results for FNR and FPR Calculation, using $l$ Iterations of PreHash}
@@ -119,82 +112,38 @@ To calculate the False Negative Rate (FNR), we count the instances where images 
 For the experiments from Table \ref{tab:theoretical_parameterization_PostHash}, we obtain the following results:
 
 \begin{enumerate}
-    \item \textbf{m = 1, l = 217 and t = 33}
+    \item \textbf{m = 1, l = 217 and t = 32}
+        \begin{itemize}
+            \item $FNR = 18.91\%$
+            \item $FPR = 2^{-9}$
+        \end{itemize}
+    \item \textbf{m = 1, l = 637 and t = 113}
+        \begin{itemize}
+            \item $FNR = 31.75\%$
+            \item $FPR = 2^{-14}$ 
+        \end{itemize}
+    \item \textbf{m = 2, l = 961 and t = 31}
+        \begin{itemize}
+            \item  $FNR = 33.32\%$
+            \item $FPR = 2^{-14}$
+        \end{itemize}
+    \item \textbf{m = 3, l = 2569 and t = 15}
+        \begin{itemize}
+            \item $FNR = 33.45\%$
+            \item $FPR = 2^{-13}$ 
+        \end{itemize}
+    \item \textbf{m = 4, l = 8481 and t = 10}
         \begin{itemize}
             \item FPR: 
             \item FNR: 
         \end{itemize}
-    \item \textbf{m = 1, l = 637 and t = 118}
-        \begin{itemize}
-            \item FPR: 
-            \item FNR: 
-        \end{itemize}
-    \item \textbf{m = 2, l = 961 and t = 34}
-        \begin{itemize}
-            \item FPR: 
-            \item FNR: 
-        \end{itemize}
-    \item \textbf{m = 3, l = 2569 and t = 18}
-        \begin{itemize}
-            \item FPR: 
-            \item FNR: 
-        \end{itemize}
-    \item \textbf{m = 4, l = 8481 and t = 12}
-        \begin{itemize}
-            \item FPR: 
-            \item FNR: 
-        \end{itemize}
-    \item \textbf{m = 5, l = 32'999 and t = 11}
-        \begin{itemize}
-            \item FPR: 
-            \item FNR: 
-        \end{itemize}
-    \item \textbf{m = 6, l = 140'090 and t = 10}
-        \begin{itemize}
-            \item FPR: 
-            \item FNR: 
-            
-        \end{itemize}
-    \item \textbf{m = 7, l = 568'315 and t = 9}
-        \begin{itemize}
-            \item FPR: 
-            \item FNR: 
-        \end{itemize}
-    \item \textbf{m = 8, l = 2'841'573 and t = 11}
+    \item \textbf{m = 5, l = 32'999 and t = 8}
         \begin{itemize}
             \item FPR: 
             \item FNR: 
         \end{itemize}
 \end{enumerate}
 
-\textbf{Summary of the FNR and FPR results obtained, using $l$ iterations of PreHash}
-\begin{table}[htbp] 
-    \centering
-    \begin{tabular}{|c|c|c|c|c|c|c|}
-        \hline
-        \textit{m} & \textit{l} & \textit{t} & \textit{l}\(\mu_{\text{same}}^m\) & \textit{l}\(\mu_{\text{diff}}^m\) & \textit{FNR} & \textit{FPR} \\
-        \hline
-        1 & 637 & 118 & 146.5 & 49 & ?\% & ? \\
-        %1 & 637 & 118 & 146.5 & 49 & 2^⁻6\% & \(2^{-74}\) \\
-        2 & 961 & 34 & 50.8 & 5.7 & ?\% & ? \\
-        %2 & 961 & 34 & 50.8 & 5.7 & 2^⁻6\% & \(2^⁻106\) \\
-        3 & 2569 & 18 & 31.3 & 1.2 & ?\% & ? \\
-        %3 & 2569 & 18 & 31.3 & 1.2 & 2^⁻6\% &\(2^{-179}\) \\
-        4 & 8481 & 12 & 23.7 & 0.3 & ?\% & ? \\
-        %4 & 8481 & 12 & 23.7 & 0.3 & 2^⁻6\% &\(2^{-377}\) \\
-        5 & 32 999 & 11 & 21.2 & 0.1 & ?\% & ? \\
-        %5 & 32 999 & 11 & 21.2 & 0.1 & 2^⁻6\% &\(2^{-967}\) \\
-        6 & 140 090 & 10 & 20.7 & 0.0 & ?\% & ? \\
-        %6 & 140 090 & 10 & 20.7 & 0.0 & 2^⁻6\% &\(2^{-\infty}\) \\
-        7 & 568 315 & 9 & 19.4 & 0.0 & ?\% & ? \\
-        %7 & 568 315 & 9 & 19.4 & 0.0 & 2^⁻6\% &\(??\) \\
-        8 & 2 841 573 & 11 & 22.3 & 0.0 & ?\% & ? \\
-        %8 & 2 841 573 & 11 & 22.3 & 0.0 & 2^⁻6\% &\(??\) \\
-        \hline
-    \end{tabular}
-    \caption{Experimental Parameterization Results for FNR and FPR Calculation}
-    \label{tab:experimental_parameterization}
-\end{table}
 
 \subsection{Experimental Derivation of the FNR and FPR for different (\(m, l, d\)) Parameter Configurations with Compression}
 
@@ -219,19 +168,3 @@ After both images pass through this process, each iteration of each image is com
             \item FNR: 
         \end{itemize}
 \end{enumerate}
-
-\textbf{Summary of the FNR and FPR results obtained, using $l$ iterations of PostHash}
-\begin{table}[htbp] 
-    \centering
-    \begin{tabular}{|c|c|c|c|c|c|c|c|}
-        \hline
-        \textit{m} & \textit{d} & \textit{l} & \textit{t} & \textit{l}\(q_{\text{same}}^m\) & \textit{l}\(q_{\text{diff}}^m\) & \textit{FNR} & \textit{FPR} \\
-        \hline
-        1 & 4 & 1107 & 276 & 317.7 & 130.6 & 1.0\% & \(2^{-121}\) \\
-        1 & 4 & 347 & 76 & 99.6 & 40.9 & \(\leq\)1.0\% & \(2^{-14}\)\\
-        1 & 1 & 3597 & 957 & 1032.3 & 424.4 & \(\leq\)1.0\% & \(2^{-488}\)\\
-        \hline
-    \end{tabular}
-    \caption{Theoretical Parameterization Results for FNR and FPR Calculation, using $l$ Iterations of PostHash}
-    \label{tab:theoretical_parameterization_PostHash}
-\end{table}

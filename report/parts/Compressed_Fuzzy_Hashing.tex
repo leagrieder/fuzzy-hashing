@@ -59,7 +59,7 @@ Detailed Process of \textit{PostHash}:
     \caption{\textit{Subroutine} Algorithm}
     \label{Subroutine Algorithm}
     \Function{\text{Subroutine}}{$i$, $d$}
-    \State $p = 0.0329$
+    \State $p = 0.03514$
     \State $h_i = \lfloor 2^d (1-p)^{i} \rfloor$
     \State \Return{$h_i$}
     \EndFunction
@@ -120,9 +120,9 @@ Binary Hash Output Distribution Table (\(d=1\))
 \[
 \text{\textit{PostHash}}(i) = \left\{
     \begin{array}{lll}
-        \text{1}  & \text{if } 1 \leq i \leq 20 & (\text{Pr} = 48.78\%)
+        \text{1}  & \text{if } 1 \leq i \leq 19 & (\text{Pr} = 49.32\%)
         \\
-        \text{0}  & \text{if } 21 \leq i & (\text{Pr} = 51.22\%)
+        \text{0}  & \text{if } 20 \leq i & (\text{Pr} = 50.68\%)
         \\
     \end{array}
 \right.    
@@ -134,13 +134,13 @@ Quaternary Hash Output Distribution Table (\(d=2\)):
 \[
 \text{\textit{PostHash}}(i) = \left\{
     \begin{array}{lll}
-        \text{3}  & \text{if } 1 \leq i \leq 8 & (\text{Pr} = 23.48\%)
+        \text{3}  & \text{if } 1 \leq i \leq 8 & (\text{Pr} = 24.89\%)
         \\
-        \text{2}  & \text{if } 9 \leq i \leq 20 & (\text{Pr} = 25.3\%)
+        \text{2}  & \text{if } 9 \leq i \leq 19 & (\text{Pr} = 24.43\%)
         \\
-        \text{1}  & \text{if } 21 \leq i \leq 41 & (\text{Pr} = 25.85\%)
+        \text{1}  & \text{if } 20 \leq i \leq 38 & (\text{Pr} = 25\%)
         \\
-        \text{0}  & \text{if } 42 \leq i & (\text{Pr} = 25.37\%)
+        \text{0}  & \text{if } 39 \leq i & (\text{Pr} = 25.68\%)
         \\
     \end{array}
 \right.    
@@ -151,21 +151,21 @@ Octal Hash Output Distribution Table (\(d=3\)):
 \[
 \text{\textit{PostHash}}(i) = \left\{
     \begin{array}{lll}
-        \text{7}  & \text{if } 1 \leq i \leq 3 & (\text{Pr} = 9.55\%)
+        \text{7}  & \text{if } 1 \leq i \leq 3 & (\text{Pr} = 10.18\%)
         \\
-        \text{6}  & \text{if } 4 \leq i \leq 8 & (\text{Pr} = 13.93\%)
+        \text{6}  & \text{if } 4 \leq i \leq 8 & (\text{Pr} = 14.71\%)
         \\
-        \text{5}  & \text{if } 9 \leq i \leq 14 & (\text{Pr} = 13.92\%)
+        \text{5}  & \text{if } 9 \leq i \leq 13 & (\text{Pr} = 12.3\%)
         \\
-        \text{4}  & \text{if } 15 \leq i \leq 20 & (\text{Pr} = 11.39\%)
+        \text{4}  & \text{if } 14 \leq i \leq 19 & (\text{Pr} = 12.13\%)
         \\
-        \text{3}  & \text{if } 21 \leq i \leq 29 & (\text{Pr} = 13.32\%)
+        \text{3}  & \text{if } 20 \leq i \leq 27 & (\text{Pr} = 12.61\%)
         \\
-        \text{2}  & \text{if } 30 \leq i \leq 41 & (\text{Pr} = 12.53\%)
+        \text{2}  & \text{if } 28 \leq i \leq 38 & (\text{Pr} = 12.38\%)
         \\
-        \text{1}  & \text{if } 42 \leq i \leq 62 & (\text{Pr} = 12.8\%)
+        \text{1}  & \text{if } 39 \leq i \leq 58 & (\text{Pr} = 13.12\%)
         \\
-        \text{0}  & \text{if } 63 \leq i & (\text{Pr} = 12.57\%)
+        \text{0}  & \text{if } 59 \leq i & (\text{Pr} = 12.59\%)
         \\
     \end{array}
 \right.    
@@ -178,23 +178,23 @@ Hexadecimal Hash Output Distribution Table \(d=4\)
 \[
 \text{\textit{PostHash}}(i) = \left\{
 \begin{array}{lll}
-    \text{15} & \text{if } i = 1 & (\text{Pr} = 3.29\%), \\
-    \text{14} & \text{if } 2 \leq i \leq 3 & (\text{Pr} = 6.26\%) \\
-    \text{13} & \text{if } 4 \leq i \leq 6 & (\text{Pr} = 8.64\%) \\
-    \text{12} & \text{if } 7 \leq i \leq 8 & (\text{Pr} = 5.3\%) 
+    \text{15} & \text{if } i = 1 & (\text{Pr} = 3.51\%), \\
+    \text{14} & \text{if } 2 \leq i \leq 3 & (\text{Pr} = 6.66\%) \\
+    \text{13} & \text{if } 4 \leq i \leq 5 & (\text{Pr} = 6.2\%) \\
+    \text{12} & \text{if } 6 \leq i \leq 8 & (\text{Pr} = 8.51\%) 
     \\
-    \text{11} & \text{if } 9 \leq i \leq 11 & (\text{Pr} = 7.31\%) \\
-    \text{10} & \text{if } 12 \leq i \leq 14 & (\text{Pr} = 6.61\%) \\
-    \text{9} & \text{if } 15 \leq i \leq 17 & (\text{Pr} = 6\%) \\
-    \text{8} & \text{if } 18 \leq i \leq 20 & (\text{Pr} = 5.41\%) \\
-    \text{7} & \text{if } 21 \leq i \leq 24 & (\text{Pr} = 6.41\%) \\
-    \text{6} & \text{if } 25 \leq i \leq 29 & (\text{Pr} = 6.9\%) \\
-    \text{5} & \text{if } 30 \leq i \leq 34 & (\text{Pr} = 5.83\%) \\
-    \text{4} & \text{if } 35 \leq i \leq 41 & (\text{Pr} = 6.7\%) \\
-    \text{3} & \text{if } 42 \leq i \leq 50 & (\text{Pr} = 6.6\%) \\
-    \text{2} & \text{if } 51 \leq i \leq 62 & (\text{Pr} = 6.2\%) \\
-    \text{1} & \text{if } 63 \leq i \leq 82 & (\text{Pr} = 6.13\%) \\
-    \text{0} & \text{if } 83 \leq i \leq n & (\text{Pr} = 6.43\%)
+    \text{11} & \text{if } 9 \leq i \leq 10 & (\text{Pr} = 5.19\%) \\
+    \text{10} & \text{if } 11 \leq i \leq 13 & (\text{Pr} = 7.12\%) \\
+    \text{9} & \text{if } 14 \leq i \leq 16 & (\text{Pr} = 6.39\%) \\
+    \text{8} & \text{if } 17 \leq i \leq 19 & (\text{Pr} = 5.74\%) \\
+    \text{7} & \text{if } 20 \leq i \leq 23 & (\text{Pr} = 6.76\%) \\
+    \text{6} & \text{if } 24 \leq i \leq 27 & (\text{Pr} = 5.86\%) \\
+    \text{5} & \text{if } 28 \leq i \leq 32 & (\text{Pr} = 6.23\%) \\
+    \text{4} & \text{if } 33 \leq i \leq 38 & (\text{Pr} = 6.15\%) \\
+    \text{3} & \text{if } 39 \leq i \leq 46 & (\text{Pr} = 6.39\%) \\
+    \text{2} & \text{if } 47 \leq i \leq 58 & (\text{Pr} = 6.73\%) \\
+    \text{1} & \text{if } 59 \leq i \leq 77 & (\text{Pr} = 6.19\%) \\
+    \text{0} & \text{if } 78 \leq i \leq n & (\text{Pr} = 6.36\%)
 \end{array}
 \right.
 \]
@@ -209,7 +209,7 @@ In the context of compressed fuzzy hashing, domain scrambling aims to reorder th
     \item There is no known algorithm that can find an optimal solution to NP-complete problems in polynomial time for all general cases.
 \end{enumerate}
 
-Given the NP-completeness of the partition problem, programming an optimal solution for domain scrambling — which is akin to a continuous partitioning challenge — is impractical. Theoretically, while it is feasible to verify if a given distribution of indices across hash buckets is optimal, finding that distribution algorithmically cannot be guaranteed to be efficient for all possible cases. However, we did try to implement this algorithm and observe the results for the case where the hash depth is \(d=4\), resulting in \(D=16\) possible hash values. The program written is designed to distribute a sequence of integers (1 to 96'500) across predefined buckets (0 to 15) to achieve a target probability distribution based on our geometric decay model~\ref{eq:GeomFormula}. This process begins by mapping each integer to a bucket using a calculated index derived from the geometric formula, adjusted by a scaling factor. Initial bucket assignments aim to approximate a uniform distribution of probabilities. The program then iteratively adjusts these assignments: integers are moved between buckets to better align with the target probabilities, ensuring that the sum of probabilities within each bucket remains close to the desired uniform distribution. This adjustment process continues until the distribution of probabilities across all buckets falls within an acceptable error margin, or until no further beneficial adjustments can be made. The following lookup table illustrates the distribution of indices across each bucket, including the count of indices falling within each bucket and the range of indices encompassed by it.
+Given the NP-completeness of the partition problem, programming an optimal solution for domain scrambling — which is akin to a continuous partitioning challenge — is impractical. Theoretically, while it is feasible to verify if a given distribution of indices across hash buckets is optimal, finding that distribution algorithmically cannot be guaranteed to be efficient for all possible cases. However, we did try to implement this algorithm and observe the results for the case where the hash depth is \(d=4\), resulting in \(D=16\) possible hash values. The program written is designed to distribute a sequence of integers (1 to 90'240) across predefined buckets (0 to 15) to achieve a target probability distribution based on our geometric decay model~\ref{eq:GeomFormula}. This process begins by mapping each integer to a bucket using a calculated index derived from the geometric formula, adjusted by a scaling factor. Initial bucket assignments aim to approximate a uniform distribution of probabilities. The program then iteratively adjusts these assignments: integers are moved between buckets to better align with the target probabilities, ensuring that the sum of probabilities within each bucket remains close to the desired uniform distribution. This adjustment process continues until the distribution of probabilities across all buckets falls within an acceptable error margin, or until no further beneficial adjustments can be made. The following lookup table illustrates the distribution of indices across each bucket, including the count of indices falling within each bucket and the range of indices encompassed by it.
 
 
 
@@ -217,61 +217,29 @@ Given the NP-completeness of the partition problem, programming an optimal solut
 \[
 \text{Bucket Assignments} = \left\{
 \begin{array}{lll}
-    0 & \text{if } i \in [1, 96500] & (\text{Count} = 88216, \text{Pr} = 6.269\%), \\
-    1 & \text{if } i \in [2, 8287] & (\text{Count} = 2075, \text{Pr} = 6.274\%), \\
-    2 & \text{if } i \in [3, 6215] & (\text{Count} = 1216, \text{Pr} = 6.298\%), \\
-    3 & \text{if } i \in [4, 5003] & (\text{Count} = 864, \text{Pr} = 6.292\%), \\
-    4 & \text{if } i \in [5, 4143] & (\text{Count} = 671, \text{Pr} = 6.289\%), \\
-    5 & \text{if } i \in [6, 3476] & (\text{Count} = 549, \text{Pr} = 6.253\%), \\
-    6 & \text{if } i \in [7, 2931] & (\text{Count} = 465, \text{Pr} = 6.298\%), \\
-    7 & \text{if } i \in [8, 2471] & (\text{Count} = 405, \text{Pr} = 6.289\%), \\
-    8 & \text{if } i \in [9, 2071] & (\text{Count} = 358, \text{Pr} = 6.298\%), \\
-    9 & \text{if } i \in [10, 1719] & (\text{Count} = 321, \text{Pr} = 6.290\%), \\
-    10 & \text{if } i \in [11, 1404] & (\text{Count} = 291, \text{Pr} = 6.297\%), \\
-    11 & \text{if } i \in [12, 1120] & (\text{Count} = 269, \text{Pr} = 6.298\%), \\
-    12 & \text{if } i \in [13, 859] & (\text{Count} = 247, \text{Pr} = 6.231\%), \\
-    13 & \text{if } i \in [14, 620] & (\text{Count} = 230, \text{Pr} = 6.092\%), \\
-    14 & \text{if } i \in [15, 399] & (\text{Count} = 215, \text{Pr} = 5.981\%), \\
-    15 & \text{if } i \in [80, 192] & (\text{Count} = 108, \text{Pr} = 6.252\%)
+    0 & \text{if } i \in [1, 90240] & (\text{Count} = 82493, \text{Pr} = 6.297\%), \\
+    1 & \text{if } i \in [2, 7750] & (\text{Count} = 1941, \text{Pr} = 6.276\%), \\
+    2 & \text{if } i \in [3, 5812] & (\text{Count} = 1136, \text{Pr} = 6.264\%), \\
+    3 & \text{if } i \in [4, 4679] & (\text{Count} = 807, \text{Pr} = 6.204\%), \\
+    4 & \text{if } i \in [5, 3875] & (\text{Count} = 628, \text{Pr} = 6.294\%), \\
+    5 & \text{if } i \in [6, 3251] & (\text{Count} = 514, \text{Pr} = 6.284\%), \\
+    6 & \text{if } i \in [7, 2741] & (\text{Count} = 435, \text{Pr} = 6.237\%), \\
+    7 & \text{if } i \in [8, 2310] & (\text{Count} = 378, \text{Pr} = 6.295\%), \\
+    8 & \text{if } i \in [9, 1936] & (\text{Count} = 334, \text{Pr} = 6.298\%), \\
+    9 & \text{if } i \in [10, 1608] & (\text{Count} = 301, \text{Pr} = 6.292\%), \\
+    10 & \text{if } i \in [11, 1313] & (\text{Count} = 272, \text{Pr} = 6.214\%), \\
+    11 & \text{if } i \in [12, 1047] & (\text{Count} = 250, \text{Pr} = 6.293\%), \\
+    12 & \text{if } i \in [13, 804] & (\text{Count} = 232, \text{Pr} = 6.298\%), \\
+    13 & \text{if } i \in [14, 580] & (\text{Count} = 215, \text{Pr} = 6.127\%), \\
+    14 & \text{if } i \in [15, 373] & (\text{Count} = 201, \text{Pr} = 6.061\%), \\
+    15 & \text{if } i \in [76, 180] & (\text{Count} = 103, \text{Pr} = 6.267\%)
 \end{array}
 \right.
 \]
 
-The distribution of probabilities and counts across buckets demonstrates a commendable effort towards achieving uniformity. However, the variations observed, particularly in buckets \(13\) and \(14\) with their notably lower probabilities of \(5.981\%\) and \(6.092\), indicate potential areas for further optimization. To address this, we have decided to try implementing a close to optimal solution by manually scrambling the domain to achieve a desirable uniform distribution. This manual method involved:
+We can see that the distribution of probabilities and counts across buckets demonstrates a good effort towards achieving uniformity.
 
-\begin{itemize}
-    \item Assigning indices to buckets (hash values) initially based on heuristic insights and preliminary analysis to ensure a rough balance.
-    \item Iteratively adjusting the distribution by swapping indices between buckets to refine the balance, based on observed distributions and targeted uniformity.
-\end{itemize}
-
-This manual approach allowed us to control the distribution directly and ensure a quasi-even spread across hash outputs, which is crucial for maintaining the efficacy and reliability of the compressed fuzzy hashing system.
-
-\renewcommand{\arraystretch}{1.25}{
-\[
-\text{\textit{PostHash}}(i) = \left\{
-\begin{array}{lll}
-    15 & \text{if } i \in \{1\} \cup \{4\} & (\text{Pr} = 6.27\%), \\
-    14 & \text{if } i \in \{2, 3\} & (\text{Pr} = 6.26\%), \\
-    13 & \text{if } i \in \makecell[tl]{\{5, 6\} \cup \{53\}} & (\text{Pr} = 6.24\%), \\
-    12 & \text{if } i \in \makecell[tl]{\{7, 8\} \cup \{38\}} & (\text{Pr} = 6.25\%), \\
-    11 & \text{if } i \in \makecell[tl]{\{9, 10\} \cup \{29\}} & (\text{Pr} = 6.24\%), \\
-    10 & \text{if } i \in \makecell[tl]{\{12, 13\} \cup \{83\} \cup \{85, \ldots, 92\} \cup \{99\} \cup \{170\}} & (\text{Pr} = 6.24\%), \\
-    9  & \text{if } i \in \makecell[tl]{\{15, \ldots, 17\} \cup \{78\}} & (\text{Pr} = 6.23\%), \\
-    8  & \text{if } i \in \makecell[tl]{\{18, \ldots, 20\} \cup \{42\}} & (\text{Pr} = 6.24\%), \\
-    7  & \text{if } i \in \makecell[tl]{\{21, \ldots, 23\} \cup \{63, 64\} \cup \{71\} \cup \{100\} \cup \{102\}} & (\text{Pr} = 6.25\%), \\
-    6  & \text{if } i \in \makecell[tl]{\{25, \ldots, 28\} \cup \{61\} \cup \{84\}} & (\text{Pr} = 6.26\%), \\
-    5  & \text{if } i \in \makecell[tl]{\{30, \ldots, 34\} \cup \{62\}} & (\text{Pr} = 6.27\%), \\
-    4  & \text{if } i \in \makecell[tl]{\{35, \ldots, 37\} \cup \{39, \ldots, 41\} \cup \{57\}} & (\text{Pr} = 6.25\%), \\
-    3  & \text{if } i \in \makecell[tl]{\{43, \ldots, 50\} \cup \{59\}} & (\text{Pr} = 6.23\%), \\
-    2  & \text{if } i \in \makecell[tl]{\{11\} \cup \{51, 52\} \cup \{54, \ldots, 56\} \cup \{58\} \cup \{60\} \\ \cup \{98\}} & (\text{Pr} = 6.27\%), \\
-    1  & \text{if } i \in \makecell[tl]{\{24\} \cup \{65, \ldots, 70\} \cup \{72, \ldots, 77\} \\ \cup \{79, \ldots, 82\}} & (\text{Pr} = 6.27\%), \\
-    0  & \text{if } i \in \makecell[tl]{\{14\} \cup \{93, \ldots, 97\} \cup \{101\} \cup \{103, \ldots, 169\} \\ \cup \{171, \ldots, n\}} & (\text{Pr} = 6.24\%)
-\end{array}
-\right.
-\]
-}
-
-Utilizing these derived lookup tables, alongside our established PreHash function(\(~\ref{preHash Algorithm}\)) and the newly implemented PostHash function (\(~\ref{postHash Algorithm}\)), we are equipped to conduct experiments on our dataset to assess \(q_{same}\) and \(q_{diff}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the PreHash function directly into the PostHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the PreHash and PostHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
+Utilizing these derived lookup tables, alongside our established PreHash function(~\ref{preHash Algorithm}) and the newly implemented PostHash function(~\ref{postHash Algorithm}), we are equipped to conduct experiments on our dataset to assess \(q_{same}\) and \(q_{diff}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the PreHash function directly into the PostHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the PreHash and PostHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
 
 \begin{enumerate}
     \item \text{\(d = 1\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and binary PostHash indices (\(d=1\)).

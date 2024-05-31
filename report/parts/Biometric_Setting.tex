@@ -266,21 +266,19 @@ In Table \ref{tab:joint_distribution}, we explain each entry:
 Utilizing \(\delta_{same}^{obs}\), \(\delta_{diff}^{obs}\) and \(\delta_{indep}^{obs}\), we can determine the corresponding probabilities presented in Table \ref{tab:joint_distribution}. This gives us the following figures:
 
 
-% je crois pas en faite qu'on devrait avoir ca pour delta_indep... parce que delta_indep c'est quand X et Y n'ton pas de optimal offsets appliqueé Donc ca veut dire que X et Y sont indep et donc p(Xi = 0, Yi = 0) = P(Xi = 0)P(Yi = 0) = p²
-PAS JUSTE?????!!!!
 \begin{table}[H]
     \centering
     \renewcommand{\arraystretch}{1.5}
     \begin{tabular}{|c|c|c|}
         \hline
-        & $\bar{Y}_i = 0$ & $\bar{Y}_i = 1$\\
+        & $Y_i = 0$ & $Y_i = 1$\\
         \hline
-        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{indep}^{obs}}{2} = 93.5\% $ & $\frac{\delta_{indep}^{obs}}{2} = 3.2\%$\\
+        $X_i = 0$ & $(1-p)² = 93.1\% $ & $p(1-p) = 3.39\%$\\
         \hline
-        $\bar{X}_i = 1$ & $\frac{\delta_{indep}^{obs}}{2} = 3.2\% $ & $p - \frac{\delta_{indep}^{obs}}{2} = 0.1\%$\\
+        $X_i = 1$ & $p(1-p) = 3.39\% $ & $p² = 0.12\%$\\
         \hline
     \end{tabular}
-    \caption{Joint Distribution of ($\bar{X}_j$, $\bar{Y}_j$) for \(X\) and \(Y\) made up of \(2n\) independent random bits of expected value \(p\)}
+    \caption{Joint Distribution of ($X_j$, $Y_j$) for \(X\) and \(Y\) made up of \(2n\) independent random bits of expected value \(p\)}
     \label{tab:joint_distribution_deltaindep}
 \end{table}
 

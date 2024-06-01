@@ -36,8 +36,6 @@ The mean (\(p\)), along with the variance (\(\sigma²\)) and standard deviation 
     (\sigma_{p}^{\text{obs}})² = \mathbb{V}\left( \frac{\text{HW}(X)}{n} \right)  \approx 2.52 \times 10^{-5}
 \end{equation}
 
-%In this context, \( \sigma_{p}^{\text{obs}} \) represents the observed standard deviation, and \( (\sigma_{p}^{\text{obs}})^2 \) represents the observed variance of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\), which has a mean value of \(p\). These notations will be used consistently throughout our report. It's important to note that \(p\) is not the random variable itself but rather the mean of the random variable for which we are calculating the mean and standard deviation.\\
-
 In biometric authentication and identification, the uniqueness of each biometric capture is encoded in its bits. The objective revolves around discerning the similarity between two biometric captures to verify or identify two individuals. Therefore, the scoring mechansim plays a crucial role in quantatively determining the similarity between biometric captures. This similarity score holds significance in verifying the identity of an individual (authentication) or identifying potential matches in a database (identification). A higher score indicates a greater ressemblance between captures, while a lower score suggests less similarity. This scoring mechanism is indispensable for ensuring the accuracy and reliability of biometric systems. The score of (\(X\), \(Y\)) is computed as
 
 \begin{equation} \label{eq:score}
@@ -78,7 +76,7 @@ The probability of the \(i\)-th pixel of two captures not being the same after a
 
 \begin{equation}
     \begin{aligned}
-        (\sigma_{\delta})² = {Var}\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)
+        (\sigma_{\delta})² = \mathbb{V}\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)
     \end{aligned}
 \end{equation}
 

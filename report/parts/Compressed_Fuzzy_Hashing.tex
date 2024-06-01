@@ -99,6 +99,7 @@ Based on the range of possible values for \(d\), we have computed several specif
         \hline
     \end{tabular}
 \caption{Comparison of Distributions: $q_{same}$, $q_{diff}$, and $q_{indep}$}
+\label{tab:theoretical_q}
 \end{table}
 
 \subsection{Experimental Derivation of the probabilities $q_{same}^{obs}$, $q_{diff}^{obs}$, and $q_{indep}^{obs}$ for different \(m\), \(d\) parameter combinations}
@@ -237,6 +238,7 @@ Given the NP-completeness of the partition problem, programming an optimal solut
 \right.
 \]
 
+
 We can see that the distribution of probabilities and counts across buckets demonstrates a good effort towards achieving uniformity.
 
 Utilizing these derived lookup tables, alongside our established PreHash function(~\ref{preHash Algorithm}) and the newly implemented PostHash function(~\ref{postHash Algorithm}), we are equipped to conduct experiments on our dataset to assess \(q_{same}\) and \(q_{diff}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the PreHash function directly into the PostHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the PreHash and PostHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
@@ -244,8 +246,8 @@ Utilizing these derived lookup tables, alongside our established PreHash functio
 \begin{enumerate}
     \item \text{\(d = 1\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and binary PostHash indices (\(d=1\)).
     \begin{itemize}
-        \item \(q_{same}^{obs} = 65.68\%\)
-        \item \(q_{diff}^{obs} = 56.40\%\)
+        \item \(q_{same}^{obs} = 61.53\%\)
+        \item \(q_{diff}^{obs} = 52.69\%\)
     \end{itemize}
 
     \begin{figure}[H]
@@ -267,8 +269,8 @@ Utilizing these derived lookup tables, alongside our established PreHash functio
     
     \item \text{\(d = 2\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Quaternary PostHash indices (\(d=2\)).
     \begin{itemize}
-        \item \(q_{same}^{obs} = 46.80\%\)
-        \item \(q_{diff}^{obs} = 30.55\%\)
+        \item \(q_{same}^{obs} = 42.62\%\)
+        \item \(q_{diff}^{obs} = 29.84\%\)
     \end{itemize}
 
     \begin{figure}[H]
@@ -290,8 +292,8 @@ Utilizing these derived lookup tables, alongside our established PreHash functio
     
     \item \text{\(d = 3\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Octal PostHash indices (\(d=3\)).
     \begin{itemize}
-        \item \(q_{same}^{obs} = 34.77\%\)
-        \item \(q_{diff}^{obs} = 17.95\%\)
+        \item \(q_{same}^{obs} = 31.97\%\)
+        \item \(q_{diff}^{obs} = 17.36\%\)
     \end{itemize}
 
     \begin{figure}[H]
@@ -313,8 +315,8 @@ Utilizing these derived lookup tables, alongside our established PreHash functio
     
     \item \text{\(d = 4\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Hexa-Decimal PostHash indices (\(d=4\)).
     \begin{itemize}
-        \item \(q_{same}^{obs} = 28.73\%\)
-        \item \(q_{diff}^{obs} = 11.80\%\)
+        \item \(q_{same}^{obs} = 26.92\%\)
+        \item \(q_{diff}^{obs} = 13.13\%\)
     \end{itemize}
 
     \begin{figure}[H]
@@ -334,4 +336,6 @@ Utilizing these derived lookup tables, alongside our established PreHash functio
         \end{minipage}
     \end{figure}
 \end{enumerate}
+
+The theoretical values for \(q_{same}\) presented in Table~\ref{tab:theoretical_q} are accurate approximations, as the experimental results closely match these values. The greater discrepancy between theoretical and experimental values for \(q_{diff}\) compared to \(q_{same}\) can be attributed to the following factor: Different biometric samples exhibit higher variability, leading to a broader range of feature differences, which can cause deviations from theoretical assumptions. Outliers and noise further exacerbate the discrepancies for \(q_{diff}\). Moreover, the theoretical values for the parameter combination \(m=1\) and \(d=4\) (last row of Table~\ref{tab:theoretical_q}) align almost perfectly with the experimental results, with \(q_{same}\) values being identical and \(q_{diff}\) values differing by only approximately 0.8\%. The lookup table used for this experiment was generated using Equation~\ref{eq:GeomFormula}, followed by a redistribution of the indices across each bucket to achieve a more uniform distribution. This redistribution process was not applied to the first three experiments, which could explain why their results show greater discrepancies.
 

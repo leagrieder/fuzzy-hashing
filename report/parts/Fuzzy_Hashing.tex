@@ -192,14 +192,16 @@ Depending on the distribution of (\(X\), \(Y\)), it is denoted
     \mu = \mathbb{E}(f(A,B,C))
 \end{equation}\\
 
-In order to assess the theoretical approximations of $\mu_{same}$, $\mu_{diff}$, and the value of $\mu_{indep}$, we can easily replace the different values in Equation~\ref{eq:mu_approximation} with the corresponding values calculated in the previous sections. We demonstrate how this is done for \( \mu_{\text{indep}}^{obs} \). Using \( p^{obs} \), \(\delta_{\text{indep}}^{obs}\), and their respective standard deviations, we aim to calculate \(\mathbb{E}(f(A,B,C))\). This calculation is based on \(X\) and \(Y\) comprising \(2n\) independent random bits with an expected value of \(p\), without applying the optimal offset to obtain \(\bar{X}\) and \(\bar{Y}\). The expectation \(\mathbb{E}(f(A,B,C))\) is simplified because the covariance between \(A\) and \(B\) is zero in Equation~\ref{eq:mu_approximation}. For clarity, note that in the following equation, \(p\) corresponds to \(p^{obs}\), \(\delta\) corresponds to \(\delta_{\text{indep}}^{obs}\), \(\sigma_p\) corresponds to \(\sigma_p^{obs}\), and \(\sigma_\delta\) corresponds to \(\sigma_{\delta_{\text{indep}}}^{\text{obs}}\). This allows us to express \( \mu_{\text{indep}}^{obs} \) as follows:
+In order to assess the theoretical approximations of $\mu_{same}$, $\mu_{diff}$, and the value of $\mu_{indep}$, we can easily replace the different values in Equation~\ref{eq:mu_approximation} with the corresponding values calculated in the previous sections. We demonstrate how this is done for \( \mu_{\text{indep}}^{obs} \). Using \( p^{obs} \), \(\delta_{\text{indep}}^{obs}\), and their respective standard deviations, we aim to calculate \(\mathbb{E}(f(A,B,C))\). This calculation is based on \(X\) and \(Y\) comprising \(2n\) independent random bits with an expected value of \(p\), without applying the optimal offset to obtain \(\bar{X}\) and \(\bar{Y}\). Equation~\ref{eq:mu_approximation} is simplified because the covariance between \(A\) and \(B\) is zero (because of independence). For clarity, note that in the following equation, \(p\) corresponds to \(p^{obs}\), \(\delta\) corresponds to \(\delta_{\text{indep}}^{obs}\), \(\sigma_p\) corresponds to \(\sigma_p^{obs}\), and \(\sigma_\delta\) corresponds to \(\sigma_{\delta_{\text{indep}}}^{\text{obs}}\). This allows us to express \( \mu_{\text{indep}}^{obs} \) as follows:
 
 \begin{equation}
     \begin{aligned}
     \mu_{\text{indep}}^{obs} = \mathbb{E}(f(A,B,C)) &\approx \quad \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 \right. \\[2mm]
     & \left. + \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) \right. \\[2mm]
-    & \left. + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]\\
-    & \approx 0.01449 = 1.45\%
+    & \left. + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]\\[10mm]
+    & = \num{1.78e-2} + \frac{1}{2} \left[ -2\cdot\num{2.6e-3} + \num{1.5e-4}  \right. \\[2mm]
+    & \left. + 2\cdot\num{1.31e-6} \right] \\[10mm]
+    & \approx 0.01536 = 1.54\%
     \end{aligned}
     \label{eq:mu_indep}
 \end{equation}\\
@@ -234,7 +236,7 @@ Covariance Matrix for Different Distribution:
 \]\\
 
 
-Finally, the following figure is provided:
+Finally, the following figures are provided:
 
 \begin{table}[H]
     \centering
@@ -242,11 +244,25 @@ Finally, the following figure is provided:
         \hline
         $\mu_{same}$ & $\mu_{diff}$ & $\mu_{indep}$\\
         \hline
-        $18.88\%$ & $4.69\%$ & $1.45\%$\\
+        $21.41\%$ & $7.99\%$ & $1.79\%$\\
         \hline
     \end{tabular}
-\caption{Comparison of Theoretical Approximations: $\mu_{same}$, $\mu_{diff}$, and $\mu_{indep}$}
+\caption{Theoretical Approximations without Taylor Series Expansion: $\mu_{same}$, $\mu_{diff}$, and $\mu_{indep}$}
 \label{tab:mu_approx}
+\end{table}
+
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.25}\begin{tabular}{|c|c|c|}
+        \hline
+        $\mu_{same}$ & $\mu_{diff}$ & $\mu_{indep}$\\
+        \hline
+        $22.08\%$ & $8.01\%$ & $1.54\%$\\
+        \hline
+    \end{tabular}
+\caption{CTheoretical Approximations with Taylor Series Expansion: $\mu_{same}$, $\mu_{diff}$, and $\mu_{indep}$}
+\label{tab:approximation_mu_taylor}
 \end{table}
 
 Finally, it is observed that:
@@ -306,7 +322,7 @@ For \(\mu_{\text{same}}^{obs}\) and \(\mu_{\text{diff}}^{obs}\), our experimenta
     \end{itemize}
 \end{enumerate}
 
-In our analysis of the dataset at hand featuring biometric data from 20 unique individuals, we have quantified the performance of the preHash function in distinguishing between identical and different biometric subjects. Specifically, when evaluating samples from the same individual, the probability that the preHash function will produce the same index is approximately \(22.05\%\). Conversely, when the function is applied to samples from different individuals, the probability of a match in the indices drops to roughly \(8.25\%\). This indicates that the likelihood of mistakenly identifying different individuals as the same is about three times lower than correctly matching samples from the same individual, demonstrating the preHash function's relative efficacy in biometric differentiation within this specific dataset.
+In our analysis of the dataset at hand featuring biometric data from 20 unique individuals, we have quantified the performance of the preHash function in distinguishing between identical and different biometric subjects. Specifically, when evaluating samples from the same individual, the probability that the preHash function will produce the same index is approximately \(22.05\%\). Conversely, when the function is applied to samples from different individuals, the probability of a match in the indices drops to roughly \(8.25\%\). This indicates that the likelihood of mistakenly identifying different individuals as the same is about three times lower than correctly matching samples from the same individual, demonstrating the preHash function's relative efficacy in biometric differentiation within this specific dataset. Moreover, we can observe that the experimental results that we got are very close to the theoretical values predicted from Table~\ref{tab:approximation_mu_taylor}. This shows that our theoretical framework and the Taylor series approximations accurately model the behavior of \(\mu_{\text{diff}}\) and \(\mu_{\text{same}}\). The minor differences between the theoretical model and the experiments can be explained by the fact that real-world biometric data can include noise and measurement errors that are not accounted for in the theoretical model.
 
 
 \subsubsection{Experimental Derivation of the Probabilities \(\mu_{same}\) and \(\mu_{diff}\) Excluding the Post-Alignment Step}

@@ -11,7 +11,7 @@ We begin by delving into the representation of the biometric data. Finger images
 
 In the biometric context, each finger serves as a biometric subject, with a corresponding biometric capture represented as a bitstring \(X\) of length \(n\). This bitstring encapsulates the specific vein pixel information extracted from the finger image, while the biometric template serves as a reference model derived from these images. 
 
-Each of the \(n\) bits of the biometric capture is designated as \(X_1, \ldots, X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. We define the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\), as the Hamming Weight of a feature vector\footnote{The terms "feature vector" and "bitstring" are used interchangeably throughout this report to refer to the vein pixel information extracted from the finger image.} \(X\) divided by the total number of bits in the vector. We define the value \(p\)\footnote{Throughout this report, experimentally derived variables are denoted with the superscript "obs" (e.g., \(\text{var}^{\text{obs}}\)), while theoretical variables are presented without any superscript.} as the mean of this random variable.
+Each of the \(n\) bits of the biometric capture is designated as \(X_1, \ldots, X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. We define the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\), as the Hamming Weight of a feature vector\footnote{The terms "feature vector" and "bitstring" are used interchangeably throughout this report to refer to the vein pixel information extracted from the finger image.} \(X\) divided by the total number of bits in the vector. In the case where \(i\) is a uniformly distributed random index and \(X\) is randomly chosen, we define the value \(p\)\footnote{Throughout this report, experimentally derived variables are denoted with the superscript "obs" (e.g., \(\text{var}^{\text{obs}}\)), while theoretical variables are presented without any superscript.} as the mean of this random variable.
 
 
 \begin{equation} \label{eq:p}
@@ -20,7 +20,7 @@ Each of the \(n\) bits of the biometric capture is designated as \(X_1, \ldots, 
     \end{aligned}
 \end{equation}
 
-In the case where \(i\) is a uniformly distributed random index and \(X\) is randomly chosen, the mean (\(p\)), along with the variance (\(\sigma²\)) and standard deviation (\(\sigma\)) of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) across all images are quantified as follows:
+The mean (\(p\)), along with the variance (\(\sigma²\)) and standard deviation (\(\sigma\)) of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) across all images are quantified as follows:
 
 \begin{equation} \label{eq:proba1}
     p^{\text{obs}} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right) = 3.51\%

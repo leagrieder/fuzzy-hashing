@@ -192,7 +192,16 @@ Depending on the distribution of (\(X\), \(Y\)), it is denoted
     \mu = \mathbb{E}(f(A,B,C))
 \end{equation}\\
 
-In order to assess the theoretical approximations of $\mu_{same}$, $\mu_{diff}$, and the value of $\mu_{indep}$, we can easily replace the different values in Equation~\ref{eq:mu_approximation} with the corresponding values calculated in the previous sections. We demonstrate how this is done for \( \mu_{\text{indep}}^{obs} \). Using \( p^{obs} \), \(\delta_{\text{indep}}^{obs}\), and their respective standard deviations, we aim to calculate \(\mathbb{E}(f(A,B,C))\). This calculation is based on \(X\) and \(Y\) comprising \(2n\) independent random bits with an expected value of \(p\), without applying the optimal offset to obtain \(\bar{X}\) and \(\bar{Y}\). Equation~\ref{eq:mu_approximation} is simplified because the covariance between \(A\) and \(B\) is zero (because of independence). For clarity, note that in the following equation, \(p\) corresponds to \(p^{obs}\), \(\delta\) corresponds to \(\delta_{\text{indep}}^{obs}\), \(\sigma_p\) corresponds to \(\sigma_p^{obs}\), and \(\sigma_\delta\) corresponds to \(\sigma_{\delta_{\text{indep}}}^{\text{obs}}\). This allows us to express \( \mu_{\text{indep}}^{obs} \) as follows:
+In order to assess the theoretical approximations of $\mu_{same}$, $\mu_{diff}$, and the value of $\mu_{indep}$, we can easily replace the different values in Equation~\ref{eq:mu_approximation} with the corresponding values calculated in the previous sections. We demonstrate how this is done for \( \mu_{\text{indep}}^{obs} \). Using \( p^{obs} \), \(\delta_{\text{indep}}^{obs}\), and their respective standard deviations, we aim to calculate \(\mathbb{E}(f(A,B,C))\). This calculation is based on \(X\) and \(Y\) comprising \(2n\) independent random bits with an expected value of \(p\), without applying the optimal offset to obtain \(\bar{X}\) and \(\bar{Y}\). Equation~\ref{eq:mu_approximation} is simplified because the covariance between \(A\) and \(B\) is zero (because of independence).
+
+For clarity, note that in the following equation:
+
+- \(p\) corresponds to \(p^{obs}\),\\
+- \(\delta\) corresponds to \(\delta_{\text{indep}}^{obs}\),\\
+- \(\sigma_p\) corresponds to \(\sigma_p^{obs}\), and\\
+- \(\sigma_\delta\) corresponds to \(\sigma_{\delta_{\text{indep}}}^{\text{obs}}\).
+
+This allows us to express \( \mu_{\text{indep}}^{obs} \) as follows:
 
 \begin{equation}
     \begin{aligned}
@@ -235,6 +244,37 @@ Covariance Matrix for Different Distribution:
 \end{array}
 \]\\
 
+We have the following equations for \(\mu_{same}\) and \(\mu_{diff}\). Depending on the distribution (same or different), the variables \(p\), \(\delta\), \(\sigma_p\), and \(\sigma_\delta\) correspond to their observed counterparts as indicated:
+
+- \(p \rightarrow p^{obs}\)\\
+- \(\delta \rightarrow \delta_{\text{same/diff}}^{obs}\)\\
+- \(\sigma_p \rightarrow \sigma_p^{obs}\)\\
+- \(\sigma_\delta \rightarrow \sigma_{\delta_{\text{same/diff}}}^{\text{obs}}\)\\
+
+\begin{equation}
+    \begin{aligned}
+    \mu_{\text{same}}^{obs} = \mathbb{E}(f(A,B,C)) &\approx \quad \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 \right. \\[2mm]
+    & \left. + \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 + 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) \right. \\[2mm] 
+    & \left. + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]\\[10mm]
+    & = \num{2.14e-1} + \frac{1}{2} \left[ -2\cdot\num{2.9e-3} + \num{1.9e-2}  \right. \\[2mm]
+    & \left. - \num{5.1e-3} + 2\cdot\num{2.3e-3} \right] \\[10mm]
+    & \approx 0.22048 = 22.05\%
+    \end{aligned}
+    \label{eq:mu_same}
+\end{equation}\\
+
+\begin{equation}
+    \begin{aligned}
+    \mu_{\text{diff}}^{obs} = \mathbb{E}(f(A,B,C)) &\approx \quad \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 \right. \\[2mm]
+    & \left. + \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 + 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) \right. \\[2mm] 
+    & \left. + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]\\[10mm]
+    & = \num{7.99e-2} + \frac{1}{2} \left[ -2\cdot\num{2.7e-3} + \num{5.8e-3}  \right. \\[2mm]
+    & \left. - \num{1.3e-3} + \num{4.9e-4} + \num{5e-4} \right] \\[10mm]
+    & \approx 0.07993 = 7.99\%
+    \end{aligned}
+    \label{eq:mu_diff}
+\end{equation}\\
+
 
 Finally, the following figures are provided:
 
@@ -244,7 +284,7 @@ Finally, the following figures are provided:
         \hline
         $\mu_{same}$ & $\mu_{diff}$ & $\mu_{indep}$\\
         \hline
-        $21.41\%$ & $7.99\%$ & $1.79\%$\\
+        $21.41\%$ & $7.99\%$ & $1.78\%$\\
         \hline
     \end{tabular}
 \caption{Theoretical Approximations without Taylor Series Expansion: $\mu_{same}$, $\mu_{diff}$, and $\mu_{indep}$}
@@ -258,10 +298,10 @@ Finally, the following figures are provided:
         \hline
         $\mu_{same}$ & $\mu_{diff}$ & $\mu_{indep}$\\
         \hline
-        $22.08\%$ & $8.01\%$ & $1.54\%$\\
+        $22.05\%$ & $7.99\%$ & $1.54\%$\\
         \hline
     \end{tabular}
-\caption{CTheoretical Approximations with Taylor Series Expansion: $\mu_{same}$, $\mu_{diff}$, and $\mu_{indep}$}
+\caption{Theoretical Approximations with Taylor Series Expansion: $\mu_{same}$, $\mu_{diff}$, and $\mu_{indep}$}
 \label{tab:approximation_mu_taylor}
 \end{table}
 

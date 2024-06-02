@@ -6,9 +6,9 @@
 Fuzzy hashing, as opposed to traditional hashing, produces consistent cryptographic keys for similar but not identical inputs, enabling recognition of the same biometric trait across different instances despite slight variations. This approach ensures legitimate users are not incorrectly denied access due to minor discrepancies and protects user privacy by storing and using hashed values instead of raw biometric data, making it difficult to reverse-engineer the original data even if unauthorized access occurs. 
 This section will discuss how we implemented the fuzzy hashing algorithm, its corresponding mathematical aspects and some experiments.
 
-\subsection{PreHashing Algorithm}
+\subsection{PreHash Algorithm}
 
-The \textit{PreHash} algorithm is the first step in the fuzzy hashing process, designed to manipulate biometric templates extracted from finger vein patterns. It operates on a bitstring \(X\), representing the presence (1) or absence (0) of vein pixels across \(n\) pixels, where \(n=90'240\).
+The preHash algorithm is the first step in the fuzzy hashing process, designed to manipulate biometric templates extracted from finger vein patterns. It operates on a bitstring \(X\), representing the presence (1) or absence (0) of vein pixels across \(n\) pixels, where \(n=90'240\).
 
 Algorithm Inputs and Outputs:
 \begin{enumerate}
@@ -18,10 +18,10 @@ Algorithm Inputs and Outputs:
         \item \textbf{A bitstring X}: the feature-extracted vein patterns of a biometric capture
         \item \textbf{A key}: used to initialize a Pseudorandom Number Generator (PRNG)
     \end{itemize}
-    \item \textbf{Output}: The algorithm outputs a tuple \((i_1,...,i_m)\) consisting of the \(m\) smallest indices \(i_j\)​ such that \(1 \leq i_1<...<i_m\)​ and the pixel at \(PRNGkey(i_j)\) in \(X\) is identified as a vein pixel. 
+    \item \textbf{Output}: The algorithm outputs a tuple \((i_1,...,i_m)\) consisting of the \(m\) smallest indices \(i_j\)​ such that \(1 \leq i_1<...<i_m\)​ and the pixel at \(PRNG_{key(i_j)}\) in \(X\) is identified as a vein pixel. 
 \end{enumerate}
 
-Detailed Process of \textit{PreHash}:
+Detailed Process of preHash:
 \begin{itemize}
     \item \textbf{Initiallization}: Utilizing the provided key, the algorithm initializes a PRNG. This PRNG is based on the \hyperref[def:AES CTR mode]{Advanced Encryption Standard (AES) in Counter (CTR) mode}, ensuring the generation of uniform and independent pseudorandom sequences.
 
@@ -44,16 +44,16 @@ Detailed Process of \textit{PreHash}:
 
     \item \textbf{Selection of Indices}: The algorithm iterates through the generated pseudorandom sequence, selecting the first \(m\) indices corresponding to vein pixels in the biometric template \(X\). This selection process involves a careful mechanism to ensure the uniqueness and proper ordering of indices.
 
-    \item \textbf{Corner Cases}: In scenarios where there are no veins present in the image, the algorithm incorporates a built-in mechanism to address such situations. Prior to initiating the prehash process, it assesses whether at least one vein is present in the image. If no veins are detected, the algorithm suspends further execution, preventing an infinite loop.
+    \item \textbf{Corner Cases}: In scenarios where there are no veins present in the image, the algorithm incorporates a built-in mechanism to address such situations. Prior to initiating the preHash process, it assesses whether at least one vein is present in the image. If no veins are detected, the algorithm suspends further execution, preventing an infinite loop.
 
 \end{itemize}
 
 
 \begin{algorithm}
 \begin{algorithmic}[1]
-\caption{\textit{preHash} Algorithm}
+\caption{preHash Algorithm}
 \label{preHash Algorithm}
-\Function{\text{preHash}$_\text{key}^m$}{$X$}
+\Function{preHash$_\text{key}^m$}{$X$}
 \State \hfill $\triangleright$ $L \gets \lceil \log_2(n) \rceil$
 \State Initialize PRNG using key for $L$ bits
 \State $i \gets 0$
@@ -71,14 +71,14 @@ Detailed Process of \textit{PreHash}:
 \end{algorithmic}
 \end{algorithm}
 
-The algorithm, preHash, illustrated in Figure~\ref{preHash Algorithm} generates \(m\) smallest indices, denoted by \(i_j\), such that \(j\in{[1, m]} \) and \(1 \leq i_1 < ... < i_m\), where each \(i_j\) correponds to an index such that \(X_{PRNG_{key}(i_j)} = 1\). It achieves this by rigorously verifying that the numbers produced by PRNG (PRNG[i]) stay within the specified bounds \(\text{PRNG}[i] \in (0, n] \text{ for } i \in [0, m]\).
+The algorithm, preHash, illustrated in Figure~\ref{preHash Algorithm} generates \(m\) smallest indices, denoted by \(i_j\), such that \(j\in{[1, m]} \) and \(1 \leq i_1 < ... < i_m\), where each \(i_j\) correponds to an index such that \(X_{PRNG_{key}(i_j)} = 1\). It achieves this by rigorously verifying that the numbers produced by PRNG stay within the specified bounds, i.e. \(\text{PRNG}[i] \in (0, n] \text{ for all } i \in [0, m]\).
 
 \subsection{Assessing Similarity of Biometric Inputs After PreHash Application}
 \label{sec:mu}
 
-After the finger images are processed through the pipeline described in Figure~\ref{pipeline_simon} to extract their feature vectors, and the \textit{preHash} algorithm is applied, the outcome is a set of indices that fall within the inclusive range \(\text{PRNG}[i] \in (0, n] \text{ for } i \in [0, m]\), effectively mapping each selected feature to a unique index within the feature vector's length.
+After the finger images are processed through the pipeline described in Figure~\ref{pipeline_simon} to extract their feature vectors, and the preHash algorithm is applied, the outcome is a set of indices that fall within the inclusive range \(\text{PRNG}[i] \in (0, n] \text{ for } i \in [0, m]\), effectively mapping each selected feature to a unique index within the feature vector's length.
 
-In the context of a simplified scenario where the hash length parameter (\(m\)) is set to \(1\), implying the generation of a single-index hash, and assuming a randomly chosen key for the \textit{preHash} algorithm, along with \(k\) representing a uniformly distributed random index, the probability that the \textit{preHash} operation yields the same index for two different fixed inputs \(X\) and \(Y\) can be mathematically delineated as follows:
+In the context of a simplified scenario where the hash length parameter (\(m\)) is set to \(1\), implying the generation of a single-index hash, and assuming a randomly chosen key for the preHash algorithm, along with \(k\) representing a uniformly distributed random index, the probability that the preHash operation yields the same index for two different fixed inputs \(X\) and \(Y\) can be mathematically delineated as follows:
 
 
 \begin{equation} \label{eq:preHash1}
@@ -93,7 +93,7 @@ In the context of a simplified scenario where the hash length parameter (\(m\)) 
 
 This equation encapsulates the likelihood of two images, \(X\) and \(Y\), having their singular hash index coincide, based on the presence of matching features identified by the algorithm. The final form of the equation relates the probability to the scoring function between \(X\) and \(Y\), inversely proportional to the score minus one.
 
-It is noticed that there is a direct link with the Miura matching score that is of interest. The direct link between the \textit{preHash} algorithm's outcomes and the Miura matching score lies in their shared foundation of evaluating biometric similarities. Specifically, both methodologies utilize Hamming weight and bitwise operations to assess the overlap between biometric samples, such as finger vein patterns. The \textit{preHash} algorithm, through its probabilistic formula, quantifies the likelihood of matching indices based on feature presence, closely paralleling the Miura score's approach of comparing binary patterns to derive a similarity score. The above computation can also be expressed as follows:
+It is noticed that there is a direct link with the Miura matching score that is of interest. The direct link between the preHash algorithm's outcomes and the Miura matching score lies in their shared foundation of evaluating biometric similarities. Specifically, both methodologies utilize Hamming weight and bitwise operations to assess the overlap between biometric samples, such as finger vein patterns. The preHash algorithm, through its probabilistic formula, quantifies the likelihood of matching indices based on feature presence, closely paralleling the Miura score's approach of comparing binary patterns to derive a similarity score. The above computation can also be expressed as follows:
 
 \begin{equation} \label{eq:preHash2}
     \begin{aligned}
@@ -108,14 +108,14 @@ The following approximations are made, inspired by equations \(p\) (\ref{eq:p}) 
     \mathbb{E}\left(\frac{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} - \frac{1}{2}Pr[\bar{X}_k \neq \bar{Y}_k]}{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} + \frac{1}{2}Pr[\bar{X}_k \neq \bar{Y}_k]}\right) \approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}}
 \end{equation}
 
-The core of this approximation revolves around the expectation formula, which integrates probabilities of feature presence \(Pr[X_k=1]+Pr[Y_k=1]\) and the likelihood of discrepancies between \(X\) and \(Y\), \(Pr[\bar{X}_k \neq \bar{Y}_k]\). This formula essentially aims to quantify the similarity between two biometric samples by considering both the concurrence of features and the instances where they diverge.
+The core of this approximation revolves around the expectation formula, which integrates probabilities of feature presence \(Pr[X_k=1]+Pr[Y_k=1]\) and the likelihood of discrepancies between \(\bar{X}\) and \(\bar{Y}\), \(Pr[\bar{X}_k \neq \bar{Y}_k]\). This formula essentially aims to quantify the similarity between two biometric samples by considering both the concurrence of features and the instances where they diverge.
 
-To achieve a more accurate approximation of the expected value of equation \ref{eq:preHash2}, we define the following parameters and employ a Taylor series expansion of the function \(f(A,B,C) = \frac{A + B - C}{A + B + C}\) around the point \((p, p, \delta)\). This method allows us to incorporate not only the means but also the variances and covariances of the variables involved.
+To achieve a more accurate approximation of the expected value of Equation \ref{eq:preHash2}, we define the following parameters and employ a Taylor series expansion of the function \(f(A,B,C) = \frac{A + B - C}{A + B + C}\) around the point \((p, p, \delta)\). This method allows us to incorporate not only the means but also the variances and covariances of the variables involved.
 
 \[
 A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = \frac{d_H(\bar{X}, \bar{Y})}{n}
 \]
-where \(HW(\cdot)\) denotes the Hamming weight and \(d_H(\cdot, \cdot)\) represents the normalized Hamming distance. Given these definitions, we know the expected values and variances from Section~\ref{sec:bio_setting} :
+where \(HW(\cdot)\) denotes the Hamming weight and \(\frac{d_H(\cdot, \cdot)}{n}\) represents the normalized Hamming distance. Given these definitions, we know the expected values and variances from Section~\ref{sec:bio_setting} :
 \[
     \mathbb{E}(A) = \mathbb{E}(B) = p^\text{obs}, \quad \mathbb{E}(C) = \delta^\text{obs}, \quad \mathbb{V}(A) = \mathbb{V}(B) = ({\sigma^\text{obs}_p})^2, \quad \mathbb{V}(C) = ({\sigma^\text{obs}_\delta})^2
 \]
@@ -207,9 +207,9 @@ This allows us to express \( \mu_{\text{indep}}^{obs} \) as follows:
     \begin{aligned}
     \mu_{\text{indep}}^{obs} = \mathbb{E}(f(A,B,C)) &\approx \quad \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 \right. \\[2mm]
     & \left. + \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) \right. \\[2mm]
-    & \left. + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]\\[10mm]
+    & \left. + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]\\[6mm]
     & = \num{1.78e-2} + \frac{1}{2} \left[ -2\cdot\num{2.6e-3} + \num{1.5e-4}  \right. \\[2mm]
-    & \left. + 2\cdot\num{1.31e-6} \right] \\[10mm]
+    & \left. + 2\cdot\num{1.31e-6} \right] \\[6mm]
     & \approx 0.01536 = 1.54\%
     \end{aligned}
     \label{eq:mu_indep}
@@ -222,18 +222,18 @@ A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = \frac{d_H(
 
 We obtained the following covariance matrices from the experiments held to find \(\delta^{obs}_{diff}\) and \(\delta^{obs}_{same}\):
 
-Covariance Matrix for Same Distribution:
 \[
 \begin{array}{c|ccc}
            & \text{A} & \text{B} & \text{C} \\
 \hline
 \text{A} & 0.000025 & 0.000022 & 0.000036 \\
 \text{B} & 0.000022 & 0.000025 & 0.000036 \\
-\text{C}  & 0.000036 & 0.000036 & 0.000106 \\
+\text{C} & 0.000036 & 0.000036 & 0.000106 \\
 \end{array}
 \]
+\begin{center}\text{Covariance Matrix for Same Distribution}\end{center}
 
-Covariance Matrix for Different Distribution:
+
 \[
 \begin{array}{c|ccc}
            & \text{A} & \text{B} & \text{C} \\
@@ -242,7 +242,8 @@ Covariance Matrix for Different Distribution:
 \text{B} & 0.000006 & 0.000026 & 0.000027 \\
 \text{C}  & 0.000026 & 0.000027 & 0.000046 \\
 \end{array}
-\]\\
+\]
+\begin{center}\text{Covariance Matrix for Different Distribution}\end{center}
 
 We have the following equations for \(\mu_{same}\) and \(\mu_{diff}\). Depending on the distribution (same or different), the variables \(p\), \(\delta\), \(\sigma_p\), and \(\sigma_\delta\) correspond to their observed counterparts as indicated:
 
@@ -276,6 +277,7 @@ We have the following equations for \(\mu_{same}\) and \(\mu_{diff}\). Depending
 \end{equation}\\
 
 
+\newpage
 Finally, the following figures are provided:
 
 \begin{table}[H]
@@ -310,7 +312,7 @@ Finally, it is observed that:
 \begin{equation}
     Pr[preHash_{key}^m(offset_X * X) = preHash_{key}^m(offset_Y * Y)] \leq \mu^m
 \end{equation}
-
+\\
 where equality is reached for the optimal offset translations.
 
 \subsection{Experimental Derivation of the Probabilities \(\mu_{\text{same}}^{\text{obs}}, \mu_{\text{diff}}^{\text{obs}}, \mu_{\text{indep}}^{\text{obs}}\)}
@@ -347,14 +349,14 @@ For \(\mu_{\text{same}}^{obs}\) and \(\mu_{\text{diff}}^{obs}\), our experimenta
             \begin{subfigure}[b]{0.48\linewidth}
                 \centering
                 \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/mu_same.png}
-                \caption{Count of the number of matches for Same, Aligned Biometric Samples with Single Index PreHashing}
+                \caption{Count of the number of matches for Same, Aligned Biometric Samples with Single Index preHashing}
                 \label{mu_same}
             \end{subfigure}
             \hfill
             \begin{subfigure}[b]{0.48\linewidth}
                 \centering
                 \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/mu_diff.png}
-                \caption{Count of the number of matches for Different, Aligned Biometric Samples with Single Index PreHashing}
+                \caption{Count of the number of matches for Different, Aligned Biometric Samples with Single Index preHashing}
                 \label{mu_diff}
             \end{subfigure}
             \caption{Comparison of match counts for Same and Different Aligned Biometric Samples}
@@ -385,14 +387,14 @@ Following the setup and conductin the experiment as described in the previous se
         \begin{minipage}[b]{0.48\linewidth}
             \centering
             \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/mu_same_without_postAlignment.png}
-            \caption{Count of the number of matches for Same, Non-Aligned Biometric Samples with Single Index PreHashing}
+            \caption{Count of the number of matches for Same, Non-Aligned Biometric Samples with Single Index preHashing}
             \label{mu_same_without_postAlignement}
         \end{minipage}
         \hfill
         \begin{minipage}[b]{0.48\linewidth}
             \centering
             \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/mu_diff_without_postAlignment.png}
-            \caption{Count of the number of matches for Different, Non-Aligned Biometric Samples with Single Index PreHashing}
+            \caption{Count of the number of matches for Different, Non-Aligned Biometric Samples with Single Index preHashing}
             \label{mu_diff_without_postAlignement}
         \end{minipage}
         \caption{Comparison of match counts for Same and Different Non-Aligned Biometric Samples}

@@ -9,7 +9,7 @@ This section delves into the mechanics of the compressed fuzzy hashing algorithm
 
 \subsection{PostHashing Algorithm}
 
-The postHash algorithm, constituting the second and final step in the fuzzy hashing process, generates compact hashes based on the indices derived from the preHash algorithm (see section \ref{sec:Fuzzy Hashing}). This algorithm is designed to transform a tuple of indices into a concise hash format, \(h_1 || \ldots || h_m\), where each \(h_i\), for \(i \in [1, m]\), is an integer within the range \([0, \ldots, D-1]\).The parameter \(D\), defined as \(2^d\), denotes the total number of possible values each \(h_i\) can assume, with \(d\) representing the bit depth used per index. 
+The postHash algorithm, constituting the second and final step in the fuzzy hashing process, generates compact hashes based on the indices derived from the preHash algorithm (see Section \ref{sec:Fuzzy Hashing}). This algorithm is designed to transform a tuple of indices into a concise hash format, \(h_1 || \ldots || h_m\), where each \(h_i\), for \(i \in [1, m]\), is an integer within the range \([0, \ldots, D-1]\).The parameter \(D\), defined as \(2^d\), denotes the total number of possible values each \(h_i\) can assume, with \(d\) representing the bit depth used per index. 
 
 Algorithm Inputs and Outputs:
 \begin{enumerate}
@@ -20,7 +20,7 @@ Algorithm Inputs and Outputs:
     \item \textbf{Output}: Converted indices, forming a compact hash \(h_1|| \ldots || h_m\), where \(h_i\) \(i \in [1, m]\), is an integer in \([0, \ldots, D-1]\)
 \end{enumerate}
 
-Detailed Process of postHash:
+Detailed process of postHash, for the case when $d < 4$:
 \begin{enumerate}
     \item \textbf{Subroutine}: For each index provided by the preHash, subroutine \(T\) checks if the index is within the acceptable range. If an index is out of range, \(T\) returns 0, otherwise, it proceeds with a table lookup. The subroutine maps each valid index \(i\) to an integer nearly uniformly distributed between \([0, D-1]\), ensuring that all potential hash values are equally probable. This mapping is important for the security and effectiveness of the fuzzy hashing system.
     
@@ -34,6 +34,8 @@ Detailed Process of postHash:
         \item \textbf{Output}: \(h_i\), the mapped integer
     \end{itemize}
 \end{enumerate}
+
+For the case when $d = 4$, a different subroutine called \textit{scambled\_T} is used. This subroutine corresponds to a partition problem, which is detailed at the end of Section~\ref{sec:Experimental_derivation_q}. Although the mapping of integers differs in this subroutine, it similarly takes an index from the preHash tuple as input and maps it to an integer, just as in the process for $d < 4$.
 
 \vspace{20pt}
 
@@ -102,7 +104,7 @@ Based on the range of possible values for \(d\), we have computed several specif
 \label{tab:theoretical_q}
 \end{table}
 
-\subsection{Experimental Derivation of the probabilities $q_{same}^{obs}$, $q_{diff}^{obs}$, and $q_{indep}^{obs}$ for different \(m\), \(d\) parameter combinations}
+\subsection{Experimental Derivation of the probabilities $q_{same}^{obs}$, $q_{diff}^{obs}$, and $q_{indep}^{obs}$ for different \(m\), \(d\) parameter combinations} \label{sec:Experimental_derivation_q}
 
 In the subsequent section, we explore enhancements to data compression techniques within our fuzzy hashing framework, emphasizing the use of various \(m\) and \(d\) parameter combinations. We initiate our analysis by conducting experiments to determine \(q_{same}^{obs}\), \(q_{diff}^{obs}\), and \(q_{indep}^{obs}\).
 

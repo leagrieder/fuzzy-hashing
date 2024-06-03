@@ -101,6 +101,7 @@ To experimentally determine the False Negative Rate (FNR) and the False Positive
 
 Each experiment we conducted uses a different row from Table \ref{tab:theoretical_parameterization_PostHash}. In each experiment, we generate \( l \) \textit{PreHash} iterations for all image pairs and then determine if two images, \(X\) and \(Y\), are a match, defined as \( l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) \geq t \). We perform two types of comparisons on our data:
 
+
 \begin{enumerate}
     \item \textbf{Same Person, Same Finger Comparisons}: This involves comparing different trials of images from the same person and the same finger. These comparisons should theoretically result in a match. If two such images do not match (i.e., \( l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) < t \)), this contributes to the FNR.
     \item \textbf{Different People or Fingers Comparisons}: This involves comparing images from different people and/or different fingers. These comparisons should theoretically not result in a match. If two such images do match, this contributes to the FPR.

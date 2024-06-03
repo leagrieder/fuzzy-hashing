@@ -166,7 +166,7 @@ And we hence have:
 \]
 \[
 + 2f''_{AB}(p,p,\delta) \text{Cov}(A,B) + 2f''_{AC}(p,p,\delta) \text{Cov}(A,C) + 2f''_{BC}(p,p,\delta) \text{Cov}(B,C)]
-\]\\
+\]
 
 Simplifying with our values and notations we get:
 
@@ -215,7 +215,7 @@ This allows us to express \( \mu_{\text{indep}}^{obs} \) as follows:
     \label{eq:mu_indep}
 \end{equation}\\
 
-We proceed in a similar way to assess the theoretical values of $\mu_{same}$ and $\mu_{diff}$, except in this case the covariances are not \(0\) and have been calculated by observing the correlation between the different random variables (\(A\), \(B\), \(C\)) in the experimental results obtained in Section~\ref{sec:bio_setting}. That is, we calculated the covariance matrix between the following random variables:
+We proceed in a similar way to assess the theoretical values of $\mu_{same}$ and $\mu_{diff}$, except in this case the covariances are non-zero and have been calculated by observing the correlation between the different random variables (\(A\), \(B\), \(C\)) in the experimental results obtained in Section~\ref{sec:bio_setting}. That is, we calculated the covariance matrix between the following random variables:
 \[
 A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = \frac{d_H(\bar{X}, \bar{Y})}{n}
 \]
@@ -262,7 +262,7 @@ We have the following equations for \(\mu_{same}\) and \(\mu_{diff}\). Depending
     & \approx 0.22048 = 22.05\%
     \end{aligned}
     \label{eq:mu_same}
-\end{equation}\\
+\end{equation}
 
 \begin{equation}
     \begin{aligned}
@@ -274,10 +274,8 @@ We have the following equations for \(\mu_{same}\) and \(\mu_{diff}\). Depending
     & \approx 0.07993 = 7.99\%
     \end{aligned}
     \label{eq:mu_diff}
-\end{equation}\\
+\end{equation}
 
-
-\newpage
 Finally, the following figures are provided:
 
 \begin{table}[H]
@@ -343,7 +341,6 @@ For \(\mu_{\text{same}}^{obs}\) and \(\mu_{\text{diff}}^{obs}\), our experimenta
         \item \textbf{\(\mu_{\text{diff}}^{obs}\)}: Similarly, \(\mu_{\text{diff}}^{obs}\) was determined by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the inter-individual comparisons, which furnished us with the following probability:
 
         \[ \mu_{\text{diff}}^{obs} \approx 0.08249 = 8.25\% \]
-
         \begin{figure}[H]
             \centering
             \begin{subfigure}[b]{0.48\linewidth}

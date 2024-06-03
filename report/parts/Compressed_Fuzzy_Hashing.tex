@@ -5,30 +5,30 @@
 \label{sec:Compressed Fuzzy Hashing}
 
 Compressed fuzzy hashing generates concise hashes of data, capturing key features while allowing for slight variations - a concept referred to as "fuzziness". Unlike conventional cryptographic hashing, which generates fixed-length outputs and is highly sensitive to even minimal changes in input, compressed fuzzy hashing maintains a robust link to the original content despite alterations.
-This section delves into the mechanics of the compressed fuzzy hashing algorithm, called the \textit{PostHash} procedure. We will explore the mathematical concepts that enable its effectiveness and discuss experimental results that demonstrate its capabilities and performance on our dataset.
+This section delves into the mechanics of the compressed fuzzy hashing algorithm, called the postHash procedure. We will explore the mathematical concepts that enable its effectiveness and discuss experimental results that demonstrate its capabilities and performance on our dataset.
 
 \subsection{PostHashing Algorithm}
 
-The \textit{PostHash} algorithm, constituting the second and final step in the fuzzy hashing process, generates compact hashes based on the indices derived from the \textit{PreHash} algorithm (see section \ref{sec:Fuzzy Hashing}). This algorithm is designed to transform a tuple of indices into a concise hash format, \(h_1 || \ldots || h_m\), where each \(h_i\), for \(i \in [1, m]\), is an integer within the range \([0, \ldots, D-1]\).The parameter \(D\), defined as \(2^d\), denotes the total number of possible values each \(h_i\) can assume, with \(d\) representing the bit depth used per index. 
+The postHash algorithm, constituting the second and final step in the fuzzy hashing process, generates compact hashes based on the indices derived from the preHash algorithm (see section \ref{sec:Fuzzy Hashing}). This algorithm is designed to transform a tuple of indices into a concise hash format, \(h_1 || \ldots || h_m\), where each \(h_i\), for \(i \in [1, m]\), is an integer within the range \([0, \ldots, D-1]\).The parameter \(D\), defined as \(2^d\), denotes the total number of possible values each \(h_i\) can assume, with \(d\) representing the bit depth used per index. 
 
 Algorithm Inputs and Outputs:
 \begin{enumerate}
     \item \textbf{Inputs}: As illustrated in Figure~\ref{postHash Algorithm}, the algorithm takes as input:
     \begin{itemize}
-        \item \textbf{A tuple of indices}: \((i_1, \ldots, i_m)\), which is the output of the \textit{PreHash} algorithm
+        \item \textbf{A tuple of indices}: \((i_1, \ldots, i_m)\), which is the output of the preHash algorithm
     \end{itemize}
     \item \textbf{Output}: Converted indices, forming a compact hash \(h_1|| \ldots || h_m\), where \(h_i\) \(i \in [1, m]\), is an integer in \([0, \ldots, D-1]\)
 \end{enumerate}
 
-Detailed Process of \textit{PostHash}:
+Detailed Process of postHash:
 \begin{enumerate}
-    \item \textbf{Subroutine}: For each index provided by the \textit{PreHash}, subroutine \(T\) checks if the index is within the acceptable range. If an index is out of range, \(T\) returns 0, otherwise, it proceeds with a table lookup. The subroutine maps each valid index \(i\) to an integer nearly uniformly distributed between \([0, D-1]\), ensuring that all potential hash values are equally probable. This mapping is important for the security and effectiveness of the fuzzy hashing system.
+    \item \textbf{Subroutine}: For each index provided by the preHash, subroutine \(T\) checks if the index is within the acceptable range. If an index is out of range, \(T\) returns 0, otherwise, it proceeds with a table lookup. The subroutine maps each valid index \(i\) to an integer nearly uniformly distributed between \([0, D-1]\), ensuring that all potential hash values are equally probable. This mapping is important for the security and effectiveness of the fuzzy hashing system.
     
     The subroutine function, \(T\), works as follows:
     \begin{itemize}
         \item \textbf{Inputs}: 
         \begin{itemize}
-            \item \textbf{Shifted Index}: Each index from the \textit{PreHash} output tuple \((i_1, \ldots, i_m)\) is adjusted before conversion into a hash component. Specifically, the index \(i\) is shifted by subtracting a previously determined index \(i'\), resulting in a transformed index \(i - i'\). This shifting process normalizes the indices, maintaining a consistent relative positioning within the dataset, which helps in achieving a more uniform distribution of hash values across the range \([0, D-1]\).
+            \item \textbf{Shifted Index}: Each index from the preHash output tuple \((i_1, \ldots, i_m)\) is adjusted before conversion into a hash component. Specifically, the index \(i\) is shifted by subtracting a previously determined index \(i'\), resulting in a transformed index \(i - i'\). This shifting process normalizes the indices, maintaining a consistent relative positioning within the dataset, which helps in achieving a more uniform distribution of hash values across the range \([0, D-1]\).
             \item \textbf{d}: Represents the bit length used for each hash index \(h_i\). This value determines \(D = 2^d\), the total number of distinct values each \(h_i\) can take, effectively setting the hash resolution.
         \end{itemize}
         \item \textbf{Output}: \(h_i\), the mapped integer
@@ -39,7 +39,7 @@ Detailed Process of \textit{PostHash}:
 
 \begin{algorithm}
     \begin{algorithmic}[1]
-    \caption{\textit{postHash} Algorithm}
+    \caption{postHash Algorithm}
     \label{postHash Algorithm}
     \Function{(postHash $\circ$ preHash$_\text{key}^m$)}{$X$}
     \State $\text{hash} = []$
@@ -69,9 +69,9 @@ Detailed Process of \textit{PostHash}:
 \subsection{Assessing Similarity of Biometric Inputs After PostHash Application}
 \label{sec:q}
 
-After processing finger images through the pipeline referenced in Pipeline~\ref{pipeline_simon} to extract their feature vectors, the resulting data undergo the \textit{preHash} and subsequently, the \textit{postHash} algorithms. The final output from \textit{postHash} consists of a set of integers \( h_i \), each bounded within the inclusive range \([0, D-1]\). This process effectively assigns each feature vector index to an integer within this range.
+After processing finger images through the pipeline referenced in Pipeline~\ref{pipeline_simon} to extract their feature vectors, the resulting data undergo the preHash and subsequently, the postHash algorithms. The final output from postHash consists of a set of integers \( h_i \), each bounded within the inclusive range \([0, D-1]\). This process effectively assigns each feature vector index to an integer within this range.
 
-In our methodology, we model these integers \( h_i \) as following a geometric distribution. This assumption is based on the output relationship established by \( Hash_{key}^m(X) = \text{postHash}(\text{preHash}_{key}^m(X)) \). We assume the same conditions as discussed in Section~\ref{sec:Fuzzy Hashing}: the key is randomly chosen, and \(k\) represents a uniformly distributed random index. Consequently, the probability of the \textit{Hash} operation yielding the same index for two different inputs \(X\) and \(Y\) can be mathematically characterized as follows:
+In our methodology, we model these integers \( h_i \) as following a geometric distribution. This assumption is based on the output relationship established by \( Hash_{key}^m(X) = postHash(preHash_{key}^m(X)) \). We assume the same conditions as discussed in Section~\ref{sec:Fuzzy Hashing}: the key is randomly chosen, and \(k\) represents a uniformly distributed random index. Consequently, the probability of the Hash operation yielding the same index for two different inputs \(X\) and \(Y\) can be mathematically characterized as follows:
 
 \[Pr[Hash_{key}^m(d_X) = Hash_{key}^m(d_Y)] \leq \mu^m(1 - \frac{1}{D}) + \frac{1}{D}\]
 
@@ -109,7 +109,7 @@ In the subsequent section, we explore enhancements to data compression technique
 Building on the foundational calculations for \(q_{\text{indep}}\), which we derived using Formula ~\ref{eq:q_formula} with \( \mu^{obs}_{\text{indep}} \) previously identified in Section \ref{sec:Fuzzy Hashing}, our exploration extended to \(q^{obs}_{\text{same}}\) and \(q^{obs}_\text{diff}\). To evaluate these parameters, we initiated a series of experiments. Integral to this implementation and the following ones, is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table and all subsequent ones, is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
 
 \begin{equation}
-    \text{\textit{PostHash}}(i) = \left\lfloor 2^d \left(1 - p\right)^i \right\rfloor
+    \text{postHash}(i) = \left\lfloor 2^d \left(1 - p\right)^i \right\rfloor
     \label{eq:GeomFormula}
 \end{equation}
     
@@ -119,7 +119,7 @@ Leveraging the above formula, we have developed lookup tables that convert a sin
 Binary Hash Output Distribution Table (\(d=1\))
 {\renewcommand{\arraystretch}{1.25}
 \[
-\text{\textit{PostHash}}(i) = \left\{
+\text{postHash}(i) = \left\{
     \begin{array}{lll}
         \text{1}  & \text{if } 1 \leq i \leq 19 & (\text{Pr} = 49.32\%)
         \\
@@ -133,7 +133,7 @@ Binary Hash Output Distribution Table (\(d=1\))
 Quaternary Hash Output Distribution Table (\(d=2\)):
 {\renewcommand{\arraystretch}{1.25}
 \[
-\text{\textit{PostHash}}(i) = \left\{
+\text{PostHash}(i) = \left\{
     \begin{array}{lll}
         \text{3}  & \text{if } 1 \leq i \leq 8 & (\text{Pr} = 24.89\%)
         \\
@@ -150,7 +150,7 @@ Quaternary Hash Output Distribution Table (\(d=2\)):
 Octal Hash Output Distribution Table (\(d=3\)):
 {\renewcommand{\arraystretch}{1.25}
 \[
-\text{\textit{PostHash}}(i) = \left\{
+\text{postHash}(i) = \left\{
     \begin{array}{lll}
         \text{7}  & \text{if } 1 \leq i \leq 3 & (\text{Pr} = 10.18\%)
         \\
@@ -177,7 +177,7 @@ Hexadecimal Hash Output Distribution Table \(d=4\)
 {
 \renewcommand{\arraystretch}{1.25}
 \[
-\text{\textit{PostHash}}(i) = \left\{
+\text{postHash}(i) = \left\{
 \begin{array}{lll}
     \text{15} & \text{if } i = 1 & (\text{Pr} = 3.51\%), \\
     \text{14} & \text{if } 2 \leq i \leq 3 & (\text{Pr} = 6.66\%) \\
@@ -201,7 +201,7 @@ Hexadecimal Hash Output Distribution Table \(d=4\)
 \]
 }
 
-In our current implementation of PostHash output tables, each partition does not distribute probabilities equally among the bins. This uneven distribution, observed from binary to hexadecimal outputs, poses some challenges, particularly in our system, where hash functions are employed to ensure the confidentiality of biometric data. The non-uniform distribution can lead to predictable patterns, potentially compromising the security by making the system more vulnerable to attacks such as hash collisions. These predictable patterns can be exploited by attackers to reverse-engineer or guess hash values, thereby breaching the confidentiality of biometric information and undermining the integrity of our security measures.
+In our current implementation of postHash output tables, each partition does not distribute probabilities equally among the bins. This uneven distribution, observed from binary to hexadecimal outputs, poses some challenges, particularly in our system, where hash functions are employed to ensure the confidentiality of biometric data. The non-uniform distribution can lead to predictable patterns, potentially compromising the security by making the system more vulnerable to attacks such as hash collisions. These predictable patterns can be exploited by attackers to reverse-engineer or guess hash values, thereby breaching the confidentiality of biometric information and undermining the integrity of our security measures.
 
 In the context of compressed fuzzy hashing, domain scrambling aims to reorder the indices in a way that the resulting hash values are "nearly" uniformly distributed. This task shares similarities with a well known problem in computer science called the "Partition Problem". This problem involves deciding whether a given multiset of positive integers can be partitioned into two or more subsets such that the sum of the numbers in each subset is equal. This problem is a specific instance of the subset sum problem, where the target sum is half of the total sum of all elements in the set. The partition problem is classified as NP-complete, a categorization in computational complexity theory used to describe decision problems. A problem is in NP (Non-deterministic Polynomial time) if a solution for the problem can be verified in polynomial time given a candidate solution. moreover, a problem is NP-complete if it is as hard as the hardest problems in NP and if every problem in NP can be reduced to it in polynomial time. This implies two things for NP-complete problems:
 
@@ -241,10 +241,10 @@ Given the NP-completeness of the partition problem, programming an optimal solut
 
 We can see that the distribution of probabilities and counts across buckets demonstrates a good effort towards achieving uniformity.
 
-Utilizing these derived lookup tables, alongside our established PreHash function(~\ref{preHash Algorithm}) and the newly implemented PostHash function(~\ref{postHash Algorithm}), we are equipped to conduct experiments on our dataset to assess \(q_{same}\) and \(q_{diff}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the PreHash function directly into the PostHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the PreHash and PostHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
+Utilizing these derived lookup tables, alongside our established preHash function(~\ref{preHash Algorithm}) and the newly implemented postHash function(~\ref{postHash Algorithm}), we are equipped to conduct experiments on our dataset to assess \(q_{same}\) and \(q_{diff}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the preHash function directly into the postHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the preHash and postHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
 
 \begin{enumerate}
-    \item \text{\(d = 1\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and binary PostHash indices (\(d=1\)).
+    \item \text{\(d = 1\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and binary postHash indices (\(d=1\)).
     \begin{itemize}
         \item \(q_{same}^{obs} = 61.53\%\)
         \item \(q_{diff}^{obs} = 52.69\%\)
@@ -267,7 +267,7 @@ Utilizing these derived lookup tables, alongside our established PreHash functio
         \end{minipage}
     \end{figure}
     
-    \item \text{\(d = 2\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Quaternary PostHash indices (\(d=2\)).
+    \item \text{\(d = 2\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and quaternary postHash indices (\(d=2\)).
     \begin{itemize}
         \item \(q_{same}^{obs} = 42.62\%\)
         \item \(q_{diff}^{obs} = 29.84\%\)
@@ -290,7 +290,7 @@ Utilizing these derived lookup tables, alongside our established PreHash functio
         \end{minipage}
     \end{figure}
     
-    \item \text{\(d = 3\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Octal PostHash indices (\(d=3\)).
+    \item \text{\(d = 3\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and octal postHash indices (\(d=3\)).
     \begin{itemize}
         \item \(q_{same}^{obs} = 31.97\%\)
         \item \(q_{diff}^{obs} = 17.36\%\)
@@ -313,7 +313,7 @@ Utilizing these derived lookup tables, alongside our established PreHash functio
         \end{minipage}
     \end{figure}
     
-    \item \text{\(d = 4\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and Hexa-Decimal PostHash indices (\(d=4\)).
+    \item \text{\(d = 4\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and hexa-decimal postHash indices (\(d=4\)).
     \begin{itemize}
         \item \(q_{same}^{obs} = 26.92\%\)
         \item \(q_{diff}^{obs} = 13.13\%\)

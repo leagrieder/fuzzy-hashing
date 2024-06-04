@@ -203,7 +203,7 @@ Hexadecimal Hash Output Distribution Table \(d=4\)
 \]
 }
 
-In our current implementation of postHash output tables, each partition does not distribute probabilities equally among the bins. This uneven distribution, observed from binary to hexadecimal outputs, poses some challenges, particularly in our system, where hash functions are employed to ensure the confidentiality of biometric data. The non-uniform distribution can lead to predictable patterns, potentially compromising the security by making the system more vulnerable to attacks such as hash collisions. These predictable patterns can be exploited by attackers to reverse-engineer or guess hash values, thereby breaching the confidentiality of biometric information and undermining the integrity of our security measures.
+In our current implementation of postHash output tables, each partition, notably partitions for \(d = 3\) and \(d = 4\), does not distribute probabilities equally among the bins. This uneven distribution, observed from binary to hexadecimal outputs, poses some challenges, particularly in our system, where hash functions are employed to ensure the confidentiality of biometric data. The non-uniform distribution can lead to predictable patterns, potentially compromising the security by making the system more vulnerable to attacks such as hash collisions. These predictable patterns can be exploited by attackers to reverse-engineer or guess hash values, thereby breaching the confidentiality of biometric information and undermining the integrity of our security measures.
 
 In the context of compressed fuzzy hashing, domain scrambling aims to reorder the indices in a way that the resulting hash values are "nearly" uniformly distributed. This task shares similarities with a well known problem in computer science called the "Partition Problem". This problem involves deciding whether a given multiset of positive integers can be partitioned into two or more subsets such that the sum of the numbers in each subset is equal. This problem is a specific instance of the subset sum problem, where the target sum is half of the total sum of all elements in the set. The partition problem is classified as NP-complete, a categorization in computational complexity theory used to describe decision problems. A problem is in NP (Non-deterministic Polynomial time) if a solution for the problem can be verified in polynomial time given a candidate solution. moreover, a problem is NP-complete if it is as hard as the hardest problems in NP and if every problem in NP can be reduced to it in polynomial time. This implies two things for NP-complete problems:
 
@@ -212,13 +212,29 @@ In the context of compressed fuzzy hashing, domain scrambling aims to reorder th
     \item There is no known algorithm that can find an optimal solution to NP-complete problems in polynomial time for all general cases.
 \end{enumerate}
 
-Given the NP-completeness of the partition problem, programming an optimal solution for domain scrambling — which is akin to a continuous partitioning challenge — is impractical. Theoretically, while it is feasible to verify if a given distribution of indices across hash buckets is optimal, finding that distribution algorithmically cannot be guaranteed to be efficient for all possible cases. However, we did try to implement this algorithm and observe the results for the case where the hash depth is \(d=4\), resulting in \(D=16\) possible hash values. The program written is designed to distribute a sequence of integers (1 to 90'240) across predefined buckets (0 to 15) to achieve a target probability distribution based on our geometric decay model~\ref{eq:GeomFormula}. This process begins by mapping each integer to a bucket using a calculated index derived from the geometric formula, adjusted by a scaling factor. Initial bucket assignments aim to approximate a uniform distribution of probabilities. The program then iteratively adjusts these assignments: integers are moved between buckets to better align with the target probabilities, ensuring that the sum of probabilities within each bucket remains close to the desired uniform distribution. This adjustment process continues until the distribution of probabilities across all buckets falls within an acceptable error margin, or until no further beneficial adjustments can be made. The following lookup table illustrates the distribution of indices across each bucket, including the count of indices falling within each bucket and the range of indices encompassed by it.
+Given the NP-completeness of the partition problem, programming an optimal solution for domain scrambling — which is akin to a continuous partitioning challenge — is impractical. Theoretically, while it is feasible to verify if a given distribution of indices across hash buckets is optimal, finding that distribution algorithmically cannot be guaranteed to be efficient for all possible cases. However, we did try to implement this algorithm and observe the results for the cases where the hash depth is \(d=3\) and \(d=4\), resulting in \(D=9\) and \(D=16\) possible hash values respectively. The program written is designed to distribute a sequence of integers (1 to 90'240) across predefined buckets, (0 to 8) and (0 to 15) respectively, to achieve a target probability distribution based on our geometric decay model~\ref{eq:GeomFormula}. This process begins by mapping each integer to a bucket using a calculated index derived from the geometric formula, adjusted by a scaling factor. Initial bucket assignments aim to approximate a uniform distribution of probabilities. The program then iteratively adjusts these assignments: integers are moved between buckets to better align with the target probabilities, ensuring that the sum of probabilities within each bucket remains close to the desired uniform distribution. This adjustment process continues until the distribution of probabilities across all buckets falls within an acceptable error margin, or until no further beneficial adjustments can be made. The following lookup tables illustrate the distribution of indices across each bucket, including the count of indices falling within each bucket and the range of indices encompassed by it.
+
+\renewcommand{\arraystretch}{1.25}
+\[
+\text{Bucket Assignments (d = 3)} = \left\{
+\begin{array}{lll}
+    0 & \text{if } i \in [1, 90240] & (\text{Count} = 84435, \text{Pr} = 12.548\%), \\
+    1 & \text{if } i \in [2, 5812] & (\text{Count} = 1944, \text{Pr} = 12.530\%), \\
+    2 & \text{if } i \in [3, 3875] & (\text{Count} = 1142, \text{Pr} = 12.540\%), \\
+    3 & \text{if } i \in [4, 2741] & (\text{Count} = 812, \text{Pr} = 12.486\%), \\
+    4 & \text{if } i \in [5, 1937] & (\text{Count} = 633, \text{Pr} = 12.535\%), \\
+    5 & \text{if } i \in [6, 1313] & (\text{Count} = 519, \text{Pr} = 12.546\%), \\
+    6 & \text{if } i \in [7, 804] & (\text{Count} = 442, \text{Pr} = 12.312\%), \\
+    7 & \text{if } i \in [57, 373] & (\text{Count} = 313, \text{Pr} = 12.502\%), \\
+\end{array}
+\right.
+\]
 
 
 
 \renewcommand{\arraystretch}{1.25}
 \[
-\text{Bucket Assignments} = \left\{
+\text{Bucket Assignments (d = 4)} = \left\{
 \begin{array}{lll}
     0 & \text{if } i \in [1, 90240] & (\text{Count} = 82493, \text{Pr} = 6.297\%), \\
     1 & \text{if } i \in [2, 7750] & (\text{Count} = 1941, \text{Pr} = 6.276\%), \\
@@ -244,6 +260,8 @@ Given the NP-completeness of the partition problem, programming an optimal solut
 We can see that the distribution of probabilities and counts across buckets demonstrates a good effort towards achieving uniformity.
 
 Utilizing these derived lookup tables, alongside our established preHash function(~\ref{preHash Algorithm}) and the newly implemented postHash function(~\ref{postHash Algorithm}), we are equipped to conduct experiments on our dataset to assess \(q_{same}\) and \(q_{diff}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the preHash function directly into the postHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the preHash and postHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
+
+Note that for \(d = 3\) and \(d = 4\), we used the lookup tables with redistributed indices defined just above. The initial bucket assignments, calculated using formula~\ref{eq:GeomFormula}, did not achieve a balanced enough distribution of probabilities across the buckets, necessitating this redistribution.
 
 \begin{enumerate}
     \item \text{\(d = 1\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and binary postHash indices (\(d=1\)).
@@ -294,8 +312,8 @@ Utilizing these derived lookup tables, alongside our established preHash functio
     
     \item \text{\(d = 3\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and octal postHash indices (\(d=3\)).
     \begin{itemize}
-        \item \(q_{same}^{obs} = 31.97\%\)
-        \item \(q_{diff}^{obs} = 17.36\%\)
+        \item \(q_{same}^{obs} = 32.57\%\)
+        \item \(q_{diff}^{obs} = 19.04\%\)
     \end{itemize}
 
     \begin{figure}[H]
@@ -339,6 +357,8 @@ Utilizing these derived lookup tables, alongside our established preHash functio
     \end{figure}
 \end{enumerate}
 
-The theoretical values for \(q_{same}\) presented in Table~\ref{tab:theoretical_q} are accurate approximations, as the experimental results closely match these values. The greater discrepancy between theoretical and experimental values for \(q_{diff}\) compared to \(q_{same}\) can be attributed to the following factor: Different biometric samples exhibit higher variability, leading to a broader range of feature differences, which can cause deviations from theoretical assumptions. Outliers and noise further exacerbate the discrepancies for \(q_{diff}\). Moreover, the theoretical values for the parameter combination \(m=1\) and \(d=4\) (last row of Table~\ref{tab:theoretical_q}) align almost perfectly with the experimental results, with \(q_{same}\) values being identical and \(q_{diff}\) values differing by only approximately 0.8\%. The lookup table used for this experiment was generated using Equation~\ref{eq:GeomFormula}, followed by a redistribution of the indices across each bucket to achieve a more uniform distribution. This redistribution process was not applied to the first three experiments, which could explain why their results show greater discrepancies.
+The theoretical values for \(q_{same}\) presented in Table~\ref{tab:theoretical_q} are accurate approximations, as the experimental results closely match these values. The greater discrepancy between theoretical and experimental values for \(q_{diff}\) compared to \(q_{same}\) can be attributed to the following factor: Different biometric samples exhibit higher variability, leading to a broader range of feature differences, which can cause deviations from theoretical assumptions. Outliers and noise further exacerbate the discrepancies for \(q_{diff}\). Moreover, the theoretical values for the parameter combination \(m=1\) and \(d=4\) (last row of Table~\ref{tab:theoretical_q}) align almost perfectly with the experimental results, with \(q_{same}\) values being identical and \(q_{diff}\) values differing by only approximately 0.8\%. The lookup table used for this experiment was generated using Equation~\ref{eq:GeomFormula}, followed by a redistribution of the indices across each bucket to achieve a more uniform distribution. This redistribution process was also applied to the experiment with \(d = 3\), achieving experimental results much closer to the theoretical predictions. However, this redistribution was not applied to the first three experiments, which could explain why their results show greater discrepancies.
+
+
 
 

@@ -96,7 +96,7 @@ The FPR is the probability that the Hamming distance \( H \) is less than the th
 
 These formulations allow for the evaluation of false match rates based on the standard deviation and mean of the distributions for same and different samples, respectively.e
 
-For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate the threshold (\(t\)) from parameters \(m\) and \(l\) to achieve an FNR of 1\%. The theoretical resulting set of parameters is as follows: 
+For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate the threshold (\(t\)) from parameters \(m\) and \(l\) to achieve an FNR of \(\approx\) 1\%. The theoretical resulting set of parameters is as follows: 
 
 \begin{table}[htbp] 
     \centering
@@ -119,7 +119,7 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
     \label{tab:theoretical_parameterization_PreHash}
 \end{table}
 
-Using compression techniques implemented through postHash, specifically compressing to \( D = 16 \) (\( d = 4 \)), we calculate the threshold (\( t \)) from parameters \( m = 1 \) and \( l \) to achieve an FNR of \(1\%\). The introduction of compression slightly modifies the equations for FNR (\ref{eq:fnr}) and FPR (\ref{eq:fpr}), necessitating the use of \( q \) in place of \(\mu^m\). The theoretical resulting set of parameters is as follows:
+Using compression techniques implemented through postHash, specifically compressing to \( D = 16 \) (\( d = 4 \)) and \( D = 2 \) (\( d = 1 \)), we calculate the threshold (\( t \)) from parameters \( m = 1 \) and \( l \) to achieve an FNR of \(\approx\) \(1\%\). The introduction of compression slightly modifies the equations for FNR (\ref{eq:fnr}) and FPR (\ref{eq:fpr}), necessitating the use of \( q \) in place of \(\mu^m\). The theoretical resulting set of parameters is as follows:
 
 \begin{table}[htbp] 
     \centering

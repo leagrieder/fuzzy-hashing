@@ -305,6 +305,8 @@ Finally, the following figures are provided:
 \label{tab:approximation_mu_taylor}
 \end{table}
 
+We can note that there is not a major difference between approximations from Table~\ref{tab:approximation_mu_taylor} and Table~\ref{tab:mu_approx}. Yet, the approximation from Table~\ref{tab:approximation_mu_taylor} yields extremely close values to the experimental results from subsection~\ref{sec:experiment_fuzzy_hash}.
+
 Finally, it is observed that:
 
 \begin{equation}
@@ -314,6 +316,7 @@ Finally, it is observed that:
 where equality is reached for the optimal offset translations.
 
 \subsection{Experimental Derivation of the Probabilities \(\mu_{\text{same}}^{\text{obs}}, \mu_{\text{diff}}^{\text{obs}}, \mu_{\text{indep}}^{\text{obs}}\)}
+\label{sec:experiment_fuzzy_hash}
 
 In Section~\ref{sec:mu}, we have laid out the mathematical framework that defines the upper bound \(\mu\). This probability is crucial in our fuzzy hashing approach, as it quantifies the matching likelihood after applying the optimal offset translations to the biometric captures. The application of these optimal offsets is an important preprocessing step before hashing the dataset, ensuring that the biometric features are accurately aligned for comparison.
 

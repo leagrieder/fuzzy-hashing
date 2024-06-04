@@ -43,13 +43,13 @@ To further refine our understanding, we use statistical methods to approximate t
 %    FNR = \Phi\left( \frac{t - l\mu_{\text{same}}^m}{\sqrt{l\mu_{\text{same}}^m}} \right)
 %\end{equation}
 
-First, let us define the random variable $H$ as \(H = d_H(Hash_{key}(\bar{X}), Hash_{key}(\bar{Y}))\), representing the number of positions where the preHash values of two samples differ, capturing the number of keys with different hashes. Since the hash keys are generated such that each preHash comparison is independent, the Hamming distance $H$ can be modeled as a binomial random variable, \(H \sim Binomial(l, p)\), where $l$ is the total number of iterations and $p = P(Hash_{key_i}(\bar{X}) \neq Hash_{key_i}(\bar{Y})) = 1 - \mu_{same}^m$ is the probability that the output of the preHash function for a certain key $key_i$ mismatches. This probability uses $\mu_{same}$ because we are approximating the FNR, which, by definition, is when the samples should match but don't. 
+First, let us define the random variable $H$ as \(H = d_H(Hash_{key}(\bar{X}), Hash_{key}(\bar{Y}))\), representing the number of positions where the preHash values of two samples differ, capturing the number of keys with different hashes. Supposing that the hash keys are generated such that each preHash comparison is independent, the Hamming distance $H$ can be modeled as a binomial random variable, \(H \sim Binomial(l, p_H)\), where $l$ is the total number of iterations and $p_H = Pr(Hash_{key_i}(\bar{X}) \neq Hash_{key_i}(\bar{Y})) = 1 - \mu_{same}^m$ is the probability that the output of the preHash function for a certain key mismatches. This probability uses $\mu_{same}$ because we are approximating the FNR, which, by definition, is when the samples should match but don't. 
 \newline For a large $l$, the binomial distribution can be approximated by a normal distribution using the Central Limit Theorem. The mean and variance of the binomial distribution are given by
 \[
-\mu_{H, same} = \mathbb{E}(H) = l \times p = l \times (1 - \mu_{same}^m)    
+\mu_{H, same} = \mathbb{E}(H) = l \times p_H = l \times (1 - \mu_{same}^m)    
 \]
 \[
-\sigma_{H, same}^2 = \mathbb{V}(H) = l \times p \times (1 - p) = l \times (1 - \mu_{same}^m) \times \mu_{same}^m    
+\sigma_{H, same}^2 = \mathbb{V}(H) = l \times p_H \times (1 - p_H) = l \times (1 - \mu_{same}^m) \times \mu_{same}^m    
 \]
 Therefore, H can be approximated by
 \[
@@ -59,8 +59,8 @@ The FNR is the probability that the Hamming distance $H$ exceeds $l - t$ in case
 \begin{equation}
     \begin{aligned}
         \label{eq:fnr}
-        FNR &= P[l - H < t] = P[H > l - t] \\
-        &= P\left[\frac{H - \mu_{H, same}}{\sigma_{H, same}} > \frac{l - t - \mu_{H, same}}{\sigma_{H, same}}\right] \\
+        FNR &= Pr[l - H < t] = Pr[H > l - t] \\
+        &= Pr\left[\frac{H - \mu_{H, same}}{\sigma_{H, same}} > \frac{l - t - \mu_{H, same}}{\sigma_{H, same}}\right] \\
         &= \Phi \left( - \frac{l - t - \mu_{H, same}}{\sigma_{H, same}}\right) \\
         &= \Phi \left(\frac{t - l\mu_{\text{same}}}{\sqrt{l \times (1 - \mu_{same}^m) \times \mu_{\text{same}}^m}}\right) \\
         &\approx \Phi \left(\frac{t - l\mu_{\text{same}}}{\sqrt{l\mu_{\text{same}}^m}}\right) \\
@@ -72,7 +72,7 @@ Here, \(\Phi\) denotes the Cumulative Distribution Function (CDF) of the standar
 
 Using the same deduction as the previous paragraph and considering that for the False Positive Rate (FPR) we use \(\mu_{\text{diff}}\) instead of \(\mu_{\text{same}}\), we can derive the FPR as follows. The FPR is the probability that non-matching biometric samples are incorrectly identified as matches by the system. 
 
-Let \( H \) represent the Hamming distance as before. When dealing with non-matching samples, the probability of a mismatch for any given bit is higher, and is denoted by \( \mu_{\text{diff}} \). Thus, the probability of a mismatch is \( p = 1 - \mu_{\text{diff}}^m \).
+Let \( H \) represent the Hamming distance as before. When dealing with non-matching samples, the probability of a mismatch for any given preHash iteration is denoted by \( \mu_{\text{diff}} \). Thus, the probability of a mismatch is \( p_H = 1 - \mu_{\text{diff}}^m \).
 
 For a large \( l \), the Hamming distance \( H \) can again be approximated by a normal distribution. The mean and variance for the non-matching case are given by:
 \[
@@ -91,8 +91,8 @@ The FPR is the probability that the Hamming distance \( H \) is less than the th
 \begin{equation}
 \begin{aligned}
     \label{eq:fpr}
-    \text{FPR} &= P[H \leq l - t] \\
-    &= P\left[\frac{H - \mu_{H, \text{diff}}}{\sigma_{H, \text{diff}}} \leq \frac{l - t - \mu_{H, \text{diff}}}{\sigma_{H, \text{diff}}}\right] \\
+    \text{FPR} &= Pr[H \leq l - t] \\
+    &= Pr\left[\frac{H - \mu_{H, \text{diff}}}{\sigma_{H, \text{diff}}} \leq \frac{l - t - \mu_{H, \text{diff}}}{\sigma_{H, \text{diff}}}\right] \\
     &= \Phi\left(\frac{l - t - \mu_{H, \text{diff}}}{\sigma_{H, \text{diff}}}\right) \\
     &= \Phi\left(-\frac{t - l\mu_{\text{diff}}^m}{\sqrt{l \times (1 - \mu_{\text{diff}}^m) \times \mu_{\text{diff}}^m}}\right)\\
     &\approx\Phi\left(-\frac{t - l\mu_{\text{diff}}^m}{\sqrt{l\cdot \mu_{\text{diff}}^m}}\right)
@@ -106,7 +106,7 @@ The FPR is the probability that the Hamming distance \( H \) is less than the th
 %    FPR = \Phi\left(\frac{l - t - \mu_{H, diff}^m}{\sigma_{H, diff}} \right)
 %\end{equation}
 
-These formulations allow for the evaluation of false match rates based on the standard deviation and mean of the distributions for same and different samples, respectively. The upper bound \(\mu_{same}\) and \(\mu_{diff}\) are defined in Equation \ref{eq:mu}.
+These formulations allow for the evaluation of false match rates based on the standard deviation and mean of the distributions for same and different samples, respectively.e
 
 For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate the threshold (\(t\)) from parameters \(m\) and \(l\) to achieve an FNR of 1\%. The theoretical resulting set of parameters is as follows: 
 
@@ -131,7 +131,7 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
     \label{tab:theoretical_parameterization_PreHash}
 \end{table}
 
-Using compression techniques implemented through postHash, specifically compressing to \( D = 16 \) (\( d = 4 \)), we calculate the threshold (\( t \)) from parameters \( m = 1 \) and \( l \) to achieve an FNR of \(1\%\) and an FPR \(\leq 2^{-36} \). The introduction of compression slightly modifies the equations for FNR (\ref{eq:fnr}) and FPR (\ref{eq:fpr}), necessitating the use of \( q \) in place of \(\mu^m\). The theoretical resulting set of parameters is as follows:
+Using compression techniques implemented through postHash, specifically compressing to \( D = 16 \) (\( d = 4 \)), we calculate the threshold (\( t \)) from parameters \( m = 1 \) and \( l \) to achieve an FNR of \(1\%\). The introduction of compression slightly modifies the equations for FNR (\ref{eq:fnr}) and FPR (\ref{eq:fpr}), necessitating the use of \( q \) in place of \(\mu^m\). The theoretical resulting set of parameters is as follows:
 
 \begin{table}[htbp] 
     \centering
@@ -148,6 +148,7 @@ Using compression techniques implemented through postHash, specifically compress
     \label{tab:theoretical_parameterization_PostHash}
 \end{table}
 
+\newpage
 \subsection{Experimental Derivation of the FNR and FPR for different (\(m, l\)) Parameter Configurations}
 
 To experimentally determine the False Negative Rate (FNR) and the False Positive Rate (FPR) for various \((m, l)\) parameter configurations, the initial step is to compute the Hamming distance between \( Hash_{\text{key}}(X) \) and \( Hash_{\text{key}}(Y) \). The \( Hash_{\text{key}} \) of an extracted feature vector is generated using \( l \) iterations of preHash. We designed an algorithm that accepts a list of \( l \) keys (since each preHash iteration requires a new key) and the parameter \( m \), which indicates the number of indices each call to preHash should generate per key. For testing purposes, the \( l \) keys are simply integers from 0 to \( l-1 \), converted into a two-byte binary format. We then calculate the Hamming distance between the resulting hash values for pairs of images. The Hamming distance between \( Hash_{\text{key}}(X) \) and \( Hash_{\text{key}}(Y) \) is defined as the number of positions at which the corresponding iterations of preHash are different, as defined in Equation \ref{eq:HammingDist}. In this formula, the expression \( \# \{ i : preHash_{\text{key}_i}(X) \neq preHash_{\text{key}_i}(Y) \} \) counts the number of iterations \( i \) where the pre-hash values of \( X \) and \( Y \) differ. Each comparison results in a \(1\) if the iterations differ and a \(0\) if they are the same. Summing these comparison results gives the total number of differing positions, thereby computing the Hamming distance between the hash values of the iterations.

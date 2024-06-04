@@ -16,7 +16,7 @@ Subsequently, the Hamming distance between the resulting hash values of two biom
 \begin{equation}
     \begin{aligned}
         \label{eq:HammingDist}
-        d_H(Hash_{\text{key}}(\bar{X}), Hash_{\text{key}}(\bar{Y})) = \# \{i: preHash_{\text{key}_i}(\bar{X}) \neq preHash_{\text{key}_i}(\bar{Y})\}
+        d_H(Hash_{\text{key}}^m(\bar{X}), Hash_{\text{key}}^m(\bar{Y})) = \# \{i: preHash_{\text{key}_i}^m(\bar{X}) \neq preHash_{\text{key}_i}^m(\bar{Y})\}
     \end{aligned}
 \end{equation}
 
@@ -33,18 +33,18 @@ It's crucial to note that for both scenarios, additional privacy safeguards can 
 Transforming biometric data into a hash, using methods such as preHash or its more compact version, postHash, plays a key role in enhancing the system's efficiency and security. This process helps protect privacy, which in turn influences important aspects of the system's performance, such as the \hyperref[def:FNR]{False Negative Rate (FNR)} and the \hyperref[def:FPR]{False Positive Rate (FPR)}. By converting detailed biometric data into a simpler, hashed format, the system not only uses storage space more efficiently but also reduces the chances of unauthorized access to sensitive information. This transformation is crucial for maintaining the integrity of the data and provides a strong line of defense against potential security threats. Additionally, choosing the right techniques for generating these hashes can greatly improve the system's ability to distinguish between authorized and unauthorized users. This means fewer mistakes in the form of false rejections or acceptances, leading to a more accurate and dependable biometric verification process.
 
 We establish a threshold \(t\) to evaluate the match between two biometric samples, \(\bar{X}\) and \(\bar{Y}\), by analyzing the Hamming distance between their hash values.
-We define that a match is confirmed if the difference between \(l\) (the total iterations) and the Hamming distance is equal to or exceeds the threshold \(t\), expressed as: \[l - d_H(Hash_{\text{key}}(\bar{X}), Hash_{\text{key}}(\bar{Y})) \geq t\]
-In contrast, we define there being no match if the following equation holds: \[l - d_H(Hash_{\text{key}}(\bar{X}), Hash_{\text{key}}(\bar{Y})) < t\]
+We define that a match is confirmed if the difference between \(l\) (the total iterations) and the Hamming distance is equal to or exceeds the threshold \(t\), expressed as: \[l - d_H(Hash_{\text{key}}^m(\bar{X}), Hash_{\text{key}}^m(\bar{Y})) \geq t\]
+In contrast, we define there being no match if the following equation holds: \[l - d_H(Hash_{\text{key}}^m(\bar{X}), Hash_{\text{key}}^m(\bar{Y})) < t\]
 
 To further refine our understanding, we use statistical methods to approximate this comparison to a normal distribution, allowing us to more accurately calculate the False Negative Rate (FNR). 
 
-First, let us define the random variable $H$ as \(H = d_H(Hash_{key}(\bar{X}), Hash_{key}(\bar{Y}))\), representing the number of positions where the preHash values of two samples differ, capturing the number of keys with different hashes. Supposing that the hash keys are generated such that each preHash comparison is independent, the Hamming distance $H$ can be modeled as a binomial random variable, \(H \sim Binomial(l, p_H)\), where $l$ is the total number of iterations and $p_H = Pr(Hash_{key_i}(\bar{X}) \neq Hash_{key_i}(\bar{Y})) = 1 - \mu_{\text{same}}^m$ is the probability that the output of the preHash function for a certain key mismatches. This probability uses $\mu_{\text{same}}$ because we are approximating the FNR, which, by definition, is when the samples should match but don't. 
+First, let us define the random variable $H$ as \(H = d_H(Hash_{key}^m(\bar{X}), Hash_{key}^m(\bar{Y}))\), representing the number of positions where the preHash values of two samples differ, capturing the number of keys with different hashes. Supposing that the hash keys are generated such that each preHash comparison is independent, the Hamming distance $H$ can be modeled as a binomial random variable, \(H \sim Binomial(l, p_H)\), where $l$ is the total number of iterations and $p_H = Pr[Hash_{key_i}^m(\bar{X}) \neq Hash_{key_i}^m(\bar{Y})] = 1 - \mu_{\text{same}}^m$ is the probability that the output of the preHash function for a certain key mismatches. This probability uses $\mu_{\text{same}}$ because we are approximating the FNR, which, by definition, is when the samples should match but don't. 
 \newline For a large $l$, the binomial distribution can be approximated by a normal distribution using the Central Limit Theorem. The mean and variance of the binomial distribution are given by
 \[
-\mu_{\text{H, same}} = \mathbb{E}(H) = l \times p_H = l \times (1 - \mu_{\text{same}}^m)    
+\mu_{\text{H, same}} = \mathbb{E}(H) = l \cdot p_H = l \cdot (1 - \mu_{\text{same}}^m)    
 \]
 \[
-\sigma_{\text{H, same}}^2 = \mathbb{V}(H) = l \times p_H \times (1 - p_H) = l \times (1 - \mu_{\text{same}}^m) \times \mu_{\text{same}}^m    
+\sigma_{\text{H, same}}^2 = \mathbb{V}(H) = l \cdot p_H \cdot (1 - p_H) = l \cdot (1 - \mu_{\text{same}}^m) \cdot \mu_{\text{same}}^m    
 \]
 Therefore, H can be approximated by
 \[
@@ -57,7 +57,7 @@ The FNR is the probability that the Hamming distance $H$ exceeds $l - t$ in case
         FNR &= Pr[l - H < t] = Pr[H > l - t] \\
         &= Pr\left[\frac{H - \mu_{\text{H, same}}}{\sigma_{\text{H, same}}} > \frac{l - t - \mu_{\text{H, same}}}{\sigma_{\text{H, same}}}\right] \\
         &= \Phi \left( - \frac{l - t - \mu_{\text{H, same}}}{\sigma_{\text{H, same}}}\right) \\
-        &= \Phi \left(\frac{t - l\mu_{\text{same}}}{\sqrt{l \times (1 - \mu_{\text{same}}^m) \times \mu_{\text{same}}^m}}\right) \\
+        &= \Phi \left(\frac{t - l\mu_{\text{same}}}{\sqrt{l \cdot (1 - \mu_{\text{same}}^m) \cdot \mu_{\text{same}}^m}}\right) \\
         &\approx \Phi \left(\frac{t - l\mu_{\text{same}}}{\sqrt{l\mu_{\text{same}}^m}}\right) \\
     \end{aligned}        
 \end{equation}
@@ -71,10 +71,10 @@ Let \( H \) represent the Hamming distance as before. When dealing with non-matc
 
 For a large \( l \), the Hamming distance \( H \) can again be approximated by a normal distribution. The mean and variance for the non-matching case are given by:
 \[
-\mu_{\text{H, diff}} = l \times (1 - \mu_{\text{diff}}^m)
+\mu_{\text{H, diff}} = l \cdot (1 - \mu_{\text{diff}}^m)
 \]
 \[
-\sigma_{\text{H, diff}}^2 = l \times (1 - \mu_{\text{diff}}^m) \times \mu_{\text{diff}}^m
+\sigma_{\text{H, diff}}^2 = l \cdot (1 - \mu_{\text{diff}}^m) \cdot \mu_{\text{diff}}^m
 \]
 
 Therefore, \( H \) can be approximated by:
@@ -89,17 +89,10 @@ The FPR is the probability that the Hamming distance \( H \) is less than the th
     \text{FPR} &= Pr[H \leq l - t] \\
     &= Pr\left[\frac{H - \mu_{H, \text{diff}}}{\sigma_{H, \text{diff}}} \leq \frac{l - t - \mu_{H, \text{diff}}}{\sigma_{H, \text{diff}}}\right] \\
     &= \Phi\left(\frac{l - t - \mu_{H, \text{diff}}}{\sigma_{H, \text{diff}}}\right) \\
-    &= \Phi\left(-\frac{t - l\mu_{\text{diff}}^m}{\sqrt{l \times (1 - \mu_{\text{diff}}^m) \times \mu_{\text{diff}}^m}}\right)\\
+    &= \Phi\left(-\frac{t - l\mu_{\text{diff}}^m}{\sqrt{l \cdot (1 - \mu_{\text{diff}}^m) \cdot \mu_{\text{diff}}^m}}\right)\\
     &\approx\Phi\left(-\frac{t - l\mu_{\text{diff}}^m}{\sqrt{l\cdot \mu_{\text{diff}}^m}}\right)
 \end{aligned}
 \end{equation}
-
-%In contrast, the False Positive Rate (FPR), the proportion of non-matching biometric samples incorrectly identified as matches by the system, is defined as:
-
-%\begin{equation}
-%    \label{eq:fpr}
-%    FPR = \Phi\left(\frac{l - t - \mu_{H, diff}^m}{\sigma_{H, diff}} \right)
-%\end{equation}
 
 These formulations allow for the evaluation of false match rates based on the standard deviation and mean of the distributions for same and different samples, respectively.e
 
@@ -111,14 +104,14 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
         \hline
         \textit{m} & \textit{l} & \textit{t} & \textit{l}\(\mu_{\text{same}}^m\) & \textit{l}\(\mu_{\text{diff}}^m\) & \textit{FNR} & \textit{FPR} \\
         \hline
-        1 & 217 & 32 & 47.84 & 17.9 & \(\leq\)1\% & \(2^{-11}\)\\
-        1 & 637 & 113 & 140.44 & 52.55 & 1.0\% & \(2^{-54}\) \\
+        1 & 217 & 32 & 47.85 & 17.9 & \(\leq\)1\% & \(2^{-10}\)\\
+        1 & 637 & 113 & 140.46 & 52.55 & 1.0\% & \(2^{-54}\) \\
         %1 & 637 & 118 & 146.5 & 49 & 2^⁻6\% & \(2^{-74}\) \\
-        2 & 961 & 31 & 46.71 & 6.54 & 1.0\% & \(2^{-69}\) \\
+        2 & 961 & 31 & 46.72 & 6.54 & 1.0\% & \(2^{-69}\) \\
         %2 & 961 & 34 & 50.8 & 5.7 & 2^⁻6\% & \(2^⁻106\) \\
-        3 & 2569 & 15 & 27.53 & 1.44 & 1.0\% &\(2^{-101}\) \\
+        3 & 2569 & 15 & 27.54 & 1.44 & 1.0\% &\(2^{-101}\) \\
         %3 & 2569 & 18 & 31.3 & 1.2 & 2^⁻6\% &\(2^{-179}\) \\
-        4 & 8481 & 10 & 20.04 & 0.39 & 1.0\% & \(2^{-161}\) \\
+        4 & 8481 & 10 & 20.05 & 0.39 & 1.0\% & \(2^{-161}\) \\
         %4 & 8481 & 12 & 23.7 & 0.3 & 2^⁻6\% &\(2^{-377}\) \\
         \hline
     \end{tabular}
@@ -134,9 +127,9 @@ Using compression techniques implemented through postHash, specifically compress
         \hline
         \textit{m} & \textit{d} & \textit{l} & \textit{t} & \textit{l}\(q_{\text{same}}^m\) & \textit{l}\(q_{\text{diff}}^m\) & \textit{FNR} & \textit{FPR} \\
         \hline
-        1 & 4 & 1107 & 276 & 317.7 & 130.6 & 1.0\% & \(2^{-121}\) \\
-        1 & 4 & 347 & 76 & 99.6 & 40.9 & \(\leq\)1.0\% & \(2^{-14}\)\\
-        1 & 1 & 3597 & 957 & 1032.3 & 424.4 & \(\leq\)1.0\% & \(2^{-488}\)\\
+        1 & 4 & 1107 & 258 & 298 & 145.3 & 1.0\% & \(2^{-67}\) \\
+        1 & 4 & 347 & 71 & 93.4 & 45.6 & \(\leq\)1.0\% & \(2^{-13}\)\\
+        1 & 1 & 3597 & 2104 & 2213.2 & 1895.3 & \(\leq\)1.0\% & \(2^{-20}\)\\
         \hline
     \end{tabular}
     \caption{Theoretical Parameterization Results for FNR and FPR Calculation, using $l$ Iterations of PostHash}
@@ -147,49 +140,167 @@ Using compression techniques implemented through postHash, specifically compress
 \newpage
 \subsection{Experimental Derivation of the FNR and FPR for different (\(m, l\)) Parameter Configurations}
 
-To experimentally determine the False Negative Rate (FNR) and the False Positive Rate (FPR) for various \((m, l)\) parameter configurations, the initial step is to compute the Hamming distance between \( Hash_{\text{key}}(X) \) and \( Hash_{\text{key}}(Y) \). The \( Hash_{\text{key}} \) of an extracted feature vector is generated using \( l \) iterations of preHash. We designed an algorithm that accepts a list of \( l \) keys (since each preHash iteration requires a new key) and the parameter \( m \), which indicates the number of indices each call to preHash should generate per key. For testing purposes, the \( l \) keys are simply integers from 0 to \( l-1 \), converted into a two-byte binary format. We then calculate the Hamming distance between the resulting hash values for pairs of images. The Hamming distance between \( Hash_{\text{key}}(X) \) and \( Hash_{\text{key}}(Y) \) is defined as the number of positions at which the corresponding iterations of preHash are different, as defined in Equation \ref{eq:HammingDist}. In this formula, the expression \( \# \{ i : preHash_{\text{key}_i}(X) \neq preHash_{\text{key}_i}(Y) \} \) counts the number of iterations \( i \) where the pre-hash values of \( X \) and \( Y \) differ. Each comparison results in a \(1\) if the iterations differ and a \(0\) if they are the same. Summing these comparison results gives the total number of differing positions, thereby computing the Hamming distance between the hash values of the iterations.
+To experimentally determine the False Negative Rate (FNR) and the False Positive Rate (FPR) for various \((m, l)\) parameter configurations, the initial step is to compute the Hamming distance between \( Hash_{\text{key}}^m(\bar{X}) \) and \( Hash_{\text{key}}^m(\bar{Y}) \). The \( Hash_{\text{key}}^m \) of an extracted feature vector is generated using \( l \) iterations of preHash. We designed an algorithm that accepts a list of \( l \) keys (since each preHash iteration requires a new key) and the parameter \( m \), which indicates the number of indices each call to preHash should generate per key. For testing purposes, the \( l \) keys are simply integers from 0 to \( l-1 \), converted into a two-byte binary format. We then calculate the Hamming distance between the resulting hash values for pairs of images. The Hamming distance between \( Hash_{\text{key}}^m(\bar{X}) \) and \( Hash_{\text{key}}^m(\bar{Y}) \) is defined as the number of positions at which the corresponding iterations of preHash are different, as defined in Equation \ref{eq:HammingDist}. In this formula, the expression \( \# \{ i : preHash_{\text{key}_i}^m(\bar{X}) \neq preHash_{\text{key}_i}^m(\bar{Y}) \} \) counts the number of iterations \( i \) where the pre-hash values of \( \bar{X} \) and \( \bar{Y} \) differ. Each comparison results in a \(1\) if the iterations differ and a \(0\) if they are the same. Summing these comparison results gives the total number of differing positions, thereby computing the Hamming distance between the hash values of the iterations.
 
 
-Each experiment we conducted uses a different row from Table \ref{tab:theoretical_parameterization_PostHash}. In each experiment, we generate \( l \) preHash iterations for all image pairs and then determine if two images, \(X\) and \(Y\), are a match, defined as \( l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) \geq t \). We perform two types of comparisons on our data:
+Each experiment we conducted uses a different row from Table \ref{tab:theoretical_parameterization_PreHash}. In each experiment, we generate \( l \) preHash iterations for all image pairs and then determine if two images, \(\bar{X}\) and \(\bar{Y}\), are a match, defined as \( l - d_H(Hash_{\text{key}}^m(\bar{X}), Hash_{\text{key}}^m(\bar{Y})) \geq t \). We perform two types of comparisons on our data:
 
 
 \begin{enumerate}
-    \item \textbf{Same Person, Same Finger Comparisons}: This involves comparing different trials of images from the same person and the same finger. These comparisons should theoretically result in a match. If two such images do not match (i.e., \( l - d_H(Hash_{\text{key}}(X), Hash_{\text{key}}(Y)) < t \)), this contributes to the FNR.
+    \item \textbf{Same Person, Same Finger Comparisons}: This involves comparing different trials of images from the same person and the same finger. These comparisons should theoretically result in a match. If two such images do not match (i.e., \( l - d_H(Hash_{\text{key}}^m(\bar{X}), Hash_{\text{key}}^m(\bar{Y})) < t \)), this contributes to the FNR.
     \item \textbf{Different People or Fingers Comparisons}: This involves comparing images from different people and/or different fingers. These comparisons should theoretically not result in a match. If two such images do match, this contributes to the FPR.
 \end{enumerate}
 
 To calculate the False Negative Rate (FNR), we count the instances where images that should match do not, and then compute the mean of these instances. Similarly, for the False Positive Rate (FPR), we count the instances where images that should not match do, and then compute the mean of these instances.
 
-For the experiments from Table \ref{tab:theoretical_parameterization_PostHash}, we obtain the following results:
+For the experiments from Table \ref{tab:theoretical_parameterization_PreHash}, we obtain the following results:
 
 \begin{enumerate}
     \item \textbf{m = 1, l = 217 and t = 32}
         \begin{itemize}
             \item $FNR = 18.91\%$
             \item $FPR = 2^{-9}$
+
+            \begin{figure}[H]
+                \centering
+                \begin{minipage}[b]{0.48\linewidth}
+                    \centering
+                    \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/l-dHconfig1a_same.png}
+                    \caption{Distribution of the Difference between the Total Number of Iterations and the Number of Keys for Same, Aligned Biometric Samples with Single Index PreHashing and $217$ Total Number of Iterations}
+                    \label{l-dHconfig1a_same}
+                \end{minipage}
+                \hfill
+                \begin{minipage}[b]{0.48\linewidth}
+                    \centering
+                    \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/l-dHconfig1a_diff.png}
+                    \caption{Distribution of the Difference between the Total Number of Iterations and the Number of Keys for Different, Aligned Biometric Samples with Single Index PreHashing and $217$ Total Number of Iterations}
+                    \label{l-dHconfig1a_diff}
+                \end{minipage}
+            \end{figure}
+            
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=\linewidth,height=10cm,keepaspectratio]{latex-img/FNR-FPR_ROC_TPR_config1a.png}
+                \caption{ROC}
+                \label{FNR-FPR_ROC_TPR_config1a}
+            \end{figure}
         \end{itemize}
+                    
     \item \textbf{m = 1, l = 637 and t = 113}
         \begin{itemize}
             \item $FNR = 31.75\%$
             \item $FPR = 2^{-14}$ 
+
+            \begin{figure}[H]
+                \centering
+                \begin{minipage}[b]{0.48\linewidth}
+                    \centering
+                    \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/l-dHconfig1_same.png}
+                    \caption{Distribution of the Difference between the Total Number of Iterations and the Number of Keys for Same, Aligned Biometric Samples with Single Index PreHashing and $637$ Total Number of Iterations}
+                    \label{l-dHconfig1_same}
+                \end{minipage}
+                \hfill
+                \begin{minipage}[b]{0.48\linewidth}
+                    \centering
+                    \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/l-dHconfig1_diff.png}
+                    \caption{Distribution of the Difference between the Total Number of Iterations and the Number of Keys for Different, Aligned Biometric Samples with Single Index PreHashing and $637$ Total Number of Iterations}
+                    \label{l-dHconfig1_diff}
+                \end{minipage}
+            \end{figure}
+
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=\linewidth,height=10cm,keepaspectratio]{latex-img/FNR-FPR_ROC_TPR_config1.png}
+                \caption{ROC}
+                \label{FNR-FPR_ROC_TPR_config1}
+            \end{figure}
         \end{itemize}
     \item \textbf{m = 2, l = 961 and t = 31}
         \begin{itemize}
             \item  $FNR = 33.32\%$
             \item $FPR = 2^{-14}$
+
+            \begin{figure}[H]
+                \centering
+                \begin{minipage}[b]{0.48\linewidth}
+                    \centering
+                    \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/l-dHconfig2_same.png}
+                    \caption{Distribution of the Difference between the Total Number of Iterations and the Number of Keys for Same, Aligned Biometric Samples with Double Index PreHashing and $961$ Total Number of Iterations}
+                    \label{l-dHconfig2_same}
+                \end{minipage}
+                \hfill
+                \begin{minipage}[b]{0.48\linewidth}
+                    \centering
+                    \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/l-dHconfig2_diff.png}
+                    \caption{Distribution of the Difference between the Total Number of Iterations and the Number of Keys for Different, Aligned Biometric Samples with Double Index PreHashing and $961$ Total Number of Iterations}
+                    \label{l-dHconfig2_diff}
+                \end{minipage}
+            \end{figure}
+
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=\linewidth,height=10cm,keepaspectratio]{latex-img/FNR-FPR_ROC_TPR_config2.png}
+                \caption{ROC}
+                \label{FNR-FPR_ROC_TPR_config2}
+            \end{figure}
         \end{itemize}
     \item \textbf{m = 3, l = 2569 and t = 15}
         \begin{itemize}
             \item $FNR = 33.45\%$
             \item $FPR = 2^{-13}$ 
+
+            \begin{figure}[H]
+                \centering
+                \begin{minipage}[b]{0.48\linewidth}
+                    \centering
+                    \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/l-dHconfig3_same.png}
+                    \caption{Distribution of the Difference between the Total Number of Iterations and the Number of Keys for Same, Aligned Biometric Samples with Triple Index PreHashing and $2569$ Total Number of Iterations}
+                    \label{l-dHconfig3_same}
+                \end{minipage}
+                \hfill
+                \begin{minipage}[b]{0.48\linewidth}
+                    \centering
+                    \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/l-dHconfig3_diff.png}
+                    \caption{Distribution of the Difference between the Total Number of Iterations and the Number of Keys for Different, Aligned Biometric Samples with Triple Index PreHashing and $2569$ Total Number of Iterations}
+                    \label{l-dHconfig3_diff}
+                \end{minipage}
+            \end{figure}
+
+            \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=\linewidth,height=10cm,keepaspectratio]{latex-img/FNR-FPR_ROC_TPR_config3.png}
+                    \caption{ROC}
+                    \label{FNR-FPR_ROC_TPR_config3}
+            \end{figure}
         \end{itemize}
     \item \textbf{m = 4, l = 8481 and t = 10}
         \begin{itemize}
             \item FPR: 
             \item FNR: 
+
+            % \begin{figure}[H]
+            %     \centering
+            %     \begin{minipage}[b]{0.48\linewidth}
+            %         \centering
+            %         \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/l-dHconfig4_same.png}
+            %         \caption{Count of the number of matches for Same, Aligned Biometric Samples with Single Index Hashing and Binary PostHash Indices}
+            %         \label{mu_same}
+            %     \end{minipage}
+            %     \hfill
+            %     \begin{minipage}[b]{0.48\linewidth}
+            %         \centering
+            %         \includegraphics[width=\linewidth,height=7cm,keepaspectratio]{latex-img/l-dHconfig4_diff.png}
+            %         \caption{Count of the number of matches for Different, Aligned Biometric Samples with Single Index Hashing and Binary PostHash Indices}
+            %         \label{mu_diff}
+            %     \end{minipage}
+            % \end{figure}
         \end{itemize}
 \end{enumerate}
 
+
+
+
+From all figures from this subsection, we can deduce that the derived means of the distribution for same and different biometric samples are almost identical to the theoretical values predicted. Additionally, the variance of the distribution for different biometric samples are relatively close to the ones theoretically deduced. However, the variance of the distribution for same biometric samples do not correspond to the ones theoretically deduced. 
 
 \subsection{Experimental Derivation of the FNR and FPR for different (\(m, l, d\)) Parameter Configurations with Compression}
 

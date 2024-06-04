@@ -16,7 +16,7 @@ Subsequently, the Hamming distance between the resulting hash values of two biom
 \begin{equation}
     \begin{aligned}
         \label{eq:HammingDist}
-        d_H(Hash_{key}(\bar{X}), Hash_{key}(\bar{Y})) = \# \{i: preHash_{key_i}(\bar{X}) \neq preHash_{key_i}(\bar{Y})\}
+        d_H(Hash_{\text{key}}(\bar{X}), Hash_{\text{key}}(\bar{Y})) = \# \{i: preHash_{\text{key}_i}(\bar{X}) \neq preHash_{\text{key}_i}(\bar{Y})\}
     \end{aligned}
 \end{equation}
 
@@ -36,37 +36,32 @@ We establish a threshold \(t\) to evaluate the match between two biometric sampl
 We define that a match is confirmed if the difference between \(l\) (the total iterations) and the Hamming distance is equal to or exceeds the threshold \(t\), expressed as: \[l - d_H(Hash_{\text{key}}(\bar{X}), Hash_{\text{key}}(\bar{Y})) \geq t\]
 In contrast, we define there being no match if the following equation holds: \[l - d_H(Hash_{\text{key}}(\bar{X}), Hash_{\text{key}}(\bar{Y})) < t\]
 
-To further refine our understanding, we use statistical methods to approximate this comparison to a normal distribution, allowing us to more accurately calculate the False Negative Rate (FNR). %This measure helps us assess how often the system incorrectly fails to recognize a match between the biometric samples when there actually is one. We define:
+To further refine our understanding, we use statistical methods to approximate this comparison to a normal distribution, allowing us to more accurately calculate the False Negative Rate (FNR). 
 
-%\begin{equation}
-%    \label{eq:fnr}
-%    FNR = \Phi\left( \frac{t - l\mu_{\text{same}}^m}{\sqrt{l\mu_{\text{same}}^m}} \right)
-%\end{equation}
-
-First, let us define the random variable $H$ as \(H = d_H(Hash_{key}(\bar{X}), Hash_{key}(\bar{Y}))\), representing the number of positions where the preHash values of two samples differ, capturing the number of keys with different hashes. Supposing that the hash keys are generated such that each preHash comparison is independent, the Hamming distance $H$ can be modeled as a binomial random variable, \(H \sim Binomial(l, p_H)\), where $l$ is the total number of iterations and $p_H = Pr(Hash_{key_i}(\bar{X}) \neq Hash_{key_i}(\bar{Y})) = 1 - \mu_{same}^m$ is the probability that the output of the preHash function for a certain key mismatches. This probability uses $\mu_{same}$ because we are approximating the FNR, which, by definition, is when the samples should match but don't. 
+First, let us define the random variable $H$ as \(H = d_H(Hash_{key}(\bar{X}), Hash_{key}(\bar{Y}))\), representing the number of positions where the preHash values of two samples differ, capturing the number of keys with different hashes. Supposing that the hash keys are generated such that each preHash comparison is independent, the Hamming distance $H$ can be modeled as a binomial random variable, \(H \sim Binomial(l, p_H)\), where $l$ is the total number of iterations and $p_H = Pr(Hash_{key_i}(\bar{X}) \neq Hash_{key_i}(\bar{Y})) = 1 - \mu_{\text{same}}^m$ is the probability that the output of the preHash function for a certain key mismatches. This probability uses $\mu_{\text{same}}$ because we are approximating the FNR, which, by definition, is when the samples should match but don't. 
 \newline For a large $l$, the binomial distribution can be approximated by a normal distribution using the Central Limit Theorem. The mean and variance of the binomial distribution are given by
 \[
-\mu_{H, same} = \mathbb{E}(H) = l \times p_H = l \times (1 - \mu_{same}^m)    
+\mu_{\text{H, same}} = \mathbb{E}(H) = l \times p_H = l \times (1 - \mu_{\text{same}}^m)    
 \]
 \[
-\sigma_{H, same}^2 = \mathbb{V}(H) = l \times p_H \times (1 - p_H) = l \times (1 - \mu_{same}^m) \times \mu_{same}^m    
+\sigma_{\text{H, same}}^2 = \mathbb{V}(H) = l \times p_H \times (1 - p_H) = l \times (1 - \mu_{\text{same}}^m) \times \mu_{\text{same}}^m    
 \]
 Therefore, H can be approximated by
 \[
-H \sim \mathcal{N}(\mu_{H, same}, \sigma_{H, same}^2)    
+H \sim \mathcal{N}(\mu_{\text{H, same}}, \sigma_{\text{H, same}}^2)    
 \]
 The FNR is the probability that the Hamming distance $H$ exceeds $l - t$ in cases where there should be a match. This is given by
 \begin{equation}
     \begin{aligned}
         \label{eq:fnr}
         FNR &= Pr[l - H < t] = Pr[H > l - t] \\
-        &= Pr\left[\frac{H - \mu_{H, same}}{\sigma_{H, same}} > \frac{l - t - \mu_{H, same}}{\sigma_{H, same}}\right] \\
-        &= \Phi \left( - \frac{l - t - \mu_{H, same}}{\sigma_{H, same}}\right) \\
-        &= \Phi \left(\frac{t - l\mu_{\text{same}}}{\sqrt{l \times (1 - \mu_{same}^m) \times \mu_{\text{same}}^m}}\right) \\
+        &= Pr\left[\frac{H - \mu_{\text{H, same}}}{\sigma_{\text{H, same}}} > \frac{l - t - \mu_{\text{H, same}}}{\sigma_{\text{H, same}}}\right] \\
+        &= \Phi \left( - \frac{l - t - \mu_{\text{H, same}}}{\sigma_{\text{H, same}}}\right) \\
+        &= \Phi \left(\frac{t - l\mu_{\text{same}}}{\sqrt{l \times (1 - \mu_{\text{same}}^m) \times \mu_{\text{same}}^m}}\right) \\
         &\approx \Phi \left(\frac{t - l\mu_{\text{same}}}{\sqrt{l\mu_{\text{same}}^m}}\right) \\
     \end{aligned}        
 \end{equation}
-where the last equality is obtained because $l\cdot(\mu_{same}^m)^2$ is negligeable. 
+where the last equality is obtained because $l\cdot(\mu_{\text{same}}^m)^2$ is negligeable. 
 
 Here, \(\Phi\) denotes the Cumulative Distribution Function (CDF) of the standard normal distribution, denoted as \(\mathcal{N}(0, 1)\).
 
@@ -76,10 +71,10 @@ Let \( H \) represent the Hamming distance as before. When dealing with non-matc
 
 For a large \( l \), the Hamming distance \( H \) can again be approximated by a normal distribution. The mean and variance for the non-matching case are given by:
 \[
-\mu_{H, \text{diff}} = l \times (1 - \mu_{\text{diff}}^m)
+\mu_{\text{H, diff}} = l \times (1 - \mu_{\text{diff}}^m)
 \]
 \[
-\sigma_{H, \text{diff}}^2 = l \times (1 - \mu_{\text{diff}}^m) \times \mu_{\text{diff}}^m
+\sigma_{\text{H, diff}}^2 = l \times (1 - \mu_{\text{diff}}^m) \times \mu_{\text{diff}}^m
 \]
 
 Therefore, \( H \) can be approximated by:

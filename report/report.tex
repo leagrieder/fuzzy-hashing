@@ -74,7 +74,7 @@
 % HEADERS
 \usepackage{fancyhdr}
     \pagestyle{fancy}
-    \lhead{Fuzzy Hashing for Finger Vein Matching}
+    \lhead{Biometric Matching by Hashing and Applications}
     \rhead{L. Grieder / L. Sidjanski}
     \renewcommand{\footrulewidth}{0.4pt}
     \renewcommand{\headrulewidth}{0.4pt}
@@ -121,19 +121,27 @@
   \includegraphics[width=0.3\linewidth]{latex-img/logo-epfl.png}\\[0.2cm]
   \rule{\textwidth}{0.4pt}\\[2cm]
   % TITLE
-  {\LARGE Biometric Matching by Prehashing and Applications}\\[2cm]
+  {\LARGE Biometric Matching by Hashing and Applications}\\[2cm]
   % AUTHORS
   {\normalsize Lea Grieder (328216)\\[0.2cm]Leila Sidjanski (330810)}\\[2cm]
   % BACHELOR PROJECT INFO
   {\normalsize Computer Science / Communication Systems\\[0.2cm]EPFL}\\[2cm]
   % DATE
-  {\normalsize March 2024}\\[2cm]
+  {\normalsize June 2024}\\[2cm]
 
   {\normalsize\bfseries Responsible}\\[0.2cm]
   {\normalsize Prof. Serge Vaudenay}\\[2cm]
   \rule{\textwidth}{0.3pt}\\[1cm]
   \includegraphics[width=0.3\linewidth]{latex-img/lasec.jpg}\\[0.2cm]
 \end{titlepage}
+
+% ABSTRACT
+\newpage
+\begin{abstract}
+This report explores the application of fuzzy hashing for finger-vein biometric authentication, aiming to enhance security and efficiency in biometric systems. Finger-vein authentication, which leverages internal anatomical features, provides a unique security advantage as these features are less susceptible to replication or theft. The primary focus is on the development and assessment of two algorithms: preHash and postHash. These algorithms transform biometric data into secure hash values that maintain consistency despite slight variations in the input data. The preHash algorithm selects significant bits from the biometric data using a permutation keyed by a secure key, effectively reducing data dimensionality while preserving distinguishing features. The postHash algorithm then compresses these indices into a compact hash. This process is further bolstered by the incorporation of fuzzy extractors, which ensure that even if the stored data is compromised, reconstructing the original biometric data remains computationally infeasible. The experiments conducted involved extensive comparisons, demonstrating the algorithms' efficacy in maintaining a balance between security and performance. Despite some challenges, including the integration of previous work and managing extensive experiment runtimes, the developed system shows promise for secure and efficient biometric authentication.\\
+
+\textbf{Keywords:} Fuzzy hashing, finger-vein biometric authentication, preHash, postHash, fuzzy extractors, biometric security, data compression, biometric hashing.
+\end{abstract}
 
 
 % TABLE OF CONTENTS

@@ -20,7 +20,7 @@ Algorithm Inputs and Outputs:
     \item \textbf{Output}: Converted indices, forming a compact hash \(h_1|| \ldots || h_m\), where \(h_i\) \(i \in [1, m]\), is an integer in \([0, \ldots, D-1]\)
 \end{enumerate}
 
-Detailed process of postHash, for the case when $d < 4$:
+Detailed process of postHash, for the case when $d < 3$:
 \begin{enumerate}
     \item \textbf{Subroutine}: For each index provided by the preHash, subroutine \(T\) checks if the index is within the acceptable range. If an index is out of range, \(T\) returns 0, otherwise, it proceeds with a table lookup. The subroutine maps each valid index \(i\) to an integer nearly uniformly distributed between \([0, D-1]\), ensuring that all potential hash values are equally probable. This mapping is important for the security and effectiveness of the fuzzy hashing system.
     
@@ -35,7 +35,7 @@ Detailed process of postHash, for the case when $d < 4$:
     \end{itemize}
 \end{enumerate}
 
-For the case when $d = 4$, a different subroutine called \textit{scambled\_T} is used. This subroutine corresponds to a partition problem, which is detailed at the end of Section~\ref{sec:Experimental_derivation_q}. Although the mapping of integers differs in this subroutine, it similarly takes an index from the preHash tuple as input and maps it to an integer, just as in the process for $d < 4$.
+For the case when $d = 3$ and $d = 4$, a different subroutine called \textit{scambled\_T} is used. This subroutine corresponds to a partition problem, which is detailed at the end of Section~\ref{sec:Experimental_derivation_q}. Although the mapping of integers differs in this subroutine, it similarly takes an index from the preHash tuple as input and maps it to an integer, just as in the process for $d < 3$.
 
 \vspace{20pt}
 
@@ -73,9 +73,9 @@ For the case when $d = 4$, a different subroutine called \textit{scambled\_T} is
 
 After processing finger images through the pipeline referenced in Pipeline~\ref{pipeline_simon} to extract their feature vectors, the resulting data undergo the preHash and subsequently, the postHash algorithms. The final output from postHash consists of a set of integers \( h_i \), each bounded within the inclusive range \([0, D-1]\). This process effectively assigns each feature vector index to an integer within this range.
 
-In our methodology, we model these integers \( h_i \) as following a geometric distribution. This assumption is based on the output relationship established by \( Hash_{key}^m(X) = postHash(preHash_{key}^m(X)) \). We assume the same conditions as discussed in Section~\ref{sec:Fuzzy Hashing}: the key is randomly chosen, and \(k\) represents a uniformly distributed random index. Consequently, the probability of the Hash operation yielding the same index for two different inputs \(X\) and \(Y\) can be mathematically characterized as follows:
+In our methodology, we model these integers \( h_i \) as following a geometric distribution. This assumption is based on the output relationship established by \( Hash_{\text{key}}^m(X) = postHash(preHash_{\text{key}}^m(X)) \). We assume the same conditions as discussed in Section~\ref{sec:Fuzzy Hashing}: the key is randomly chosen, and \(k\) represents a uniformly distributed random index. Consequently, the probability of the Hash operation yielding the same index for two different inputs \(X\) and \(Y\) can be mathematically characterized as follows:
 
-\[Pr[Hash_{key}^m(d_X) = Hash_{key}^m(d_Y)] \leq \mu^m(1 - \frac{1}{D}) + \frac{1}{D}\]
+\[Pr[Hash_{\text{key}}^m(d_X) = Hash_{\text{key}}^m(d_Y)] \leq \mu^m(1 - \frac{1}{D}) + \frac{1}{D}\]
 
 where equality is reached for the optimal offset translations.
 
@@ -92,7 +92,7 @@ Based on the range of possible values for \(d\), we have computed several specif
     \centering
     \renewcommand{\arraystretch}{1.25}\begin{tabular}{|c|c|c|c|}
         \hline
-        & $q_{same}$ & $q_{diff}$ & $q_{indep}$\\
+        & $q_{\text{same}}$ & $q_{\text{diff}}$ & $q_{\text{indep}}$\\
         \hline
         \(m = 1\) \(d = 1\) & $61.03\%$ & $54.12\%$ & $50.73\%$\\
         \(m = 1\) \(d = 2\) & $41.54\%$ & $31.19\%\%$ & $26.09\%$\\
@@ -104,11 +104,11 @@ Based on the range of possible values for \(d\), we have computed several specif
 \label{tab:theoretical_q}
 \end{table}
 
-\subsection{Experimental Derivation of the probabilities $q_{same}^{obs}$, $q_{diff}^{obs}$, and $q_{indep}^{obs}$ for different \(m\), \(d\) parameter combinations} \label{sec:Experimental_derivation_q}
+\subsection{Experimental Derivation of the Probabilities $q_{\text{same}}^{\text{obs}}$, $q_{\text{diff}}^{\text{obs}}$, and $q_{\text{indep}}^{\text{obs}}$ for Different \(m\), \(d\) Parameter Combinations} \label{sec:Experimental_derivation_q}
 
-In the subsequent section, we explore enhancements to data compression techniques within our fuzzy hashing framework, emphasizing the use of various \(m\) and \(d\) parameter combinations. We initiate our analysis by conducting experiments to determine \(q_{same}^{obs}\), \(q_{diff}^{obs}\), and \(q_{indep}^{obs}\).
+In the subsequent section, we explore enhancements to data compression techniques within our fuzzy hashing framework, emphasizing the use of various \(m\) and \(d\) parameter combinations. We initiate our analysis by conducting experiments to determine \(q_{\text{same}}^{\text{obs}}\), \(q_{\text{diff}}^{\text{obs}}\), and \(q_{\text{indep}}^{\text{obs}}\).
 
-Building on the foundational calculations for \(q_{\text{indep}}\), which we derived using Formula ~\ref{eq:q_formula} with \( \mu^{obs}_{\text{indep}} \) previously identified in Section \ref{sec:Fuzzy Hashing}, our exploration extended to \(q^{obs}_{\text{same}}\) and \(q^{obs}_\text{diff}\). To evaluate these parameters, we initiated a series of experiments. Integral to this implementation and the following ones, is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table and all subsequent ones, is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
+Building on the foundational calculations for \(q_{\text{indep}}\), which we derived using Formula ~\ref{eq:q_formula} with \( \mu^{\text{obs}}_{\text{indep}} \) previously identified in Section \ref{sec:Fuzzy Hashing}, our exploration extended to \(q^{\text{obs}}_{\text{same}}\) and \(q^{\text{obs}}_\text{diff}\). To evaluate these parameters, we initiated a series of experiments. Integral to this implementation and the following ones, is the creation of the lookup table, to convert indices to their compressed counterparts. The generation of this table and all subsequent ones, is governed by a geometrically-derived formula that accurately encapsulates the transformation of index values. The specific formula is presented as:
 
 \begin{equation}
     \text{postHash}(i) = \left\lfloor 2^d \left(1 - p\right)^i \right\rfloor
@@ -175,7 +175,7 @@ Octal Hash Output Distribution Table (\(d=3\)):
 \]}
 
 
-Hexadecimal Hash Output Distribution Table \(d=4\)
+Hexadecimal Hash Output Distribution Table (\(d=4\)):
 {
 \renewcommand{\arraystretch}{1.25}
 \[
@@ -212,7 +212,7 @@ In the context of compressed fuzzy hashing, domain scrambling aims to reorder th
     \item There is no known algorithm that can find an optimal solution to NP-complete problems in polynomial time for all general cases.
 \end{enumerate}
 
-Given the NP-completeness of the partition problem, programming an optimal solution for domain scrambling — which is akin to a continuous partitioning challenge — is impractical. Theoretically, while it is feasible to verify if a given distribution of indices across hash buckets is optimal, finding that distribution algorithmically cannot be guaranteed to be efficient for all possible cases. However, we did try to implement this algorithm and observe the results for the cases where the hash depth is \(d=3\) and \(d=4\), resulting in \(D=9\) and \(D=16\) possible hash values respectively. The program written is designed to distribute a sequence of integers (1 to 90'240) across predefined buckets, (0 to 8) and (0 to 15) respectively, to achieve a target probability distribution based on our geometric decay model~\ref{eq:GeomFormula}. This process begins by mapping each integer to a bucket using a calculated index derived from the geometric formula, adjusted by a scaling factor. Initial bucket assignments aim to approximate a uniform distribution of probabilities. The program then iteratively adjusts these assignments: integers are moved between buckets to better align with the target probabilities, ensuring that the sum of probabilities within each bucket remains close to the desired uniform distribution. This adjustment process continues until the distribution of probabilities across all buckets falls within an acceptable error margin, or until no further beneficial adjustments can be made. The following lookup tables illustrate the distribution of indices across each bucket, including the count of indices falling within each bucket and the range of indices encompassed by it.
+Given the NP-completeness of the partition problem, programming an optimal solution for domain scrambling — which is akin to a continuous partitioning challenge — is impractical. Theoretically, while it is feasible to verify if a given distribution of indices across hash buckets is optimal, finding that distribution algorithmically cannot be guaranteed to be efficient for all possible cases. However, we did try to implement this algorithm and observe the results for the cases where the hash depth is \(d = 3\) and \(d = 4\), resulting in \(D = 9\) and \(D = 16\) possible hash values respectively. The program written is designed to distribute a sequence of integers (\(1\) to \(90'240\)) across predefined buckets, (\(0\) to \(8\)) and (\(0\) to \(15\)) respectively, to achieve a target probability distribution based on our geometric decay model~\ref{eq:GeomFormula}. This process begins by mapping each integer to a bucket using a calculated index derived from the geometric formula, adjusted by a scaling factor. Initial bucket assignments aim to approximate a uniform distribution of probabilities. The program then iteratively adjusts these assignments: integers are moved between buckets to better align with the target probabilities, ensuring that the sum of probabilities within each bucket remains close to the desired uniform distribution. This adjustment process continues until the distribution of probabilities across all buckets falls within an acceptable error margin, or until no further beneficial adjustments can be made. The following lookup tables illustrate the distribution of indices across each bucket, including the count of indices falling within each bucket and the range of indices encompassed by it.
 
 \renewcommand{\arraystretch}{1.25}
 \[
@@ -259,15 +259,15 @@ Given the NP-completeness of the partition problem, programming an optimal solut
 
 We can see that the distribution of probabilities and counts across buckets demonstrates a good effort towards achieving uniformity.
 
-Utilizing these derived lookup tables, alongside our established preHash function(~\ref{preHash Algorithm}) and the newly implemented postHash function(~\ref{postHash Algorithm}), we are equipped to conduct experiments on our dataset to assess \(q_{same}\) and \(q_{diff}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the preHash function directly into the postHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the preHash and postHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
+Utilizing these derived lookup tables, alongside our established preHash function(~\ref{preHash Algorithm}) and the newly implemented postHash function(~\ref{postHash Algorithm}), we are equipped to conduct experiments on our dataset to assess \(q_{\text{same}}\) and \(q_{\text{diff}}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the preHash function directly into the postHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the preHash and postHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
 
 Note that for \(d = 3\) and \(d = 4\), we used the lookup tables with redistributed indices defined just above. The initial bucket assignments, calculated using formula~\ref{eq:GeomFormula}, did not achieve a balanced enough distribution of probabilities across the buckets, necessitating this redistribution.
 
 \begin{enumerate}
     \item \text{\(d = 1\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and binary postHash indices (\(d=1\)).
     \begin{itemize}
-        \item \(q_{same}^{obs} = 61.53\%\)
-        \item \(q_{diff}^{obs} = 52.69\%\)
+        \item \(q_{\text{same}}^{\text{obs}} = 61.53\%\)
+        \item \(q_{\text{diff}}^{\text{obs}} = 52.69\%\)
     \end{itemize}
 
     \begin{figure}[H]
@@ -289,8 +289,8 @@ Note that for \(d = 3\) and \(d = 4\), we used the lookup tables with redistribu
     
     \item \text{\(d = 2\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and quaternary postHash indices (\(d=2\)).
     \begin{itemize}
-        \item \(q_{same}^{obs} = 42.62\%\)
-        \item \(q_{diff}^{obs} = 29.84\%\)
+        \item \(q_{\text{same}}^{\text{obs}} = 42.62\%\)
+        \item \(q_{\text{diff}}^{\text{obs}} = 29.84\%\)
     \end{itemize}
 
     \begin{figure}[H]
@@ -312,8 +312,8 @@ Note that for \(d = 3\) and \(d = 4\), we used the lookup tables with redistribu
     
     \item \text{\(d = 3\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and octal postHash indices (\(d=3\)).
     \begin{itemize}
-        \item \(q_{same}^{obs} = 32.57\%\)
-        \item \(q_{diff}^{obs} = 19.04\%\)
+        \item \(q_{\text{same}}^{\text{obs}} = 32.57\%\)
+        \item \(q_{\text{diff}}^{\text{obs}} = 19.04\%\)
     \end{itemize}
 
     \begin{figure}[H]
@@ -335,8 +335,8 @@ Note that for \(d = 3\) and \(d = 4\), we used the lookup tables with redistribu
     
     \item \text{\(d = 4\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and hexa-decimal postHash indices (\(d=4\)).
     \begin{itemize}
-        \item \(q_{same}^{obs} = 26.92\%\)
-        \item \(q_{diff}^{obs} = 13.13\%\)
+        \item \(q_{\text{same}}^{\text{obs}} = 26.92\%\)
+        \item \(q_{\text{diff}}^{\text{obs}} = 13.13\%\)
     \end{itemize}
 
     \begin{figure}[H]
@@ -357,7 +357,7 @@ Note that for \(d = 3\) and \(d = 4\), we used the lookup tables with redistribu
     \end{figure}
 \end{enumerate}
 
-The theoretical values for \(q_{same}\) presented in Table~\ref{tab:theoretical_q} are accurate approximations, as the experimental results closely match these values. The greater discrepancy between theoretical and experimental values for \(q_{diff}\) compared to \(q_{same}\) can be attributed to the following factor: Different biometric samples exhibit higher variability, leading to a broader range of feature differences, which can cause deviations from theoretical assumptions. Outliers and noise further exacerbate the discrepancies for \(q_{diff}\). Moreover, the theoretical values for the parameter combination \(m=1\) and \(d=4\) (last row of Table~\ref{tab:theoretical_q}) align almost perfectly with the experimental results, with \(q_{same}\) values being identical and \(q_{diff}\) values differing by only approximately 0.8\%. The lookup table used for this experiment was generated using Equation~\ref{eq:GeomFormula}, followed by a redistribution of the indices across each bucket to achieve a more uniform distribution. This redistribution process was also applied to the experiment with \(d = 3\), achieving experimental results much closer to the theoretical predictions. However, this redistribution was not applied to the first three experiments, which could explain why their results show greater discrepancies.
+The theoretical values for \(q_{\text{same}}\) presented in Table~\ref{tab:theoretical_q} are accurate approximations, as the experimental results closely match these values. The greater discrepancy between theoretical and experimental values for \(q_{\text{diff}}\) compared to \(q_{\text{same}}\) can be attributed to the following factor: Different biometric samples exhibit higher variability, leading to a broader range of feature differences, which can cause deviations from theoretical assumptions. Outliers and noise further exacerbate the discrepancies for \(q_{\text{diff}}\). Moreover, the theoretical values for the parameter combination \(m=1\) and \(d=4\) (last row of Table~\ref{tab:theoretical_q}) align almost perfectly with the experimental results, with \(q_{\text{same}}\) values being identical and \(q_{\text{diff}}\) values differing by only approximately 0.8\%. The lookup table used for this experiment was generated using Equation~\ref{eq:GeomFormula}, followed by a redistribution of the indices across each bucket to achieve a more uniform distribution. This redistribution process was also applied to the experiment with \(d = 3\), achieving experimental results much closer to the theoretical predictions. However, this redistribution was not applied to the first three experiments, which could explain why their results show greater discrepancies.
 
 
 

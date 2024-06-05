@@ -8,7 +8,7 @@ This section will discuss how we implemented the fuzzy hashing algorithm, its co
 
 \subsection{PreHash Algorithm}
 
-The preHash algorithm is the first step in the fuzzy hashing process, designed to manipulate biometric templates extracted from finger vein patterns. It operates on a bitstring \(X\), representing the presence (1) or absence (0) of vein pixels across \(n\) pixels, where \(n=90'240\).
+The preHash algorithm is the first step in the fuzzy hashing process, designed to manipulate biometric templates extracted from finger vein patterns. It operates on a bitstring \(X\), representing the presence (\(1\)) or absence (\(0\)) of vein pixels across \(n\) pixels, where \(n=90'240\).
 
 Algorithm Inputs and Outputs:
 \begin{enumerate}
@@ -18,7 +18,7 @@ Algorithm Inputs and Outputs:
         \item \textbf{A bitstring X}: the feature-extracted vein patterns of a biometric capture
         \item \textbf{A key}: used to initialize a Pseudorandom Number Generator (PRNG)
     \end{itemize}
-    \item \textbf{Output}: The algorithm outputs a tuple \((i_1,...,i_m)\) consisting of the \(m\) smallest indices \(i_j\)​ such that \(1 \leq i_1<...<i_m\)​ and the pixel at \(PRNG_{key(i_j)}\) in \(X\) is identified as a vein pixel. 
+    \item \textbf{Output}: The algorithm outputs a tuple \((i_1,...,i_m)\) consisting of the \(m\) smallest indices \(i_j\)​ such that \(1 \leq i_1<...<i_m\)​ and the pixel at \(PRNG_{\text{key}(i_j)}\) in \(X\) is identified as a vein pixel. 
 \end{enumerate}
 
 Detailed Process of preHash:
@@ -71,7 +71,7 @@ Detailed Process of preHash:
 \end{algorithmic}
 \end{algorithm}
 
-The algorithm, preHash, illustrated in Figure~\ref{preHash Algorithm} generates \(m\) smallest indices, denoted by \(i_j\), such that \(j\in{[1, m]} \) and \(1 \leq i_1 < ... < i_m\), where each \(i_j\) correponds to an index such that \(X_{PRNG_{key}(i_j)} = 1\). It achieves this by rigorously verifying that the numbers produced by PRNG stay within the specified bounds, i.e. \(\text{PRNG}[i] \in (0, n] \text{ for all } i \in [0, m]\).
+The algorithm, preHash, illustrated in Figure~\ref{preHash Algorithm} generates \(m\) smallest indices, denoted by \(i_j\), such that \(j\in{[1, m]} \) and \(1 \leq i_1 < ... < i_m\), where each \(i_j\) correponds to an index such that \(X_{PRNG_{\text{key}}(i_j)} = 1\). It achieves this by rigorously verifying that the numbers produced by PRNG stay within the specified bounds, i.e. \(\text{PRNG}[i] \in (0, n] \text{ for all } i \in [0, m]\).
 
 \subsection{Assessing Similarity of Biometric Inputs After PreHash Application}
 \label{sec:mu}
@@ -83,7 +83,7 @@ In the context of a simplified scenario where the hash length parameter (\(m\)) 
 
 \begin{equation} \label{eq:preHash1}
     \begin{aligned}
-        Pr[preHash_{key}^1(X) = preHash_{key}^1(Y)] &= \sum_{i > 0} Pr[preHash_{key}^1(X) = preHash_{key}^1(Y) = i]\\
+        Pr[preHash_{\text{key}}^1(X) = preHash_{\text{key}}^1(Y)] &= \sum_{i > 0} Pr[preHash_{\text{key}}^1(X) = preHash_{\text{key}}^1(Y) = i]\\
         &= \sum_{i > 0} Pr[X_k = Y_k = 0]^{i - 1} Pr[X_k = Y_k = 1]\\
         &= \frac{Pr[X_k = Y_k = 1]}{1 - Pr[X_k = Y_k = 0]}\\
         &= \frac{HW(X \land Y)}{HW(X) + HW(Y) - HW(X \land Y)}\\
@@ -97,7 +97,7 @@ It is noticed that there is a direct link with the Miura matching score that is 
 
 \begin{equation} \label{eq:preHash2}
     \begin{aligned}
-        Pr[preHash_{key}^1(\bar{X}) = preHash_{key}^1(\bar{Y})] &= \frac{Pr[\bar{X}_k = \bar{Y}_k = 1]}{1 - Pr[\bar{X}_k = \bar{Y}_k = 0]}\\
+        Pr[preHash_{\text{key}}^1(\bar{X}) = preHash_{\text{key}}^1(\bar{Y})] &= \frac{Pr[\bar{X}_k = \bar{Y}_k = 1]}{1 - Pr[\bar{X}_k = \bar{Y}_k = 0]}\\
         &= \frac{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} - \frac{1}{2}Pr[\bar{X}_k \neq \bar{Y}_k]}{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} + \frac{1}{2}Pr[\bar{X}_k \neq \bar{Y}_k]}\\
     \end{aligned}
 \end{equation}
@@ -117,7 +117,7 @@ A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = \frac{d_H(
 \]
 where \(HW(\cdot)\) denotes the Hamming weight and \(\frac{d_H(\cdot, \cdot)}{n}\) represents the normalized Hamming distance. Given these definitions, we know the expected values and variances from Section~\ref{sec:bio_setting} :
 \[
-    \mathbb{E}(A) = \mathbb{E}(B) = p^\text{obs}, \quad \mathbb{E}(C) = \delta^\text{obs}, \quad \mathbb{V}(A) = \mathbb{V}(B) = ({\sigma^\text{obs}_p})^2, \quad \mathbb{V}(C) = ({\sigma^\text{obs}_\delta})^2
+    \mathbb{E}(A) = \mathbb{E}(B) = p^{\text{obs}}, \quad \mathbb{E}(C) = \delta^{\text{obs}}, \quad \mathbb{V}(A) = \mathbb{V}(B) = (\sigma^{\text{obs}}_{\text{p}})^2, \quad \mathbb{V}(C) = ({\sigma^{\text{obs}}_{\delta}})^2
 \]
 
 Next, we perform a Taylor series expansion of \(f(A,B,C)\) up to the second order around the point \((p, p, \delta)\). The first-order partial derivatives are calculated as follows:
@@ -182,7 +182,7 @@ Simplifying with our values and notations we get:
 Hence for (\(X\), \(Y\)) random,
 \begin{equation}
     \label{eq:mu_leq}
-    Pr[preHash_{key}^1(offset_X * X) = preHash_{key}^1(offset_Y * Y)] \leq \mathbb{E}(f(A,B,C))
+    Pr[preHash_{\text{key}}^\text{1}(offset_X * X) = preHash_{\text{key}}^\text{1}(offset_Y * Y)] \leq \mathbb{E}(f(A,B,C))
 \end{equation}
 where equality is reached for the optimal offset translations.\\
 
@@ -192,18 +192,18 @@ Depending on the distribution of (\(X\), \(Y\)), it is denoted
     \mu = \mathbb{E}(f(A,B,C))
 \end{equation}\\
 
-In order to assess the theoretical approximations of $\mu_{same}$, $\mu_{diff}$, and the value of $\mu_{indep}$, we can easily replace the different values in Equation~\ref{eq:mu_approximation} with the corresponding values calculated in the previous sections. We demonstrate how this is done for \( \mu_{\text{indep}}^{obs} \). Using \( p^{obs} \), \(\delta_{\text{indep}}^{obs}\), and their respective standard deviations, we aim to calculate \(\mathbb{E}(f(A,B,C))\). This calculation is based on \(X\) and \(Y\) comprising \(2n\) independent random bits with an expected value of \(p\), without applying the optimal offset to obtain \(\bar{X}\) and \(\bar{Y}\). Equation~\ref{eq:mu_approximation} is simplified because the covariance between \(A\) and \(B\) is zero (because of independence).
+In order to assess the theoretical approximations of $\mu_{\text{same}}$, $\mu_{\text{diff}}$, and the value of $\mu_{\text{indep}}$, we can easily replace the different values in Equation~\ref{eq:mu_approximation} with the corresponding values calculated in the previous sections. We demonstrate how this is done for \( \mu_{\text{indep}}^{\text{obs}} \). Using \( p^{\text{obs}} \), \(\delta_{\text{indep}}^{\text{obs}}\), and their respective standard deviations, we aim to calculate \(\mathbb{E}(f(A,B,C))\). This calculation is based on \(X\) and \(Y\) comprising \(2n\) independent random bits with an expected value of \(p\), without applying the optimal offset to obtain \(\bar{X}\) and \(\bar{Y}\). Equation~\ref{eq:mu_approximation} is simplified because the covariance between \(A\) and \(B\) is zero (because of independence).
 
 For clarity, note that in the following equations:
 
-- \(p\) corresponds to \(p^{obs}\),\\
-- \(\delta\) corresponds to \(\delta_{\text{indep}}^{obs}\),\\
-- \(\sigma_p\) corresponds to \(\sigma_p^{obs}\), and\\
+- \(p\) corresponds to \(p^{\text{obs}}\),\\
+- \(\delta\) corresponds to \(\delta_{\text{indep}}^{\text{obs}}\),\\
+- \(\sigma_{\text{p}}\) corresponds to \(\sigma_{\text{p}}^{\text{obs}}\), and\\
 - \(\sigma_\delta\) corresponds to \(\sigma_{\delta_{\text{indep}}}^{\text{obs}}\).
 
 Moreover, we have the following equalities:
  \[
-    \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} \approx \num{1.78e-2}, \quad \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 \approx -\num{2.6e-3}
+    \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} \approx \num{1.78e-2}, \quad \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^{\text{obs}}_{\text{p}}})^2 \approx -\num{2.6e-3}
  \]\\
  \[
     \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 \approx \num{1.5e-4}, \quad  2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) = 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \approx \num{1.31e-6}
@@ -214,7 +214,7 @@ This allows us to express \( \mu_{\text{indep}}^{obs} \) as follows:
 
 \begin{equation}
     \begin{aligned}
-    \mu_{\text{indep}}^{obs} = \mathbb{E}(f(A,B,C)) &\approx \quad \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 \right. \\[2mm]
+    \mu_{\text{indep}}^{\text{obs}} = \mathbb{E}(f(A,B,C)) &\approx \quad \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_{\text{p}}})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_{\text{p}}})^2 \right. \\[2mm]
     & \left. + \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) \right. \\[2mm]
     & \left. + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]\\[6mm]
     & = \num{1.78e-2} + \frac{1}{2} \left[ -2\cdot\num{2.6e-3} + \num{1.5e-4}  \right. \\[2mm]
@@ -224,12 +224,12 @@ This allows us to express \( \mu_{\text{indep}}^{obs} \) as follows:
     \label{eq:mu_indep}
 \end{equation}\\
 
-We proceed in a similar way to assess the theoretical values of $\mu_{same}$ and $\mu_{diff}$, except in this case the covariances are non-zero and have been calculated by observing the correlation between the different random variables (\(A\), \(B\), \(C\)) in the experimental results obtained in Section~\ref{sec:bio_setting}. That is, we calculated the covariance matrix between the following random variables:
+We proceed in a similar way to assess the theoretical values of $\mu_{\text{same}}$ and $\mu_{\text{diff}}$, except in this case the covariances are non-zero and have been calculated by observing the correlation between the different random variables (\(A\), \(B\), \(C\)) in the experimental results obtained in Section~\ref{sec:bio_setting}. That is, we calculated the covariance matrix between the following random variables:
 \[
 A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = \frac{d_H(\bar{X}, \bar{Y})}{n}
 \]
 
-We obtained the following covariance matrices from the experiments held to find \(\delta^{obs}_{diff}\) and \(\delta^{obs}_{same}\):
+We obtained the following covariance matrices from the experiments held to find \(\delta^{\text{obs}}_{\text{diff}}\) and \(\delta^{\text{obs}}_{\text{same}}\):
 
 \[
 \begin{array}{c|ccc}
@@ -254,16 +254,29 @@ We obtained the following covariance matrices from the experiments held to find 
 \]
 \begin{center}\text{Covariance Matrix for Different Distribution}\end{center}
 
-We have the following equations for \(\mu_{same}\) and \(\mu_{diff}\). Depending on the distribution (same or different), the variables \(p\), \(\delta\), \(\sigma_p\), and \(\sigma_\delta\) correspond to their observed counterparts as indicated:
+We have the following equations for \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\). Depending on the distribution (same or different), the variables \(p\), \(\delta\), \(\sigma_{\text{p}}\), and \(\sigma_\delta\) correspond to their observed counterparts as indicated:
 
-- \(p \rightarrow p^{obs}\)\\
-- \(\delta \rightarrow \delta_{\text{same/diff}}^{obs}\)\\
-- \(\sigma_p \rightarrow \sigma_p^{obs}\)\\
+- \(p \rightarrow p^{\text{obs}}\)\\
+- \(\delta \rightarrow \delta_{\text{same/diff}}^{\text{obs}}\)\\
+- \(\sigma_p \rightarrow \sigma_{\text{p}}^{\text{obs}}\)\\
 - \(\sigma_\delta \rightarrow \sigma_{\delta_{\text{same/diff}}}^{\text{obs}}\)\\
+
+Moreover, we have the following equalities for \( \mu_{\text{same}}^{\text{obs}} \) :
+ \[
+    \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} \approx \num{2.14e-1}, \quad \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_{\text{p}}})^2 \approx -\num{2.9e-3}
+ \]\\
+ \[
+    \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 \approx \num{1.9e-2}, \quad 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) \approx -\num{5.1e-3}
+ \]\\
+ \[
+    2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) = 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \approx \num{2.3e-3}
+ \]
+
+This allows us to express \( \mu_{\text{same}}^{\text{obs}} \) as follows:
 
 \begin{equation}
     \begin{aligned}
-    \mu_{\text{same}}^{obs} = \mathbb{E}(f(A,B,C)) &\approx \quad \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 \right. \\[2mm]
+    \mu_{\text{same}}^{\text{obs}} = \mathbb{E}(f(A,B,C)) &\approx \quad \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_{\text{p}}})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_{\text{p}}})^2 \right. \\[2mm]
     & \left. + \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 + 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) \right. \\[2mm] 
     & \left. + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]\\[10mm]
     & = \num{2.14e-1} + \frac{1}{2} \left[ -2\cdot\num{2.9e-3} + \num{1.9e-2}  \right. \\[2mm]
@@ -273,9 +286,22 @@ We have the following equations for \(\mu_{same}\) and \(\mu_{diff}\). Depending
     \label{eq:mu_same}
 \end{equation}
 
+We have the following equalities for \( \mu_{\text{diff}}^{obs} \) :
+\[
+    \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} \approx \num{7.99e-2}, \quad \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_{\text{p}}})^2 \approx -\num{2.7e-3}
+ \]\\
+ \[
+    \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 \approx \num{5.8e-3}, \quad 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) \approx -\num{1.3e-3}
+ \]\\
+ \[
+    2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) \approx \num{4.9e-4}, \quad 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \approx \num{2.3e-3}
+ \]
+
+This allows us to express \( \mu_{\text{diff}}^{\text{obs}} \) as follows:
+
 \begin{equation}
     \begin{aligned}
-    \mu_{\text{diff}}^{obs} = \mathbb{E}(f(A,B,C)) &\approx \quad \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_p})^2 \right. \\[2mm]
+    \mu_{\text{diff}}^{\text{obs}} = \mathbb{E}(f(A,B,C)) &\approx \quad \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} + \frac{1}{2} \left[ \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_{\text{p}}})^2 + \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_{\text{p}}})^2 \right. \\[2mm]
     & \left. + \frac{8p}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_\delta})^2 + 2\cdot\frac{-4\delta}{(2p + \delta)^3}\cdot\text{Cov}(A,B) \right. \\[2mm] 
     & \left. + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) + 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \right]\\[10mm]
     & = \num{7.99e-2} + \frac{1}{2} \left[ -2\cdot\num{2.7e-3} + \num{5.8e-3}  \right. \\[2mm]
@@ -291,12 +317,12 @@ Finally, the following figures are provided:
     \centering
     \renewcommand{\arraystretch}{1.25}\begin{tabular}{|c|c|c|}
         \hline
-        $\mu_{same}$ & $\mu_{diff}$ & $\mu_{indep}$\\
+        $\mu_{\text{same}}$ & $\mu_{\text{diff}}$ & $\mu_{\text{indep}}$\\
         \hline
         $21.41\%$ & $7.99\%$ & $1.78\%$\\
         \hline
     \end{tabular}
-\caption{Theoretical Approximations without Taylor Series Expansion: $\mu_{same}$, $\mu_{diff}$, and $\mu_{indep}$}
+\caption{Theoretical Approximations without Taylor Series Expansion: $\mu_{\text{same}}$, $\mu_{\text{diff}}$, and $\mu_{\text{indep}}$}
 \label{tab:mu_approx}
 \end{table}
 
@@ -305,12 +331,12 @@ Finally, the following figures are provided:
     \centering
     \renewcommand{\arraystretch}{1.25}\begin{tabular}{|c|c|c|}
         \hline
-        $\mu_{same}$ & $\mu_{diff}$ & $\mu_{indep}$\\
+        $\mu_{\text{same}}$ & $\mu_{\text{diff}}$ & $\mu_{\text{indep}}$\\
         \hline
         $22.05\%$ & $7.99\%$ & $1.54\%$\\
         \hline
     \end{tabular}
-\caption{Theoretical Approximations with Taylor Series Expansion: $\mu_{same}$, $\mu_{diff}$, and $\mu_{indep}$}
+\caption{Theoretical Approximations with Taylor Series Expansion: $\mu_{\text{same}}$, $\mu_{\text{diff}}$, and $\mu_{\text{indep}}$}
 \label{tab:approximation_mu_taylor}
 \end{table}
 
@@ -319,7 +345,7 @@ We can note that there is not a major difference between approximations from Tab
 Finally, it is observed that:
 
 \begin{equation}
-    Pr[preHash_{key}^m(offset_X * X) = preHash_{key}^m(offset_Y * Y)] \leq \mu^m
+    Pr[preHash_{\text{key}}^\text{m}(offset_X * X) = preHash_{\text{key}}^\text{m}(offset_Y * Y)] \leq \mu^{\text{m}}
 \end{equation}
 \\
 where equality is reached for the optimal offset translations.
@@ -331,9 +357,9 @@ In Section~\ref{sec:mu}, we have laid out the mathematical framework that define
 
 We will proceed to evaluate these theoretical approximations (Table~\ref{tab:mu_approx}) experimentally, leveraging the same comprehensive database that has been utilized in our prior research, as explained in Section~\ref{sec:delta}. This experimental assessment will enable us to substantiate the theoretical predictions of \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\).
 
-In the experimental setup, \(\mu^{obs}_{\text{same}}\) refers to the probability that a hash function, when applied to two biometric captures of the same finger, will yield the same index. This is the measure of success in correctly identifying matches within the same individual's biometric captures. Conversely, \(\mu^{obs}_{\text{diff}}\) denotes the probability that the same hash function will produce different indices for biometric captures from different individuals, representing the ability to distinguish between different people's biometric data. Lastly, \(\mu^{obs}_{\text{indep}}\) indicates the probability of a match in the case where the biometric captures are completely independent, serving as a baseline for random chance, which has already been calculated (see Equation~\ref{eq:mu_indep})
+In the experimental setup, \(\mu^{\text{obs}}_{\text{same}}\) refers to the probability that a hash function, when applied to two biometric captures of the same finger, will yield the same index. This is the measure of success in correctly identifying matches within the same individual's biometric captures. Conversely, \(\mu^{\text{obs}}_{\text{diff}}\) denotes the probability that the same hash function will produce different indices for biometric captures from different individuals, representing the ability to distinguish between different people's biometric data. Lastly, \(\mu^{\text{obs}}_{\text{indep}}\) indicates the probability of a match in the case where the biometric captures are completely independent, serving as a baseline for random chance, which has already been calculated (see Equation~\ref{eq:mu_indep})
 
-For \(\mu_{\text{same}}^{obs}\) and \(\mu_{\text{diff}}^{obs}\), our experimental protocol adhered to the established optimal pipeline (refer to Figure~\ref{pipeline_simon}) to process the images in our dataset. Following the alignment of images through the computation of optimal offsets (referred to as Miura Matching), our fuzzy hashing function was applied to the extraced features. In alignment with the premise that \(\mu\) is computed under the condition where the hash function's output is a single index (\(m=1\)).
+For \(\mu_{\text{same}}^{\text{obs}}\) and \(\mu_{\text{diff}}^{\text{obs}}\), our experimental protocol adhered to the established optimal pipeline (refer to Figure~\ref{pipeline_simon}) to process the images in our dataset. Following the alignment of images through the computation of optimal offsets (referred to as Miura Matching), our fuzzy hashing function was applied to the extraced features. In alignment with the premise that \(\mu\) is computed under the condition where the hash function's output is a single index (\(m=1\)).
 
 \begin{enumerate}
     \item \textbf{Pairwise Comparison}: We performed a pairwise comparison for each image pair within the dataset after applying the optimal offsets to ensure proper alignment. The fuzzy hashing function, tailored to output a single index per image, was utilized to hash the images.
@@ -346,13 +372,13 @@ For \(\mu_{\text{same}}^{obs}\) and \(\mu_{\text{diff}}^{obs}\), our experimenta
     
     \item \textbf{Statistical Analysis and Probability Computation}:
     \begin{itemize}
-        \item \textbf{\(\mu_{\text{same}}^{obs}\)}: We computed \(\mu_{\text{same}}^{obs}\) by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the intra-individual comparisons, which furnished us with the following probability:
+        \item \textbf{\(\mu_{\text{same}}^{\text{obs}}\)}: We computed \(\mu_{\text{same}}^{\text{obs}}\) by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the intra-individual comparisons, which furnished us with the following probability:
 
         \[ \mu_{\text{same}}^{obs} \approx 0.22047 = 22.05\%\]
         
-        \item \textbf{\(\mu_{\text{diff}}^{obs}\)}: Similarly, \(\mu_{\text{diff}}^{obs}\) was determined by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the inter-individual comparisons, which furnished us with the following probability:
+        \item \textbf{\(\mu_{\text{diff}}^{\text{obs}}\)}: Similarly, \(\mu_{\text{diff}}^{\text{obs}}\) was determined by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the inter-individual comparisons, which furnished us with the following probability:
 
-        \[ \mu_{\text{diff}}^{obs} \approx 0.08249 = 8.25\% \]
+        \[ \mu_{\text{diff}}^{\text{obs}} \approx 0.08249 = 8.25\% \]
         \begin{figure}[H]
             \centering
             \begin{subfigure}[b]{0.48\linewidth}
@@ -376,20 +402,20 @@ For \(\mu_{\text{same}}^{obs}\) and \(\mu_{\text{diff}}^{obs}\), our experimenta
 In our analysis of the dataset at hand featuring biometric data from 20 unique individuals, we have quantified the performance of the preHash function in distinguishing between identical and different biometric subjects. Specifically, when evaluating samples from the same individual, the probability that the preHash function will produce the same index is approximately \(22.05\%\). Conversely, when the function is applied to samples from different individuals, the probability of a match in the indices drops to roughly \(8.25\%\). This indicates that the likelihood of mistakenly identifying different individuals as the same is about three times lower than correctly matching samples from the same individual, demonstrating the preHash function's relative efficacy in biometric differentiation within this specific dataset. Moreover, we can observe that the experimental results that we got are very close to the theoretical values predicted from Table~\ref{tab:approximation_mu_taylor}. This shows that our theoretical framework and the Taylor series approximations accurately model the behavior of \(\mu_{\text{diff}}\) and \(\mu_{\text{same}}\). The minor differences between the theoretical model and the experiments can be explained by the fact that real-world biometric data can include noise and measurement errors that are not accounted for in the theoretical model.
 
 
-\subsubsection{Experimental Derivation of the Probabilities \(\mu_{same}\) and \(\mu_{diff}\) Excluding the Post-Alignment Step}
+\subsubsection{Experimental Derivation of the Probabilities \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\) Excluding the Post-Alignment Step}
 
 We conducted an experimental investigation to determine the impact of omitting the Miura Marching step, which optimizes offsets before comparing images, on the coincidence probabilities of the indices. The Miura Matching step serves as a post-alignment phase in the current pipeline. According to Equation~\ref{eq:mu_leq}, excluding the Miura Matching phase should result in the probabilities of matching indices being less than or equal to the previous values determined for \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), respectively.
 Following the setup and conductin the experiment as described in the previous section, we obtained the following statistical analysis and probability computations:
 
 
 \begin{itemize}
-    \item \text{\(\mu_{\text{same}}^{obs}\)}: 
+    \item \text{\(\mu_{\text{same}}^{\text{obs}}\)}: 
     
-    \[ \mu_{\text{same}}^{obs} \approx 0.11871 = 11.87\%\]
+    \[ \mu_{\text{same}}^{\text{obs}} \approx 0.11871 = 11.87\%\]
     
-    \item \text{\(\mu_{\text{diff}}^{obs}\)}:
+    \item \text{\(\mu_{\text{diff}}^{\text{obs}}\)}:
     
-    \[ \mu_{\text{diff}}^{obs} \approx 0.05651 = 5.65\% \]
+    \[ \mu_{\text{diff}}^{\text{obs}} \approx 0.05651 = 5.65\% \]
 
     \begin{figure}[H]
         \centering

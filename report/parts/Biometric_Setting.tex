@@ -28,11 +28,11 @@ The experimental results for the mean (\(p\)), along with the variance (\(\sigma
 
 
 \begin{equation} \label{eq:proba2}
-    \sigma_{p}^{\text{obs}} = \sqrt{\mathbb{E} \left[ \left( \frac{\text{HW}(X)}{n} - p^{\text{obs}} \right)^2 \right]} \approx 5.02 \times 10^{-3}
+    \sigma_{\text{p}}^{\text{obs}} = \sqrt{\mathbb{E} \left[ \left( \frac{\text{HW}(X)}{n} - p^{\text{obs}} \right)^2 \right]} \approx 5.02 \times 10^{-3}
 \end{equation}
 
 \begin{equation} \label{eq:proba3}
-    (\sigma_{p}^{\text{obs}})² = \mathbb{V}\left( \frac{\text{HW}(X)}{n} \right)  \approx 2.52 \times 10^{-5}
+    (\sigma_{\text{p}}^{\text{obs}})² = \mathbb{V}\left( \frac{\text{HW}(X)}{n} \right)  \approx 2.52 \times 10^{-5}
 \end{equation}
 
 In biometric authentication and identification, the uniqueness of each biometric capture is encoded in its bits. The objective revolves around discerning the similarity between two biometric captures to verify or identify two individuals. Therefore, the scoring mechansim plays a crucial role in quantatively determining the similarity between biometric captures. This similarity score holds significance in verifying the identity of an individual (authentication) or identifying potential matches in a database (identification). A higher score indicates a greater ressemblance between captures, while a lower score suggests less similarity. This scoring mechanism is indispensable for ensuring the accuracy and reliability of biometric systems. The score of (\(X\), \(Y\)) is computed as
@@ -63,7 +63,7 @@ The probability of the \(i\)-th pixel of two captures not being the same after a
 
 \begin{equation} \label{eq:delta}
     \begin{aligned}
-        \delta = \mathbb{E}\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right) = P[\bar{X}_i \neq \bar{Y}_i]
+        \delta = \mathbb{E}\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right) = Pr[\bar{X}_i \neq \bar{Y}_i]
     \end{aligned}
 \end{equation}
 
@@ -80,7 +80,7 @@ The probability of the \(i\)-th pixel of two captures not being the same after a
 \end{equation}
 
 
-Distinguishing between the types of distributions associated with the two captures is crucial. When both captures originate from the same biometric subject, it is referred to as \(\delta_{\text{same}}\). Conversely, if the captures are from different subjects, it is labeled as \(\delta_{\text{diff}}\). Additionally, when \(\bar{X}\) and \(\bar{Y}\) consist of \(2n\) independent random bits with an expected value of \(p\) and no optimal offset is applied, it is classified as \(\delta_{\text{indep}}\). In this scenario, \(\delta_{\text{indep}}^{\text{obs}} = 2p^{obs}(1-p^{obs}) = 6.78\%\). As will be detailed in Section~\ref{sec:delta}, the experimental results produce the following figures:
+Distinguishing between the types of distributions associated with the two captures is crucial. When both captures originate from the same biometric subject, it is referred to as \(\delta_{\text{same}}\). Conversely, if the captures are from different subjects, it is labeled as \(\delta_{\text{diff}}\). Additionally, when \(\bar{X}\) and \(\bar{Y}\) consist of \(2n\) independent random bits with an expected value of \(p\) and no optimal offset is applied, it is classified as \(\delta_{\text{indep}}\). In this scenario, \(\delta_{\text{indep}}^{\text{obs}} = 2p^{\text{obs}}(1-p^{\text{obs}}) = 6.78\%\). As will be detailed in Section~\ref{sec:delta}, the experimental results produce the following figures:
 
 \begin{table}[H]
     \centering
@@ -163,11 +163,11 @@ Concluding the analysis of the vein pixel distribution across different camera c
 
 The findings from this analysis revealed the following probabilities:
 \begin{enumerate}
-    \item For Camera 1, the probability \(p^{obs} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) was calculated to be \(0.03658\), indicating a \(3.66\)\% chance that any given pixel in images from Camera 1 represents a vein.
+    \item For Camera 1, the probability \(p^{\text{obs}} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) was calculated to be \(0.03658\), indicating a \(3.66\)\% chance that any given pixel in images from Camera 1 represents a vein.
 
-    \item For Camera 2, the probability \(p^{obs} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) was slightly lower at \(0.03369\), translating to a \(3.37\)\% chance for vein representation in its images.
+    \item For Camera 2, the probability \(p^{\text{obs}} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) was slightly lower at \(0.03369\), translating to a \(3.37\)\% chance for vein representation in its images.
 
-    \item When considering the datasets from Both Cameras combined, the probability \(p^{obs} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) averaged out to \(0.03514\), suggesting a \(3.51\)\% likelihood of a pixel depicting a vein across the entire dataset. Moreover, the variance (\((\sigma^{obs}_p)²\)) and the standard deviation (\( \sigma^{obs}_p \)) of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) provide insights into the the random variable's spread and consistency. The observed variance is low, at approximately \( 2.52 \times 10^{-5} \), indicating minimal fluctuation in the random variables' values among different feature vectors. This suggests that the feature extraction method is highly reliable and consistent across different images. Furthermore, the standard deviation, calculated as approximately \( 5.02 \times 10^{-3} \), reinforces the idea of minimal dispersion around the mean probability (\(p\)) of detecting a vein. 
+    \item When considering the datasets from Both Cameras combined, the probability \(p^{\text{obs}} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) averaged out to \(0.03514\), suggesting a \(3.51\)\% likelihood of a pixel depicting a vein across the entire dataset. Moreover, the variance (\((\sigma^{\text{obs}}_p)²\)) and the standard deviation (\( \sigma^{\text{obs}}_p \)) of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) provide insights into the the random variable's spread and consistency. The observed variance is low, at approximately \( 2.52 \times 10^{-5} \), indicating minimal fluctuation in the random variables' values among different feature vectors. This suggests that the feature extraction method is highly reliable and consistent across different images. Furthermore, the standard deviation, calculated as approximately \( 5.02 \times 10^{-3} \), reinforces the idea of minimal dispersion around the mean probability (\(p\)) of detecting a vein. 
     
 \end{enumerate}
 
@@ -176,15 +176,15 @@ The findings from this analysis revealed the following probabilities:
 
 To assess the probability that the i-th pixel of two captures diverges after applying the optimal offset translations \( d_X \) and \( d_Y \) (Equation \ref{eq:delta}), we undertake additional experimental analysis. This investigation continues to utilize the same dataset comprising 20 distinct individuals. Here, the post-alignment process, specifically Miura Matching, is included in our examination as the calculation formula integrates this step. As detailed in Section~\ref{Bio_data_sim_scores}, our objective is to evaluate three distinct delta values: \(\delta_{\text{same}}\), \(\delta_{\text{diff}}\), and  \(\delta_{\text{indep}}\).
 
-The computation of \( \delta_{\text{indep}} \) is relatively straightforward, having determined \( p^{obs} \). In order to calculate the mean, the standard deviation, and the variance of the random variable \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\) when \(X\) and \(Y\) are made up of \(2n\) independent random bits of expected value \(p\) and without applying the optimal offset to get \(\bar{X}\) and \(\bar{Y}\), we can proceed as follows:
+The computation of \( \delta_{\text{indep}} \) is relatively straightforward, having determined \( p^{\text{obs}} \). In order to calculate the mean, the standard deviation, and the variance of the random variable \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\) when \(X\) and \(Y\) are made up of \(2n\) independent random bits of expected value \(p\) and without applying the optimal offset to get \(\bar{X}\) and \(\bar{Y}\), we can proceed as follows:
 
-\[ \delta^{obs}_{\text{indep}} = 2p^{obs}(1 - p^{obs}) = 2 \times 0.03514 \times (1 - 0.03514) \approx 6.78\% \]
+\[ \delta^{\text{obs}}_{\text{indep}} = 2p^{\text{obs}}(1 - p^{\text{obs}}) = 2 \times 0.03514 \times (1 - 0.03514) \approx 6.78\% \]
 
 Next, the standard deviation and the variance of the normalized Hamming distance are given as:
 
-\[ {\sigma^{\text{obs}}_{\delta_{indep}}} = \sqrt{\mathbb{E} \left[ \left( \frac{d_H(X, Y)}{n} - \delta_{\text{indep}} \right)^2 \right]} = \sqrt{\frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n}} \approx 1.18 \times 10^{-3} \]
+\[ {\sigma^{\text{obs}}_{\delta_{\text{indep}}}} = \sqrt{\mathbb{E} \left[ \left( \frac{d_H(X, Y)}{n} - \delta_{\text{indep}} \right)^2 \right]} = \sqrt{\frac{4p^{\text{obs}}(1 - p^{\text{obs}})(1 - 2p^{\text{obs}}(1 - p^{\text{obs}}))}{n}} \approx 1.18 \times 10^{-3} \]
 
-\[ ({\sigma^{\text{obs}}_{\delta_{indep}}})² = \mathbb{V}\left( \frac{d_H(X, Y)}{n} \right) = \frac{4p^{obs}(1 - p^{obs})(1 - 2p^{obs}(1 - p^{obs}))}{n} \approx 1.40 \times 10^{-6} \]\\
+\[ ({\sigma^{\text{obs}}_{\delta_{\text{indep}}}})² = \mathbb{V}\left( \frac{d_H(X, Y)}{n} \right) = \frac{4p^{\text{obs}}(1 - p^{\text{obs}})(1 - 2p^{\text{obs}}(1 - p^{\text{obs}}))}{n} \approx 1.40 \times 10^{-6} \]\\
 
 To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \), a meticulous procedure was executed on our dataset, which involves 20 unique individuals, each having multiple biometric captures. Below is an outline of the methodology applied:
 
@@ -199,28 +199,28 @@ To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \)
     \begin{itemize}
         \item For \( \delta_{\text{same}} \), we calculated the average normalized distances from intra-individual comparisons. This analysis provided the following results, quantifying the observed differences between captures from the same individual after alignment:
 
-        \[ \delta_{\text{same}}^{obs} \approx 4.55\% \]
-        \[ \sigma^{obs}_{\delta_{same}} \approx 1.03 \times 10^{-2} \]
-        \[ (\sigma^{obs}_{\delta_{same}})² \approx 1.06 \times 10^{-4} \]
+        \[ \delta_{\text{same}}^{\text{obs}} \approx 4.55\% \]
+        \[ \sigma^{\text{obs}}_{\delta_{\text{same}}} \approx 1.03 \times 10^{-2} \]
+        \[ (\sigma^{\text{obs}}_{\delta_{\text{same}}})² \approx 1.06 \times 10^{-4} \]
 
         \begin{figure}[H]
             \centering
             \includegraphics[width=0.7\linewidth]{latex-img/delta_same.png}
-            \caption{Frequency Distribution of Normalized Hamming Distances for Identical Biometric Samples with Alignment \(\delta_{same} \sim \mathcal{N}(0.05, 1.06 \times 10^{-4})\)}
+            \caption{Frequency Distribution of Normalized Hamming Distances for Identical Biometric Samples with Alignment \(\delta_{\text{same}} \sim \mathcal{N}(0.05, 1.06 \times 10^{-4})\)}
             \label{delta_same}
         \end{figure}
         
         \newpage
         \item For \( \delta_{\text{diff}} \), we performed a similar averaging of the normalized distances from the inter-individual comparisons, which furnished us with the following results for observing a difference between captures from the different individuals after alignment:
 
-        \[ \delta_{\text{diff}}^{obs} \approx 5.99\% \]
-        \[ \sigma^{obs}_{\delta_{diff}} \approx 6.76 \times 10^{-3} \]
-        \[ (\sigma^{obs}_{\delta_{diff}})² \approx 4.58 \times 10^{-5} \]
+        \[ \delta_{\text{diff}}^{\text{obs}} \approx 5.99\% \]
+        \[ \sigma^{\text{obs}}_{\delta_{\text{diff}}} \approx 6.76 \times 10^{-3} \]
+        \[ (\sigma^{\text{obs}}_{\delta_{\text{diff}}})² \approx 4.58 \times 10^{-5} \]
 
         \begin{figure}[H]
             \centering
             \includegraphics[width=0.7\linewidth]{latex-img/delta_diff.png}
-            \caption{Frequency Distribution of Normalized Hamming Distances for Different Biometric Samples with Alignment \(\delta_{diff} \sim \mathcal{N}(0.06, 4.58 \times 10^{-5})\)}
+            \caption{Frequency Distribution of Normalized Hamming Distances for Different Biometric Samples with Alignment \(\delta_{\text{diff}} \sim \mathcal{N}(0.06, 4.58 \times 10^{-5})\)}
             \label{delta_diff}
         \end{figure}
     \end{itemize}
@@ -231,39 +231,39 @@ The joint probability distribution presented in Table \ref{tab:joint_distributio
 In Table \ref{tab:joint_distribution}, we explain each entry:
 
 \begin{itemize}
-    \item By utilizing the previously determined value of $\delta$, we can infer the probabilities \(P[\bar{X}_i = 1, \bar{Y}_i = 0]\) and \(P[\bar{X}_i = 0, \bar{Y}_i = 1]\) as follows: 
+    \item By utilizing the previously determined value of $\delta$, we can infer the probabilities \(Pr[\bar{X}_i = 1, \bar{Y}_i = 0]\) and \(Pr[\bar{X}_i = 0, \bar{Y}_i = 1]\) as follows: 
     \begin{equation*}
         \begin{aligned}
-            \delta = P[\bar{X}_i \neq \bar{Y}_i] = P[\bar{X}_i = 1, \bar{Y}_i = 0] + P[\bar{X}_i = 0, \bar{Y}_i = 1]
+            \delta = Pr[\bar{X}_i \neq \bar{Y}_i] = Pr[\bar{X}_i = 1, \bar{Y}_i = 0] + Pr[\bar{X}_i = 0, \bar{Y}_i = 1]
         \end{aligned}
     \end{equation*}
     Hence we have:
     \begin{equation*}
         \begin{aligned}
-            P[\bar{X}_i = 1, \bar{Y}_i = 0] = P[\bar{X}_i = 0, \bar{Y}_i = 1] = \frac{\delta}{2}
+            Pr[\bar{X}_i = 1, \bar{Y}_i = 0] = Pr[\bar{X}_i = 0, \bar{Y}_i = 1] = \frac{\delta}{2}
         \end{aligned}
     \end{equation*}
-    \item To determine the probability\(P[\bar{X}_i = 0, \bar{Y}_i = 0]\), we consider the following relationships and utilize the law of total probability:
+    \item To determine the probability\(Pr[\bar{X}_i = 0, \bar{Y}_i = 0]\), we consider the following relationships and utilize the law of total probability:
     \begin{equation*}
         \begin{aligned}
-            P[\bar{X}_i = 0] = 1-p = P[\bar{X}_i = 0, \bar{Y}_i = 0] + P[\bar{X}_i = 0, \bar{Y}_i = 1]
+            Pr[\bar{X}_i = 0] = 1-p = Pr[\bar{X}_i = 0, \bar{Y}_i = 0] + Pr[\bar{X}_i = 0, \bar{Y}_i = 1]
         \end{aligned}
     \end{equation*} 
     \begin{equation*}
         \begin{aligned}
-            P[\bar{Y}_i = 0] = 1-p = P[\bar{X}_i = 0, \bar{Y}_i = 0] + P[\bar{X}_i = 1, \bar{Y}_i = 0]
+            Pr[\bar{Y}_i = 0] = 1-p = Pr[\bar{X}_i = 0, \bar{Y}_i = 0] + Pr[\bar{X}_i = 1, \bar{Y}_i = 0]
         \end{aligned}
     \end{equation*} 
     
-    By solving these equations, we can derive the probability of interest, \\\(P[\bar{X}_i = 0, \bar{Y}_i = 0]\), and hence infer the previously obtained values for \\\(P[\bar{X}_i = 1, \bar{Y}_i = 0]\) and \(P[\bar{X}_i = 0, \bar{Y}_i = 1]\):
-    \[ P[\bar{X}_i = 0, \bar{Y}_i = 0] = 1-p - \frac{\delta}{2} \] 
+    By solving these equations, we can derive the probability of interest, \\\(Pr[\bar{X}_i = 0, \bar{Y}_i = 0]\), and hence infer the previously obtained values for \\\(Pr[\bar{X}_i = 1, \bar{Y}_i = 0]\) and \(Pr[\bar{X}_i = 0, \bar{Y}_i = 1]\):
+    \[ Pr[\bar{X}_i = 0, \bar{Y}_i = 0] = 1-p - \frac{\delta}{2} \] 
 
-    \item The probability \(P[\bar{X}_i = 1, \bar{Y}_i = 1]\) is derived by 
-    \[P[\bar{X}_i = 1, \bar{Y}_i = 1] = 1 - P[\bar{X}_i = 0, \bar{Y}_i = 0] = p-\frac{\delta}{2}\]
+    \item The probability \(Pr[\bar{X}_i = 1, \bar{Y}_i = 1]\) is derived by 
+    \[Pr[\bar{X}_i = 1, \bar{Y}_i = 1] = 1 - Pr[\bar{X}_i = 0, \bar{Y}_i = 0] = p-\frac{\delta}{2}\]
 
 \end{itemize}
 
-Utilizing \(\delta_{same}^{obs}\), \(\delta_{diff}^{obs}\) and \(\delta_{indep}^{obs}\), we can determine the corresponding probabilities presented in Table \ref{tab:joint_distribution}. This gives us the following figures:
+Utilizing \(\delta_{\text{same}}^{\text{obs}}\), \(\delta_{\text{diff}}^{\text{obs}}\) and \(\delta_{\text{indep}}^{\text{obs}}\), we can determine the corresponding probabilities presented in Table \ref{tab:joint_distribution}. This gives us the following figures:
 
 
 \begin{table}[H]
@@ -290,9 +290,9 @@ Utilizing \(\delta_{same}^{obs}\), \(\delta_{diff}^{obs}\) and \(\delta_{indep}^
         \hline
         & $\bar{Y}_i = 0$ & $\bar{Y}_i = 1$\\
         \hline
-        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{same}^{obs}}{2} = 94.21\% $ & $\frac{\delta_{same}^{obs}}{2} = 2.27\%$\\
+        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{\text{same}}^{\text{obs}}}{2} = 94.21\% $ & $\frac{\delta_{\text{same}}^{\text{obs}}}{2} = 2.27\%$\\
         \hline
-        $\bar{X}_i = 1$ & $\frac{\delta_{same}^{obs}}{2} = 2.27\%$ & $p - \frac{\delta_{same}^{obs}}{2} = 1.24\%$\\
+        $\bar{X}_i = 1$ & $\frac{\delta_{\text{same}}^{\text{obs}}}{2} = 2.27\%$ & $p - \frac{\delta_{\text{same}}^{\text{obs}}}{2} = 1.24\%$\\
         \hline
     \end{tabular}
     \caption{Joint Distribution of ($\bar{X}_j$, $\bar{Y}_j$) for \(X\) and \(Y\)  Originating from the Same Biometric Subject}
@@ -306,9 +306,9 @@ Utilizing \(\delta_{same}^{obs}\), \(\delta_{diff}^{obs}\) and \(\delta_{indep}^
         \hline
         & $\bar{Y}_i = 0$ & $\bar{Y}_i = 1$\\
         \hline
-        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{diff}^{obs}}{2} = 93.49\% $ & $\frac{\delta_{diff}^{obs}}{2} = 2.99\%$\\
+        $\bar{X}_i = 0$ & $1 - p - \frac{\delta_{\text{diff}}^{\text{obs}}}{2} = 93.49\% $ & $\frac{\delta_{\text{diff}}^{\text{obs}}}{2} = 2.99\%$\\
         \hline
-        $\bar{X}_i = 1$ & $\frac{\delta_{diff}^{obs}}{2} = 2.99\%$ & $p - \frac{\delta_{diff}^{obs}}{2} = 0.52\%$\\
+        $\bar{X}_i = 1$ & $\frac{\delta_{\text{diff}}^{\text{obs}}}{2} = 2.99\%$ & $p - \frac{\delta_{\text{diff}}^{\text{obs}}}{2} = 0.52\%$\\
         \hline
     \end{tabular}
     \caption{Joint Distribution of ($\bar{X}_j$, $\bar{Y}_j$) for \(X\) and \(Y\) Originating from Different Biometric Subject}

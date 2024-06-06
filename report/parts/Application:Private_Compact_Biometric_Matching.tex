@@ -22,18 +22,16 @@ Subsequently, the Hamming distance between the resulting hash values of two biom
 
 This expression quantifies the instances "i" where the outputs of the preHash function differ between samples \(\bar{X}\) and \(\bar{Y}\).
 
-One notable advantage of this approach is the reduction in size of the stored biometric template. Rather than storing \textit{n} pixels, \textit{ml} integers are stored. Additionally, the key renders the reference preHash less privacy-sensitive compared to a biometric template. Specifically, if the key is known, each integer in the hash discloses about \(\frac{1}{p}\) pixels, revealing \(\frac{ml}{p}\) pixels at worst. This disclosure occurs because, with the keys, the hash values can potentially be reverse-engineered to reveal characteristics of the original biometric pattern. The term \(p\)​ reflects the information entropy associated with each bit being a vein (\('1'\)) and thus quantifies the average information content each disclosed pixel conveys when the hash is decoded.
+One notable advantage of this approach is the reduction in size of the stored biometric template. Rather than storing \textit{n} pixels, \textit{ml} integers are stored. Additionally, the key renders the reference preHash less privacy-sensitive compared to a biometric template. Specifically, if the key is known, each integer in the hash discloses about \(\frac{1}{p}\) pixels, revealing \(\frac{ml}{p}\) pixels at worst. This disclosure occurs because, with the keys, the hash values can potentially be reverse-engineered to reveal characteristics of the original biometric pattern. The term \(p\)​ reflects the information entropy associated with each bit being a vein (\(1\)) and thus quantifies the average information content each disclosed pixel conveys when the hash is decoded.
 
-Similarly, when employing the Hamming distance for biometric matching through the iterative generation of \textit{l} iterations of the postHash function, analogous advantages arise. Here, the stored biometric template is condensed to \textit{mld} integers instead of \textit{n} pixels. Furthermore, the key diminishes the sensitivity of the reference postHash in terms of privacy, exposing \(\frac{mld}{p}\) pixels at most if known. Additionally, postHash contributes to leakage reduction.
-
-It's crucial to note that for both scenarios, additional privacy safeguards can be implemented, for instance a restricted access to the key. Hence, the intricacies of the biometric infrastructure must be addressed on a case-by-case basis.
+Similarly, when employing the Hamming distance for biometric matching through the iterative generation of \textit{l} iterations of the postHash function, analogous advantages arise. Here, the stored biometric template is condensed to \textit{mld} integers instead of \textit{n} pixels. Furthermore, the key diminishes the sensitivity of the reference postHash in terms of privacy, exposing \(\frac{mld}{p}\) pixels at most if the keys are known. Additionally, postHash contributes to leakage reduction.
 
 \subsection{Theoretical Foundations of FPR and FNR within Fuzzy Hashing Systems}
 
 Transforming biometric data into a hash, using methods such as preHash or its more compact version, postHash, plays a key role in enhancing the system's efficiency and security. This process helps protect privacy, which in turn influences important aspects of the system's performance, such as the \hyperref[def:FNR]{False Negative Rate (FNR)} and the \hyperref[def:FPR]{False Positive Rate (FPR)}. By converting detailed biometric data into a simpler, hashed format, the system not only uses storage space more efficiently but also reduces the chances of unauthorized access to sensitive information. This transformation is crucial for maintaining the integrity of the data and provides a strong line of defense against potential security threats. Additionally, choosing the right techniques for generating these hashes can greatly improve the system's ability to distinguish between authorized and unauthorized users. This means fewer mistakes in the form of false rejections or acceptances, leading to a more accurate and dependable biometric verification process.
 
 We establish a threshold \(t\) to evaluate the match between two biometric samples, \(\bar{X}\) and \(\bar{Y}\), by analyzing the Hamming distance between their hash values.
-We define that a match is confirmed if the difference between \(l\) (the total iterations) and the Hamming distance is equal to or exceeds the threshold \(t\), expressed as: \[l - d_H(Hash_{\text{key}}^\text{m}(\bar{X}), Hash_{\text{key}}^\text{m}(\bar{Y})) \geq t\]
+We define that a match is confirmed if the difference between \(l\) (the total number of iterations) and the Hamming distance is equal to or exceeds the threshold \(t\), expressed as: \[l - d_H(Hash_{\text{key}}^\text{m}(\bar{X}), Hash_{\text{key}}^\text{m}(\bar{Y})) \geq t\]
 In contrast, we define there being no match if the following equation holds: \[l - d_H(Hash_{\text{key}}^\text{m}(\bar{X}), Hash_{\text{key}}^\text{m}(\bar{Y})) < t\]
 
 To further refine our understanding, we use statistical methods to approximate this comparison to a normal distribution, allowing us to more accurately calculate the False Negative Rate (FNR). 
@@ -44,7 +42,7 @@ First, let us define the random variable $H$ as \(H = d_H(Hash_{key}^\text{m}(\b
 \mu_{\text{H, same}} = \mathbb{E}(H) = l \cdot p_H = l \cdot (1 - \mu_{\text{same}}^\text{m})    
 \]
 \[
-\sigma_{\text{H, same}}^2 = \mathbb{V}(H) = l \cdot p_H \cdot (1 - p_H) = l \cdot (1 - \mu_{\text{same}}^\text{m}) \cdot \mu_{\text{same}}^\text{m}    
+(\sigma_{\text{H, same}})^2 = \mathbb{V}(H) = l \cdot p_H \cdot (1 - p_H) = l \cdot (1 - \mu_{\text{same}}^\text{m}) \cdot \mu_{\text{same}}^\text{m}    
 \]
 Therefore, H can be approximated by
 \[
@@ -74,7 +72,7 @@ For a large \( l \), the Hamming distance \( H \) can again be approximated by a
 \mu_{\text{H, diff}} = l \cdot (1 - \mu_{\text{diff}}^\text{m})
 \]
 \[
-\sigma_{\text{H, diff}}^\text{2} = l \cdot (1 - \mu_{\text{diff}}^m) \cdot \mu_{\text{diff}}^\text{m}
+(\sigma_{\text{H, diff}})^2 = l \cdot (1 - \mu_{\text{diff}}^m) \cdot \mu_{\text{diff}}^\text{m}
 \]
 
 Therefore, \( H \) can be approximated by:
@@ -94,7 +92,7 @@ The FPR is the probability that the Hamming distance \( H \) is less than the th
 \end{aligned}
 \end{equation}
 
-These formulations allow for the evaluation of false match rates based on the standard deviation and mean of the distributions for same and different samples, respectively.e
+These formulations allow for the evaluation of false match rates based on the standard deviation and mean of the distributions for same and different samples, respectively.
 
 For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate the threshold (\(t\)) from parameters \(m\) and \(l\) to achieve an FNR of \(\approx\) 1\%. The theoretical resulting set of parameters is as follows: 
 
@@ -106,13 +104,8 @@ For instance, employing \(\Phi(-2.33) \approx 1\%\) as a benchmark, we calculate
         \hline
         1 & 217 & 32 & 47.85 & 17.9 & \(\leq\)1\% & \(2^{-10}\)\\
         1 & 637 & 113 & 140.46 & 52.55 & 1.0\% & \(2^{-54}\) \\
-        %1 & 637 & 118 & 146.5 & 49 & 2^⁻6\% & \(2^{-74}\) \\
         2 & 961 & 31 & 46.72 & 6.54 & 1.0\% & \(2^{-69}\) \\
-        %2 & 961 & 34 & 50.8 & 5.7 & 2^⁻6\% & \(2^⁻106\) \\
         3 & 2569 & 15 & 27.54 & 1.44 & 1.0\% &\(2^{-101}\) \\
-        %3 & 2569 & 18 & 31.3 & 1.2 & 2^⁻6\% &\(2^{-179}\) \\
-        4 & 8481 & 10 & 20.05 & 0.39 & 1.0\% & \(2^{-161}\) \\
-        %4 & 8481 & 12 & 23.7 & 0.3 & 2^⁻6\% &\(2^{-377}\) \\
         \hline
     \end{tabular}
     \caption{Theoretical Parameterization Results for FNR and FPR Calculation, using $l$ Iterations of PreHash}

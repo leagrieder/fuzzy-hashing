@@ -12,13 +12,13 @@ The preHash algorithm is the first step in the fuzzy hashing process, designed t
 
 Algorithm Inputs and Outputs:
 \begin{enumerate}
-    \item \textbf{Inputs}: As illustrated in the pseudocode~\ref{preHash Algorithm}, the algorithm takes three main inputs:
+    \item \textbf{Inputs}: As illustrated in the pseudocode from Algorithm~\ref{preHash Algorithm}, it takes three main inputs:
     \begin{itemize}
         \item \textbf{A parameter m}: the number of indices to find
         \item \textbf{A bitstring X}: the feature-extracted vein patterns of a biometric capture
         \item \textbf{A key}: used to initialize a Pseudorandom Number Generator (PRNG)
     \end{itemize}
-    \item \textbf{Output}: The algorithm outputs a tuple \((i_1,...,i_m)\) consisting of the \(m\) smallest indices \(i_j\)​ such that \(1 \leq i_1<...<i_m\)​ and the pixel at \(PRNG_{\text{key}(i_j)}\) in \(X\) is identified as a vein pixel. 
+    \item \textbf{Output}: The algorithm outputs a tuple \((i_1,...,i_m)\) consisting of the \(m\) smallest indices \(i_j\)​ such that \(1 \leq i_1<...<i_m\)​ and the pixel at \(PRNG_{\text{key}}(i_j)\) in \(X\) is identified as a vein pixel. 
 \end{enumerate}
 
 Detailed Process of preHash:
@@ -28,7 +28,7 @@ Detailed Process of preHash:
     \item \textbf{Nonce Generation}: A nonce in CTR mode encryption is initialized to zero to maintain simplicity and security. We opted against using a keyed hash function to generate the nonce, as it would tie the nonce to the secret key. Such a dependency would mean that both the nonce and the Pseudo-Random Number Generator (PRNG) would rely on the same key, creating a security risk by concentrating security on a single element. To avoid this, we keep the generation of the nonce separate from the key.
 
     \item \textbf{Pseudorandom Sequence Generation}: Upon initialization with the specified parameters—key and nonce—the PRNG operates in Counter (CTR) mode to generate a sequence of pseudo-random numbers. As illustrated in Figure~\ref{ctr encryption}, the process involves encrypting an incrementing counter combined with the nonce using the specified key. The output from this block cipher encryption is used to generate a unique stream of pseudo-random bits.
-    To optimize the utilization of the cryptographic output and reduce operational overhead, the PRNG is designed to generate a full 128-bit block of pseudo-random data at a time, even though only a portion of these bits are used immediately. When a new block is generated, the algorithm extracts the lowest 17 bits to obtain the pseudo-random number for the current operation. This choice is aligned with the project's requirement for representing image sizes, where a maximum of \(90'240\) pixels can be represented, necessitating exactly 17 bits per operation (\(\left\lceil \log_2(90'240) \right\rceil = 17\)). These extracted bits serve as the pseudo-random number.
+    To optimize the utilization of the cryptographic output and reduce operational overhead, the PRNG is designed to generate a full 128-bit block of pseudo-random data at a time, even though only a portion of these bits are used immediately. When a new block is generated, the algorithm extracts the lowest 17 bits to obtain the pseudo-random number for the current operation. This choice is aligned with the project's requirement for representing image sizes, where a maximum of \(90'240\) pixels can be represented, necessitating 17 bits per operation (\(\left\lceil \log_2(90'240) \right\rceil = 17\)). These extracted bits serve as the pseudo-random number.
     Following extraction, the algorithm discards the used bits from the current block by right-shifting the block by 17 bits. This operation updates the state of the PRNG, ensuring that the consumed bits are no longer considered in subsequent operations. In the case where there are no longer 17 bits available after extraction, the algorithm generates a new pseudo-random number using the PRNG and repeats the process. This mechanism guarantees the efficient utilization of all bits produced by the block cipher, enhancing efficiency and reducing operational overhead.
     The predictability and reproducibility of the sequence are entirely dictated by the chosen key. Employing the same key across sessions guarantees the generation of an identical sequence of pseudo-random numbers.
     
@@ -37,7 +37,7 @@ Detailed Process of preHash:
     \begin{figure}[!h]
         \centering
         \includegraphics[width=1\linewidth]{latex-img/CTR_encryption.png}
-        \caption{Counter (CTR) mode encryption}
+        \caption{Counter (CTR) mode encryption\cite{ref5}}
         \label{ctr encryption}
     \end{figure}
     
@@ -199,7 +199,7 @@ For clarity, note that in the following equations:
 - \(\sigma_{\text{p}}\) corresponds to \(\sigma_{\text{p}}^{\text{obs}}\), and\\
 - \(\sigma_\delta\) corresponds to \(\sigma_{\delta_{\text{indep}}}^{\text{obs}}\).
 
-Moreover, we have the following equalities:
+We have the following equalities:
  \[
     \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} \approx \num{1.78e-2}, \quad \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^{\text{obs}}_{\text{p}}})^2 \approx -\num{2.6e-3}
  \]\\
@@ -351,9 +351,9 @@ where equality is reached for the optimal offset translations.
 \subsection{Experimental Derivation of the Probabilities \(\mu_{\text{same}}^{\text{obs}}, \mu_{\text{diff}}^{\text{obs}}, \mu_{\text{indep}}^{\text{obs}}\)}
 \label{sec:experiment_fuzzy_hash}
 
-In Section~\ref{sec:mu}, we have laid out the mathematical framework that defines the upper bound \(\mu\). This probability is crucial in our fuzzy hashing approach, as it quantifies the matching likelihood after applying the optimal offset translations to the biometric captures. The application of these optimal offsets is an important preprocessing step before hashing the dataset, ensuring that the biometric features are accurately aligned for comparison.
+In section~\ref{sec:mu}, we have laid out the mathematical framework that defines the upper bound \(\mu\). This probability is crucial in our fuzzy hashing approach, as it quantifies the matching likelihood after applying the optimal offset translations to the biometric captures. The application of these optimal offsets is an important preprocessing step before hashing the dataset, ensuring that the biometric features are accurately aligned for comparison.
 
-We will proceed to evaluate these theoretical approximations (Table~\ref{tab:mu_approx}) experimentally, leveraging the same comprehensive database that has been utilized in our prior research, as explained in Section~\ref{sec:delta}. This experimental assessment will enable us to substantiate the theoretical predictions of \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\).
+We will proceed to evaluate these theoretical approximations (Table~\ref{tab:approximation_mu_taylor}) experimentally, leveraging the same comprehensive database that has been utilized in our prior research, as explained in Section~\ref{sec:delta}. This experimental assessment will enable us to substantiate the theoretical predictions of \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\).
 
 In the experimental setup, \(\mu^{\text{obs}}_{\text{same}}\) refers to the probability that a hash function, when applied to two biometric captures of the same finger, will yield the same index. This is the measure of success in correctly identifying matches within the same individual's biometric captures. Conversely, \(\mu^{\text{obs}}_{\text{diff}}\) denotes the probability that the same hash function will produce different indices for biometric captures from different individuals, representing the ability to distinguish between different people's biometric data. Lastly, \(\mu^{\text{obs}}_{\text{indep}}\) indicates the probability of a match in the case where the biometric captures are completely independent, serving as a baseline for random chance, which has already been calculated (see Equation~\ref{eq:mu_indep})
 
@@ -370,11 +370,11 @@ For \(\mu_{\text{same}}^{\text{obs}}\) and \(\mu_{\text{diff}}^{\text{obs}}\), o
     
     \item \textbf{Statistical Analysis and Probability Computation}:
     \begin{itemize}
-        \item \textbf{\(\mu_{\text{same}}^{\text{obs}}\)}: We computed \(\mu_{\text{same}}^{\text{obs}}\) by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the intra-individual comparisons, which furnished us with the following probability:
+        \item \textbf{\(\mu_{\text{same}}^{\text{obs}}\)}: We computed \(\mu_{\text{same}}^{\text{obs}}\) by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) from the distribution of same biometric subject comparisons, which furnished us with the following probability:
 
         \[ \mu_{\text{same}}^{obs} \approx 0.22047 = 22.05\%\]
         
-        \item \textbf{\(\mu_{\text{diff}}^{\text{obs}}\)}: Similarly, \(\mu_{\text{diff}}^{\text{obs}}\) was determined by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) of the inter-individual comparisons, which furnished us with the following probability:
+        \item \textbf{\(\mu_{\text{diff}}^{\text{obs}}\)}: Similarly, \(\mu_{\text{diff}}^{\text{obs}}\) was determined by averaging the number of Hamming distances that resulted in a match (Hamming distances of 0) from the distribution of different biometric subject comparisons, which furnished us with the following probability:
 
         \[ \mu_{\text{diff}}^{\text{obs}} \approx 0.08249 = 8.25\% \]
         \begin{figure}[H]
@@ -403,7 +403,7 @@ In our analysis of the dataset at hand featuring biometric data from 20 unique i
 \subsubsection{Experimental Derivation of the Probabilities \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\) Excluding the Post-Alignment Step}
 
 We conducted an experimental investigation to determine the impact of omitting the Miura Marching step, which optimizes offsets before comparing images, on the coincidence probabilities of the indices. The Miura Matching step serves as a post-alignment phase in the current pipeline. According to Equation~\ref{eq:mu_leq}, excluding the Miura Matching phase should result in the probabilities of matching indices being less than or equal to the previous values determined for \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\), respectively.
-Following the setup and conductin the experiment as described in the previous section, we obtained the following statistical analysis and probability computations:
+Following the setup and conducting the experiment as described in the previous section, we obtained the following statistical analysis and probability computations:
 
 
 \begin{itemize}

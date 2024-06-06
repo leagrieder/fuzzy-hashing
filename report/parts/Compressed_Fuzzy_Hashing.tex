@@ -13,14 +13,14 @@ The postHash algorithm, constituting the second and final step in the fuzzy hash
 
 Algorithm Inputs and Outputs:
 \begin{enumerate}
-    \item \textbf{Inputs}: As illustrated in Figure~\ref{postHash Algorithm}, the algorithm takes as input:
+    \item \textbf{Inputs}: As illustrated in figure~\ref{postHash Algorithm}, the algorithm takes as input:
     \begin{itemize}
         \item \textbf{A tuple of indices}: \((i_1, \ldots, i_m)\), which is the output of the preHash algorithm
     \end{itemize}
     \item \textbf{Output}: Converted indices, forming a compact hash \(h_1|| \ldots || h_m\), where \(h_i\) \(i \in [1, m]\), is an integer in \([0, \ldots, D-1]\)
 \end{enumerate}
 
-Detailed process of postHash, for the case when $d < 3$:
+Detailed process of postHash, for the case when $d < 3$ (refer to figures~\ref{postHash Algorithm} and~\ref{Subroutine Algorithm}):
 \begin{enumerate}
     \item \textbf{Subroutine}: For each index provided by the preHash, subroutine \(T\) checks if the index is within the acceptable range. If an index is out of range, \(T\) returns 0, otherwise, it proceeds with a table lookup. The subroutine maps each valid index \(i\) to an integer nearly uniformly distributed between \([0, D-1]\), ensuring that all potential hash values are equally probable. This mapping is important for the security and effectiveness of the fuzzy hashing system.
     
@@ -35,7 +35,7 @@ Detailed process of postHash, for the case when $d < 3$:
     \end{itemize}
 \end{enumerate}
 
-For the case when $d = 3$ and $d = 4$, a different subroutine called \textit{scambled\_T} is used. This subroutine corresponds to a partition problem, which is detailed at the end of Section~\ref{sec:Experimental_derivation_q}. Although the mapping of integers differs in this subroutine, it similarly takes an index from the preHash tuple as input and maps it to an integer, just as in the process for $d < 3$.
+For the case when $d = 3$ and $d = 4$, a different subroutine called \textit{srcambled\_T} is used. This subroutine corresponds to a partition problem, which is detailed at the end of Section~\ref{sec:Experimental_derivation_q}. Although the mapping of integers differs in this subroutine, it similarly takes an index from the preHash tuple as input and maps it to an integer, just as in the process for $d < 3$.
 
 \vspace{20pt}
 
@@ -73,9 +73,9 @@ For the case when $d = 3$ and $d = 4$, a different subroutine called \textit{sca
 
 After processing finger images through the pipeline referenced in Pipeline~\ref{pipeline_simon} to extract their feature vectors, the resulting data undergo the preHash and subsequently, the postHash algorithms. The final output from postHash consists of a set of integers \( h_i \), each bounded within the inclusive range \([0, D-1]\). This process effectively assigns each feature vector index to an integer within this range.
 
-In our methodology, we model these integers \( h_i \) as following a geometric distribution. This assumption is based on the output relationship established by \( Hash_{\text{key}}^m(X) = postHash(preHash_{\text{key}}^m(X)) \). We assume the same conditions as discussed in Section~\ref{sec:Fuzzy Hashing}: the key is randomly chosen, and \(k\) represents a uniformly distributed random index. Consequently, the probability of the Hash operation yielding the same index for two different inputs \(X\) and \(Y\) can be mathematically characterized as follows:
+In our methodology, we model these integers \( h_i \) as following a geometric distribution when \(X\) and key are random. This assumption is based on the output relationship established by \( Hash_{\text{key}}^m(X) = postHash(preHash_{\text{key}}^m(X)) \). The probability of the Hash operation yielding the same index for two different aligned inputs \(d_X \cdot X\) and \(d_Y \cdot Y\) can be mathematically characterized as follows:
 
-\[Pr[Hash_{\text{key}}^m(d_X) = Hash_{\text{key}}^m(d_Y)] \leq \mu^m(1 - \frac{1}{D}) + \frac{1}{D}\]
+\[Pr[Hash_{\text{key}}^m(d_X \cdot X) = Hash_{\text{key}}^m(d_Y \cdot Y)] \leq \mu^m(1 - \frac{1}{D}) + \frac{1}{D}\]
 
 where equality is reached for the optimal offset translations.
 
@@ -203,12 +203,12 @@ Hexadecimal Hash Output Distribution Table (\(d=4\)):
 \]
 }
 
-In our current implementation of postHash output tables, each partition, notably partitions for \(d = 3\) and \(d = 4\), does not distribute probabilities equally among the bins. This uneven distribution, observed from binary to hexadecimal outputs, poses some challenges, particularly in our system, where hash functions are employed to ensure the confidentiality of biometric data. The non-uniform distribution can lead to predictable patterns, potentially compromising the security by making the system more vulnerable to attacks such as hash collisions. These predictable patterns can be exploited by attackers to reverse-engineer or guess hash values, thereby breaching the confidentiality of biometric information and undermining the integrity of our security measures.
+In our current implementation of postHash output tables, each partition, notably partitions for \(d = 3\) and \(d = 4\), does not distribute probabilities as equally as we would desire among the bins. This uneven distribution, observed from binary to hexadecimal outputs, poses some challenges, particularly in our system, where hash functions are employed to ensure the confidentiality of biometric data. The non-uniform distribution can lead to predictable patterns, potentially compromising the security by making the system more vulnerable to attacks such as hash collisions. These predictable patterns can be exploited by attackers to reverse-engineer or guess hash values, thereby breaching the confidentiality of biometric information and undermining the integrity of our security measures.
 
-In the context of compressed fuzzy hashing, domain scrambling aims to reorder the indices in a way that the resulting hash values are "nearly" uniformly distributed. This task shares similarities with a well known problem in computer science called the "Partition Problem". This problem involves deciding whether a given multiset of positive integers can be partitioned into two or more subsets such that the sum of the numbers in each subset is equal. This problem is a specific instance of the subset sum problem, where the target sum is half of the total sum of all elements in the set. The partition problem is classified as NP-complete, a categorization in computational complexity theory used to describe decision problems. A problem is in NP (Non-deterministic Polynomial time) if a solution for the problem can be verified in polynomial time given a candidate solution. moreover, a problem is NP-complete if it is as hard as the hardest problems in NP and if every problem in NP can be reduced to it in polynomial time. This implies two things for NP-complete problems:
+In the context of compressed fuzzy hashing, domain scrambling aims to reorder the indices in a way that the resulting hash values are "nearly" uniformly distributed. This task shares similarities with a well known problem in computer science called the Partition Problem\cite{ref6}. This problem involves deciding whether a given multiset of positive integers can be partitioned into two or more subsets such that the sum of the numbers in each subset is equal. This problem is a specific instance of the subset sum problem, where the target sum is half of the total sum of all elements in the set. The partition problem is classified as NP-complete, a categorization in computational complexity theory used to describe decision problems. A problem is in NP (Non-deterministic Polynomial time) if a solution for the problem can be verified in polynomial time given a candidate solution. moreover, a problem is NP-complete if it is as hard as the hardest problems in NP and if every problem in NP can be reduced to it in polynomial time. This implies two things for NP-complete problems:
 
 \begin{enumerate}
-    \item Verification is Feasible: Given a ``solution,'' we can verify whether it is correct in polynomial time.
+    \item Verification is Feasible: Given a solution, we can verify whether it is correct in polynomial time.
     \item There is no known algorithm that can find an optimal solution to NP-complete problems in polynomial time for all general cases.
 \end{enumerate}
 
@@ -259,7 +259,7 @@ Given the NP-completeness of the partition problem, programming an optimal solut
 
 We can see that the distribution of probabilities and counts across buckets demonstrates a good effort towards achieving uniformity.
 
-Utilizing these derived lookup tables, alongside our established preHash function(~\ref{preHash Algorithm}) and the newly implemented postHash function(~\ref{postHash Algorithm}), we are equipped to conduct experiments on our dataset to assess \(q_{\text{same}}\) and \(q_{\text{diff}}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the preHash function directly into the postHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the preHash and postHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
+Utilizing these derived lookup tables, alongside our established preHash function~\ref{preHash Algorithm} and the newly implemented postHash function~\ref{postHash Algorithm}, we are equipped to conduct experiments on our dataset to assess \(q_{\text{same}}\) and \(q_{\text{diff}}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the preHash function directly into the postHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the preHash and postHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
 
 Note that for \(d = 3\) and \(d = 4\), we used the lookup tables with redistributed indices defined just above. The initial bucket assignments, calculated using formula~\ref{eq:GeomFormula}, did not achieve a balanced enough distribution of probabilities across the buckets, necessitating this redistribution.
 
@@ -357,7 +357,7 @@ Note that for \(d = 3\) and \(d = 4\), we used the lookup tables with redistribu
     \end{figure}
 \end{enumerate}
 
-The theoretical values for \(q_{\text{same}}\) presented in Table~\ref{tab:theoretical_q} are accurate approximations, as the experimental results closely match these values. The greater discrepancy between theoretical and experimental values for \(q_{\text{diff}}\) compared to \(q_{\text{same}}\) can be attributed to the following factor: Different biometric samples exhibit higher variability, leading to a broader range of feature differences, which can cause deviations from theoretical assumptions. Outliers and noise further exacerbate the discrepancies for \(q_{\text{diff}}\). Moreover, the theoretical values for the parameter combination \(m=1\) and \(d=4\) (last row of Table~\ref{tab:theoretical_q}) align almost perfectly with the experimental results, with \(q_{\text{same}}\) values being identical and \(q_{\text{diff}}\) values differing by only approximately 0.8\%. The lookup table used for this experiment was generated using Equation~\ref{eq:GeomFormula}, followed by a redistribution of the indices across each bucket to achieve a more uniform distribution. This redistribution process was also applied to the experiment with \(d = 3\), achieving experimental results much closer to the theoretical predictions. However, this redistribution was not applied to the first three experiments, which could explain why their results show greater discrepancies.
+The theoretical values for \(q_{\text{same}}\) presented in Table~\ref{tab:theoretical_q} are accurate approximations, as the experimental results closely match these values. The greater discrepancy between theoretical and experimental values for \(q_{\text{diff}}\) compared to \(q_{\text{same}}\) can be attributed to the following factor: different biometric samples exhibit higher variability, leading to a broader range of feature differences, which can cause deviations from theoretical assumptions. Outliers and noise further exacerbate the discrepancies for \(q_{\text{diff}}\). Moreover, the theoretical values for the parameter combination \(m=1\) and \(d=4\) (last row of Table~\ref{tab:theoretical_q}) align almost perfectly with the experimental results, with \(q_{\text{same}}\) values being identical and \(q_{\text{diff}}\) values differing by only approximately 0.8\%. The lookup table used for this experiment was generated using Equation~\ref{eq:GeomFormula}, followed by a redistribution of the indices across each bucket to achieve a more uniform distribution. This redistribution process was also applied to the experiment with \(d = 3\), achieving experimental results much closer to the theoretical predictions. However, this redistribution was not applied to the first three experiments, which could explain why their results show greater discrepancies.
 
 
 

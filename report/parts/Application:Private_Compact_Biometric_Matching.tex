@@ -277,7 +277,7 @@ For the experiments from Table \ref{tab:theoretical_parameterization_PreHash}, w
 
 From all figures in this subsection, we observe that the experimental means of the distributions for same and different biometric samples closely align with the theoretical means predicted (\(l\cdot\mu_{\text{same/diff}}^\text{m}\)) as shown in Table \ref{tab:theoretical_parameterization_PreHash}. Additionally, the experimental standard deviations of the distributions for different biometric samples are relatively close to the theoretically deduced values, defined as \(\sqrt{l\cdot\mu_{\text{diff}}^\text{m}}\). However, the standard deviations of the distributions for same biometric samples are significantly larger than the predicted values, which explains why the histograms of these distributions deviate from the predicted Normal Distribution. This discrepancy could be due to the incorrect assumption that the random variable \(H\) follows a Binomial distribution. 
 
-It is possible that the assumption of independence among the \(l\) hash comparisons generated with their respective keys was incorrect. This dependence might be explained by the consistent identification of areas in the feature vector where vein concentration is higher or lower across all images. Such non-uniformity in the vein patterns could lead to correlations between hash comparisons that violate the independence assumption. Furthermore, we suppose that for two keys to define independent pairs of hashes, the two sequences of indices they define should not have overlapping elements located too far forward. If they do, the probability that \( Hash_{\text{key}_{i+1}}^\text{m}(\bar{X}) = Hash_{\text{key}_{i+1}}^\text{m}(\bar{Y}) \) given \( Hash_{\text{key}_{i}}^\text{m}(\bar{X}) = Hash_{\text{key}_{i}}^\text{m}(\bar{Y}) \) is higher than the probability that \( Hash_{\text{key}_{i+1}}^\text{m}(\bar{X}) = Hash_{\text{key}_{i+1}}^\text{m}(\bar{Y}) \)
+It is possible that the assumption of independence among the \(l\) hash comparisons generated with their respective keys was incorrect. This dependence might be explained by the consistent identification of areas in the feature vector where vein concentration is higher or lower across all images. Such non-uniformity in the vein patterns could lead to correlations between hash comparisons that violate the independence assumption. Furthermore, we suppose that for two keys to define independent pairs of hashes, the two sequences of indices they define should not have overlapping elements located too far forward. If they do, the probability that \( Hash_{key_{i+1}}^m(\bar{X}) = Hash_{key_{i+1}}^m(\bar{Y}) \) given \( Hash_{key_{i}}^m(\bar{X}) = Hash_{key_{i}}^m(\bar{Y}) \) is higher than the probability that \( Hash_{key_{i+1}}^m(\bar{X}) = Hash_{key_{i+1}}^m(\bar{Y}) \)
 alone. This might explain the observed dependencies and larger standard deviations.
 
 Further analysis of the variance of the Hamming distances normalized by \( l \) (i.e., \(\mathbb{V}(H) / l\)) across different configurations suggests that this ratio does not behave as a constant. For example, in our experiments, this ratio varied significantly for both same and different biometric samples. Specifically, for same biometric samples, the ratio decreased from 4.1152 to 0.6394 as \( l \) increased from 217 to 2569. Similarly, for different biometric samples, the ratio decreased from 0.1209 to 0.0006 over the same range of \( l \). This indicates a complex relationship between \( l \) and the variance of Hamming distances, as observed in Figure \ref{variance_iterations}. It is important to note that the number of experiments conducted to plot this figure is insufficient to accurately determine the exact nature of this variance, and thus these results should be interpreted with caution.
@@ -300,7 +300,7 @@ In this subsection, we will experimentally evaluate the False Negative Rate (FNR
 After both images pass through this process, each iteration of each image is compared, resulting in a 1 if the iterations differ and a 0 if they are the same. Summing these comparison results gives the total number of ones, effectively computing the Hamming distance between the compressed and hashed images.
 
 \begin{enumerate}
-    \item \textbf{d = 4, m = 1, l = 1107 and t = 258}
+    \item \textbf{d = 4, m = 1, l = 1'107 and t = 258}
         \begin{itemize}
             \item $FNR = \%$
             \item $FPR = $
@@ -325,7 +325,7 @@ After both images pass through this process, each iteration of each image is com
             \begin{figure}[H]
                 \centering
                 \includegraphics[width=\linewidth,height=8.5cm,keepaspectratio]{latex-img/FNR-FPR_ROC_TPR_config1a.png}
-                \caption{ROC for (d = 4, m = 1, l = 1107)}
+                \caption{ROC for (d = 4, m = 1, l = 1'107)}
                 \label{FNR-FPR_ROC_TPR_config1a}
             \end{figure}
         \end{itemize}
@@ -384,7 +384,7 @@ After both images pass through this process, each iteration of each image is com
             \begin{figure}[H]
                 \centering
                 \includegraphics[width=\linewidth,height=8.5cm,keepaspectratio]{latex-img/FNR-FPR_ROC_TPR_config2.png}
-                \caption{ROC for (d = 1, m = 1, l = 3597)}
+                \caption{ROC for (d = 1, m = 1, l = 3'597)}
                 \label{FNR-FPR_ROC_TPR_config2}
             \end{figure}
         \end{itemize}

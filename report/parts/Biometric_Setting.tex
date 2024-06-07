@@ -7,12 +7,9 @@ In this section, we explore the representation and processing of biometric data,
 
 \subsection{Biometric Data and Similarity Scores}
 \label{Bio_data_sim_scores}
-We begin by delving into the representation of the biometric data. Finger images, designated as biometric templates and formated as \(240 \times 376\), result in \(n\) = \(90'240\) pixels per image. To enhance processing efficiency, these templates are converted into vectors, departing from their original 2-dimension image structure. 
-
-In the biometric context, each finger serves as a biometric subject, with a corresponding biometric capture represented as a bitstring \(X\) of length \(n\). This bitstring encapsulates the specific vein pixel information extracted from the finger image, while the biometric template serves as a reference model derived from these images. 
+We begin by delving into the representation of the biometric data. Finger images, designated as biometric templates and formated as \(240 \times 376\), result in \(n\) = \(90'240\) pixels per image. To enhance processing efficiency, these templates are converted into vectors, departing from their original 2-dimension image structure. In the biometric context, each finger serves as a biometric subject, with a corresponding biometric capture represented as a bitstring \(X\) of length \(n\). This bitstring encapsulates the specific vein pixel information extracted from the finger image, while the biometric template serves as a reference model derived from these images. \\
 
 Each of the \(n\) bits of the biometric capture is designated as \(X_1, \ldots, X_n\), with \(X_i\) set to \(1\) if the \(i\)-th bit corresponds to a vein and \(0\) otherwise. We define the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\), as the Hamming Weight of a feature vector\footnote{The terms "feature vector" and "bitstring" are used interchangeably throughout this report to refer to the vein pixel information extracted from the finger image.} \(X\) divided by the total number of bits in the vector. In the case where \(i\) is a uniformly distributed random index and \(X\) is randomly chosen, we define the value \(p\)\footnote{Throughout this report, experimentally derived variables are denoted with the superscript "obs" (e.g., \(\text{var}^{\text{obs}}\)), while theoretical variables are presented without any superscript.} as the mean of this random variable.
-
 
 \begin{equation} \label{eq:p}
     \begin{aligned}
@@ -20,6 +17,7 @@ Each of the \(n\) bits of the biometric capture is designated as \(X_1, \ldots, 
     \end{aligned}
 \end{equation}
 
+\newpage
 The experimental results for the mean (\(p\)), along with the standard deviation (\(\sigma_p\))\footnote{The notation, \( \sigma_{p}\) denotes the theoretical standard deviation, and \(\sigma^2_p \) represents the theoretical variance of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\). Here $p$ refers to the mean of this random variable. These notations will be used consistently throughout our report.} and variance (\(\sigma_{p}²\)) of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) across all images will be detailed in Section~\ref{sec:p}, and are quantified as follows:
 
 \begin{equation} \label{eq:proba1}
@@ -33,7 +31,7 @@ The experimental results for the mean (\(p\)), along with the standard deviation
 
 \begin{equation} \label{eq:proba3}
     (\sigma_{\text{p}}^{\text{obs}})² = \mathbb{V}\left( \frac{\text{HW}(X)}{n} \right)  \approx 2.52 \times 10^{-5}
-\end{equation}
+\end{equation}\\
 
 In biometric authentication and identification, the uniqueness of each biometric capture is encoded in its bits. The objective revolves around discerning the similarity between two biometric captures to verify or identify two individuals. Therefore, the scoring mechansim plays a crucial role in quantatively determining the similarity between biometric captures. This similarity score holds significance in verifying the identity of an individual (authentication) or identifying potential matches in a database (identification). A higher score indicates a greater ressemblance between captures, while a lower score suggests less similarity. This scoring mechanism is indispensable for ensuring the accuracy and reliability of biometric systems. The score of (\(X\), \(Y\)) is computed as
 
@@ -44,8 +42,8 @@ In biometric authentication and identification, the uniqueness of each biometric
     \end{aligned}
 \end{equation}
 
-where \(HW\) denotes the \hyperref[def:Hamming Weight]{Hamming Weight} and \(d_H\) the \hyperref[def:Hamming Distance]{Hamming Distance}. 
-
+where \(HW\) denotes the \hyperref[def:Hamming Weight]{Hamming Weight} and \(d_H\) the \hyperref[def:Hamming Distance]{Hamming Distance}.\\ 
+\newpage
 In conjunction with the scoring mechanism, Miura matching emerges as a specialized technique for comparing biometric samples. This method entails determining an optimal offset translation, denoted as \(d_X\) and \(d_Y\), between two biometric samples to align their features for comparison, thereby compensating for differences in positioning or orientation. The alignment process maximizes the similarity score, defined as:
 
 \[Score = \text{Score}(d_X \cdot X, d_Y \cdot Y)\]
@@ -55,7 +53,6 @@ Once the optimal offsets, \(d_X\) and \(d_Y\), are determined, they are applied 
 \[\bar{X} = d_X \cdot X\]
 \[\bar{Y} = d_Y \cdot Y\]\\
 
-\newpage
 The probability of the \(i\)-th pixel of two captures not being the same after applying the optimal offset translations depends on the distribution of \((\bar{X}, \bar{Y})\), and is denoted as \(\delta\). We define the random variable \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\) as the normalized Hamming distance between two feature vectors. The parameter \(\delta\) is defined as the mean of this random variable, and we additionally define the standard deviation (\(\sigma_{\delta}\))\footnote{The notation, \(\sigma_{\delta}\) denotes the theoretical standard deviation, and \(\sigma^2_p \) represents the theoretical variance of the random variable \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\). Here $\delta$ refers to the mean of this random variable. These notations will be used consistently throughout our report.} and the variance (\(\sigma^2_{\delta}\)) of this random variable, as shown in the following figures (where \(i\) is a uniformly distributed random index).
 
 
@@ -95,7 +92,6 @@ Distinguishing between the types of distributions associated with the two captur
     \caption{Comparison of Distributions: Mean, Standard Deviation, and Variance of the random variable \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\) when both captures originate from the same and from different biometric subjects}
 \end{table}
 
-\newpage
 Utilizing the formulas for \(p\) (\ref{eq:p}) and $\delta$ (\ref{eq:delta}), the joint distribution for (\(\bar{X}_j\), \(\bar{Y}_j\)) across \(j\) random instances is derived:
 
 \begin{table}[H]
@@ -114,8 +110,6 @@ Utilizing the formulas for \(p\) (\ref{eq:p}) and $\delta$ (\ref{eq:delta}), the
     \label{tab:joint_distribution}
 \end{table}
 
-
-
 \subsection{Experimental Derivation of the Probability \(p\)}
 \label{sec:p}
 In order to derive the probability that a distributed random pixel is a vein (\(p\)), a dataset of 20 unique individuals was utilized. Each individual contributed images of both right and left index/middle fingers, with 5 trials per finger, captured using 2 different cameras. This methodology resulted in a comprehensive dataset of 800 images. Following the approach in Section~\ref{sec:extraction-pipeline}, Simon's optimal pipeline was implemented to extract the feature vectors from each image in the dataset (refer to Figure~\ref{pipeline_simon}). Subsequently, statistical analysis was performed on these feature vectors to gain insights into vein patterns, building on the preliminary work by Burcu. It's important to note that the calculation of the probability \(p\) does not take into account any postalignment method yet.
@@ -127,7 +121,7 @@ In order to derive the mean of \(\left( \frac{HW(X)}{n} \right)\), i.e. \(p\), w
 \end{enumerate}
 
 Following the processing of all feature vectors, the algorithm computes the probability of a pixel being part of a vein by dividing the aggregated vein detections by the total number of images analyzed, across both cameras. Visual representations were generated to illustrate the distribution of detected vein pixels for each camera individually and for the combined data from both cameras.
-\newpage
+
 \begin{enumerate}
     \item \textbf{Camera 1 and Camera 2 distribution}: The following histograms showcase the frequency distribution of vein pixels detected in images captured by camera 1 and 2 individually, with a Gaussian fit overlaid to highlight the data's normal distribution trend.
 
@@ -172,7 +166,7 @@ The findings from this analysis revealed the following probabilities:
 \subsection{Experimental Derivation of the Probabilities \(\delta_{\text{same}}, \delta_{\text{diff}}, \delta_{\text{indep}}\)}
 \label{sec:delta}
 
-To assess the probability that the i-th pixel of two captures diverges after applying the optimal offset translations \( d_X \) and \( d_Y \) (Equation \ref{eq:delta}), we undertake additional experimental analysis. This investigation continues to utilize the same dataset comprising 20 distinct individuals. Here, the post-alignment process, specifically Miura Matching, is included in our examination as the calculation formula integrates this step. As detailed in Section~\ref{Bio_data_sim_scores}, our objective is to evaluate three distinct delta values: \(\delta_{\text{same}}\), \(\delta_{\text{diff}}\), and  \(\delta_{\text{indep}}\).
+To assess the probability that the i-th pixel of two captures diverges after applying the optimal offset translations \( d_X \) and \( d_Y \) (Equation \ref{eq:delta}), we undertake additional experimental analysis. This investigation continues to utilize the same dataset comprising 20 distinct individuals. Here, the post-alignment process, specifically Miura Matching, is included in our examination as the calculation formula integrates this step. As detailed in Section~\ref{Bio_data_sim_scores}, our objective is to evaluate three distinct delta values: \(\delta_{\text{same}}\), \(\delta_{\text{diff}}\), and  \(\delta_{\text{indep}}\).\\
 
 The computation of \( \delta_{\text{indep}} \) is relatively straightforward, having determined \( p^{\text{obs}} \). In order to calculate the mean, the standard deviation, and the variance of the random variable \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\) when \(X\) and \(Y\) are made up of \(2n\) independent random bits of expected value \(p\) and without applying the optimal offset to get \(\bar{X}\) and \(\bar{Y}\), we can proceed as follows:
 

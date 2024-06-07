@@ -262,7 +262,7 @@ We can see that the distribution of probabilities and counts across buckets demo
 Utilizing these derived lookup tables, alongside our established preHash function~\ref{preHash Algorithm} and the newly implemented postHash function~\ref{postHash Algorithm}, we are equipped to conduct experiments on our dataset to assess \(q_{\text{same}}\) and \(q_{\text{diff}}\) for the \(4\) different combinations of the parameters \(d\) and \(m\). The modification in our pipeline involves passing the output from the preHash function directly into the postHash function. Subsequently, we calculate the Hamming distance between each image pair at the conclusion of both the preHash and postHash stages. This method allows us to measure the similarity of the biometric inputs after the complete application of our hashing process.
 
 Note that for \(d = 3\) and \(d = 4\), we used the lookup tables with redistributed indices defined just above. The initial bucket assignments, calculated using formula~\ref{eq:GeomFormula}, did not achieve a balanced enough distribution of probabilities across the buckets, necessitating this redistribution.
-
+\newpage
 \begin{enumerate}
     \item \text{\(d = 1\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and binary postHash indices (\(d=1\)).
     \begin{itemize}
@@ -286,7 +286,7 @@ Note that for \(d = 3\) and \(d = 4\), we used the lookup tables with redistribu
             \label{mu_diff}
         \end{minipage}
     \end{figure}
-    
+    \newpage
     \item \text{\(d = 2\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and quaternary postHash indices (\(d=2\)).
     \begin{itemize}
         \item \(q_{\text{same}}^{\text{obs}} = 42.62\%\)
@@ -332,7 +332,7 @@ Note that for \(d = 3\) and \(d = 4\), we used the lookup tables with redistribu
             \label{mu_diff}
         \end{minipage}
     \end{figure}
-    
+    \newpage
     \item \text{\(d = 4\) and \(m = 1\)}: Single-index outputs (\(m=1\)) and hexa-decimal postHash indices (\(d=4\)).
     \begin{itemize}
         \item \(q_{\text{same}}^{\text{obs}} = 26.92\%\)

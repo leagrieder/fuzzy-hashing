@@ -31,8 +31,6 @@ Detailed Process of preHash:
     To optimize the utilization of the cryptographic output and reduce operational overhead, the PRNG is designed to generate a full 128-bit block of pseudo-random data at a time, even though only a portion of these bits are used immediately. When a new block is generated, the algorithm extracts the lowest 17 bits to obtain the pseudo-random number for the current operation. This choice is aligned with the project's requirement for representing image sizes, where a maximum of \(90'240\) pixels can be represented, necessitating 17 bits per operation (\(\left\lceil \log_2(90'240) \right\rceil = 17\)). These extracted bits serve as the pseudo-random number.
     Following extraction, the algorithm discards the used bits from the current block by right-shifting the block by 17 bits. This operation updates the state of the PRNG, ensuring that the consumed bits are no longer considered in subsequent operations. In the case where there are no longer 17 bits available after extraction, the algorithm generates a new pseudo-random number using the PRNG and repeats the process. This mechanism guarantees the efficient utilization of all bits produced by the block cipher, enhancing efficiency and reducing operational overhead.
     The predictability and reproducibility of the sequence are entirely dictated by the chosen key. Employing the same key across sessions guarantees the generation of an identical sequence of pseudo-random numbers.
-    
-     
 
     \begin{figure}[!h]
         \centering
@@ -77,9 +75,8 @@ The algorithm, preHash, illustrated in Figure~\ref{preHash Algorithm} generates 
 \label{sec:mu}
 
 After the finger images are processed through the pipeline described in Figure~\ref{pipeline_simon} to extract their feature vectors, and the preHash algorithm is applied, the outcome is a set of indices that fall within the inclusive range \(\text{PRNG}[i] \in (0, n] \text{ for } i \in [0, m]\), effectively mapping each selected feature to a unique index within the feature vector's length.
-
+\newpage
 In the context of a simplified scenario where the hash length parameter (\(m\)) is set to \(1\), implying the generation of a single-index hash, and assuming a randomly chosen key for the preHash algorithm, along with \(k\) representing a uniformly distributed random index, the probability that the preHash operation yields the same index for two different fixed inputs \(X\) and \(Y\) can be mathematically delineated as follows:
-
 
 \begin{equation} \label{eq:preHash1}
     \begin{aligned}
@@ -91,7 +88,7 @@ In the context of a simplified scenario where the hash length parameter (\(m\)) 
     \end{aligned}
 \end{equation}
 
-This equation encapsulates the likelihood of two images, \(X\) and \(Y\), having their singular hash index coincide, based on the presence of matching features identified by the algorithm. The final form of the equation relates the probability to the scoring function between \(X\) and \(Y\), inversely proportional to the score minus one.
+This equation encapsulates the likelihood of two images, \(X\) and \(Y\), having their singular hash index coincide, based on the presence of matching features identified by the algorithm. The final form of the equation relates the probability to the scoring function between \(X\) and \(Y\), inversely proportional to the score minus one.\\
 
 It is noticed that there is a direct link with the Miura matching score that is of interest. The direct link between the preHash algorithm's outcomes and the Miura matching score lies in their shared foundation of evaluating biometric similarities. Specifically, both methodologies utilize Hamming weight and bitwise operations to assess the overlap between biometric samples, such as finger vein patterns. The preHash algorithm, through its probabilistic formula, quantifies the likelihood of matching indices based on feature presence, closely paralleling the Miura score's approach of comparing binary patterns to derive a similarity score. The above computation can also be expressed as follows:
 
@@ -108,7 +105,7 @@ The following approximations are made, inspired by equations \(p\) (\ref{eq:p}) 
     \mathbb{E}\left(\frac{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} - \frac{1}{2}Pr[\bar{X}_k \neq \bar{Y}_k]}{\frac{Pr[X_k = 1] + Pr[Y_k = 1]}{2} + \frac{1}{2}Pr[\bar{X}_k \neq \bar{Y}_k]}\right) \approx \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}}
 \end{equation}
 
-The core of this approximation revolves around the expectation formula, which integrates probabilities of feature presence \(Pr[X_k=1]+Pr[Y_k=1]\) and the likelihood of discrepancies between \(\bar{X}\) and \(\bar{Y}\), \(Pr[\bar{X}_k \neq \bar{Y}_k]\). This formula essentially aims to quantify the similarity between two biometric samples by considering both the concurrence of features and the instances where they diverge.
+The core of this approximation revolves around the expectation formula, which integrates probabilities of feature presence \(Pr[X_k=1]+Pr[Y_k=1]\) and the likelihood of discrepancies between \(\bar{X}\) and \(\bar{Y}\), \(Pr[\bar{X}_k \neq \bar{Y}_k]\). This formula essentially aims to quantify the similarity between two biometric samples by considering both the concurrence of features and the instances where they diverge.\\
 
 To achieve a more accurate approximation of the expected value of Equation \ref{eq:preHash2}, we define the following parameters and employ a Taylor series expansion of the function \(f(A,B,C) = \frac{A + B - C}{A + B + C}\) around the point \((p, p, \delta)\). This method allows us to incorporate not only the means but also the variances and covariances of the variables involved.
 
@@ -143,7 +140,8 @@ f(A,B,C) \approx f(p,p,\delta) + f'_A(p,p,\delta)(A - p) + f'_B(p,p,\delta)(B - 
 \]
 \[
 + 2f''_{AB}(p,p,\delta)(A - p)(B - p) + 2f''_{AC}(p,p,\delta)(A - p)(C - \delta) + 2f''_{BC}(p,p,\delta)(B - p)(C - \delta)
-\]\\
+\]
+\newpage
 To approximate the expected value \( E(f(A,B,C)) \), we use the following relations:
 \[
     \mathbb{E}(A - p) = 0, \quad \mathbb{E}(B - p) = 0, \quad \mathbb{E}(C - \delta) = 0
@@ -252,9 +250,6 @@ We obtained the following covariance matrices from the experiments held to find 
 \]
 \begin{center}\text{Covariance Matrix for Different Distribution}\end{center}
 
-
-
-
 We have the following equations for \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\). Depending on the distribution (same or different), the variables \(p\), \(\delta\), \(\sigma_{\text{p}}\), and \(\sigma_\delta\) correspond to their observed counterparts as indicated:
 
 - \(p \rightarrow p^{\text{obs}}\)\\
@@ -262,7 +257,8 @@ We have the following equations for \(\mu_{\text{same}}\) and \(\mu_{\text{diff}
 - \(\sigma_p \rightarrow \sigma_{\text{p}}^{\text{obs}}\)\\
 - \(\sigma_\delta \rightarrow \sigma_{\delta_{\text{same/diff}}}^{\text{obs}}\)\\
 
-Moreover, we have the following equalities for \( \mu_{\text{same}}^{\text{obs}} \) :
+\newpage
+We have the following equalities for \( \mu_{\text{same}}^{\text{obs}} \) :
  \[
     \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} \approx \num{2.14e-1}, \quad \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_{\text{p}}})^2 \approx -\num{2.9e-3}
  \]\\
@@ -273,7 +269,6 @@ Moreover, we have the following equalities for \( \mu_{\text{same}}^{\text{obs}}
     2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) = 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \approx \num{2.3e-3}
  \]
 
-\newpage
 This allows us to express \(\mu_{\text{same}}^{\text{obs}}\) as follows:
 
 \begin{equation}
@@ -287,7 +282,7 @@ This allows us to express \(\mu_{\text{same}}^{\text{obs}}\) as follows:
     \end{aligned}
     \label{eq:mu_same_obs}
 \end{equation}
-
+\newpage
 We have the following equalities for \( \mu_{\text{diff}}^{obs} \) :
 \[
     \frac{p - \frac{\delta}{2}}{p + \frac{\delta}{2}} \approx \num{7.99e-2}, \quad \frac{-4\delta}{(2p + \delta)^3}\cdot({\sigma^\text{obs}_{\text{p}}})^2 \approx -\num{2.7e-3}
@@ -297,8 +292,8 @@ We have the following equalities for \( \mu_{\text{diff}}^{obs} \) :
  \]\\
  \[
     2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) \approx \num{4.9e-4}, \quad 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \approx \num{2.3e-3}
- \]
-\newpage
+ \]\\
+
 This allows us to express \( \mu_{\text{diff}}^{\text{obs}} \) as follows:
 
 \begin{equation}
@@ -312,6 +307,7 @@ This allows us to express \( \mu_{\text{diff}}^{\text{obs}} \) as follows:
     \end{aligned}
     \label{eq:mu_diff_obs}
 \end{equation}
+\newpage
 
 Finally, the following figures are provided:
 
@@ -357,7 +353,7 @@ where equality is reached for the optimal offset translations.
 
 In section~\ref{sec:mu}, we have laid out the mathematical framework that defines the upper bound \(\mu\). This probability is crucial in our fuzzy hashing approach, as it quantifies the matching likelihood after applying the optimal offset translations to the biometric captures. The application of these optimal offsets is an important preprocessing step before hashing the dataset, ensuring that the biometric features are accurately aligned for comparison.
 
-We will proceed to evaluate these theoretical approximations (Table~\ref{tab:approximation_mu_taylor}) experimentally, leveraging the same comprehensive database that has been utilized in our prior research, as explained in Section~\ref{sec:delta}. This experimental assessment will enable us to substantiate the theoretical predictions of \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\).
+We will proceed to evaluate these theoretical approximations (Table~\ref{tab:approximation_mu_taylor}) experimentally, leveraging the same comprehensive database that has been utilized in our prior research, as explained in Section~\ref{sec:delta}. This experimental assessment will enable us to substantiate the theoretical predictions of \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\).\\
 
 In the experimental setup, \(\mu^{\text{obs}}_{\text{same}}\) refers to the probability that a hash function, when applied to two biometric captures of the same finger, will yield the same index. This is the measure of success in correctly identifying matches within the same individual's biometric captures. Conversely, \(\mu^{\text{obs}}_{\text{diff}}\) denotes the probability that the same hash function will produce different indices for biometric captures from different individuals, representing the ability to distinguish between different people's biometric data. Lastly, \(\mu^{\text{obs}}_{\text{indep}}\) indicates the probability of a match in the case where the biometric captures are completely independent, serving as a baseline for random chance, which has already been calculated (see Equation~\ref{eq:mu_indep})
 

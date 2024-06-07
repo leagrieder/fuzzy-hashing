@@ -81,7 +81,7 @@ Therefore, \( H \) can be approximated by:
 \[
 H \sim \mathcal{N}(\mu_{H, \text{diff}}, \sigma_{H, \text{diff}}^2)
 \]
-
+\newpage
 The FPR is the probability that the Hamming distance \( H \) is less than the threshold \( l - t \) in cases where the samples should not match. This is given by:
 \begin{equation}
 \begin{aligned}
@@ -149,7 +149,7 @@ Each experiment we conducted uses a different row from Table \ref{tab:theoretica
 \end{enumerate}
 
 To calculate the False Negative Rate (FNR), we count the instances where images that should match do not, and then compute the mean of these instances. Similarly, for the False Positive Rate (FPR), we count the instances where images that should not match do, and then compute the mean of these instances.
-
+\newpage
 For the experiments from Table \ref{tab:theoretical_parameterization_PreHash}, we obtain the following results:
 
 \begin{enumerate}
@@ -212,6 +212,7 @@ For the experiments from Table \ref{tab:theoretical_parameterization_PreHash}, w
                 \label{FNR-FPR_ROC_TPR_config1}
             \end{figure}
         \end{itemize}
+    \newpage
     \item \textbf{m = 2, l = 961 and t = 31}
         \begin{itemize}
             \item  $FNR = 33.32\%$
@@ -241,6 +242,7 @@ For the experiments from Table \ref{tab:theoretical_parameterization_PreHash}, w
                 \label{FNR-FPR_ROC_TPR_config2}
             \end{figure}
         \end{itemize}
+    \newpage
     \item \textbf{m = 3, l = 2'569 and t = 15}
         \begin{itemize}
             \item $FNR = 33.45\%$
@@ -271,7 +273,7 @@ For the experiments from Table \ref{tab:theoretical_parameterization_PreHash}, w
             \end{figure}
         \end{itemize}
 \end{enumerate}
-
+\newpage
 From all figures in this subsection, we observe that the experimental means of the distributions for same and different biometric samples closely align with the theoretical means predicted (\(l\cdot\mu_{\text{same/diff}}^m\)) as shown in Table \ref{tab:theoretical_parameterization_PreHash}. Additionally, the experimental standard deviations of the distributions for different biometric samples are relatively close to the theoretically deduced values, defined as \(\sqrt{l\cdot\mu_{\text{diff}}^m}\). However, the standard deviations of the distributions for same biometric samples are significantly larger than the predicted values, which explains why the histograms of these distributions deviate from the predicted Normal Distribution. This discrepancy could be due to the incorrect assumption that the random variable \(H\) follows a Binomial distribution. 
 
 It is possible that the assumption of independence among the \(l\) hash comparisons generated with their respective keys was incorrect. This dependence might be explained by the consistent identification of areas in the feature vector where vein concentration is higher or lower across all images. Such non-uniformity in the vein patterns could lead to correlations between hash comparisons that violate the independence assumption. Furthermore, we suppose that for two keys to define independent pairs of hashes, the two sequences of indices they define should not have overlapping elements located too far forward. If they do, the probability that \( Hash_{key_{i+1}}^m(\bar{X}) = Hash_{key_{i+1}}^m(\bar{Y}) \) given \( Hash_{key_{i}}^m(\bar{X}) = Hash_{key_{i}}^m(\bar{Y}) \) is higher than the probability that \( Hash_{key_{i+1}}^m(\bar{X}) = Hash_{key_{i+1}}^m(\bar{Y}) \)
@@ -295,13 +297,12 @@ Interestingly, we observe that increasing \(m\) and, more specifically, \(l\), d
 In this subsection, we will experimentally evaluate the False Negative Rate (FNR) and False Positive Rate (FPR) with compression. We designed an algorithm that uses the previously defined method to generate \( l \) iterations of preHash and then compresses each hash value generated depending on the value of \(D = 2^d\). For an image, the algorithm generates a list of the \( l \) iterations of preHash and then applies the postHash algorithm to each preHash output.
 
 After both images pass through this process, each iteration of each image is compared, resulting in a 1 if the iterations differ and a 0 if they are the same. Summing these comparison results gives the total number of ones, effectively computing the Hamming distance between the compressed and hashed images.
-
+\newpage
 \begin{enumerate}
     \item \textbf{d = 4, m = 1, l = 1'107 and t = 258}
         \begin{itemize}
             \item $FNR = 39.76\%$
             \item $FPR = 2^{-15}$
-
             \begin{figure}[H]
                 \centering
                 \begin{minipage}[b]{0.48\linewidth}
@@ -326,7 +327,7 @@ After both images pass through this process, each iteration of each image is com
                 \label{FNR-FPR_ROC_TPR_config1a}
             \end{figure}
         \end{itemize}
-                    
+    \newpage      
     \item \textbf{d = 4, m = 1, l = 347 and t = 71}
         \begin{itemize}
             \item $FNR = 25.69\%$
@@ -356,6 +357,7 @@ After both images pass through this process, each iteration of each image is com
                 \label{FNR-FPR_ROC_TPR_config1}
             \end{figure}
         \end{itemize}
+    \newpage
     \item \textbf{d = 1, m = 1, l = 3'597 and t = 2'104}
         \begin{itemize}
             \item  $FNR = 16.83\%$
@@ -386,5 +388,5 @@ After both images pass through this process, each iteration of each image is com
             \end{figure}
         \end{itemize}
 \end{enumerate}
-
+\newpage
 These experimental results are similar to those obtained without compression, where the results did not align as expected with the theoretical predictions. The above figures illustrate these outcomes, but the underlying reasons for the discrepancies remain consistent with those discussed in the previous section.

@@ -4,7 +4,7 @@
 \section{Fuzzy Hashing}
 \label{sec:Fuzzy Hashing}
 Fuzzy hashing, as opposed to traditional hashing, produces consistent cryptographic keys for similar but not identical inputs, enabling recognition of the same biometric trait across different instances despite slight variations. This approach ensures legitimate users are not incorrectly denied access due to minor discrepancies and protects user privacy by storing and using hashed values instead of raw biometric data, making it difficult to reverse-engineer the original data even if unauthorized access occurs. 
-This section will discuss how we implemented the fuzzy hashing algorithm, its corresponding mathematical aspects and some experiments.
+This section will discuss how we implemented the first step in the fuzzy hashing algorithm, its corresponding mathematical aspects and some experiments.
 
 \subsection{PreHash Algorithm}
 
@@ -226,7 +226,7 @@ We proceed in a similar way to assess the theoretical values of $\mu_{\text{same
 \[
 A = \frac{HW(\bar{X})}{n}, \quad B = \frac{HW(\bar{Y})}{n}, \quad C = \frac{d_H(\bar{X}, \bar{Y})}{n}
 \]
-
+\newpage
 We obtained the following covariance matrices from the experiments held to find \(\delta^{\text{obs}}_{\text{diff}}\) and \(\delta^{\text{obs}}_{\text{same}}\):
 
 \[
@@ -252,6 +252,9 @@ We obtained the following covariance matrices from the experiments held to find 
 \]
 \begin{center}\text{Covariance Matrix for Different Distribution}\end{center}
 
+
+
+
 We have the following equations for \(\mu_{\text{same}}\) and \(\mu_{\text{diff}}\). Depending on the distribution (same or different), the variables \(p\), \(\delta\), \(\sigma_{\text{p}}\), and \(\sigma_\delta\) correspond to their observed counterparts as indicated:
 
 - \(p \rightarrow p^{\text{obs}}\)\\
@@ -270,7 +273,8 @@ Moreover, we have the following equalities for \( \mu_{\text{same}}^{\text{obs}}
     2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) = 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \approx \num{2.3e-3}
  \]
 
-This allows us to express \( \mu_{\text{same}}^{\text{obs}} \) as follows:
+\newpage
+This allows us to express \(\mu_{\text{same}}^{\text{obs}}\) as follows:
 
 \begin{equation}
     \begin{aligned}
@@ -294,7 +298,7 @@ We have the following equalities for \( \mu_{\text{diff}}^{obs} \) :
  \[
     2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(A,C) \approx \num{4.9e-4}, \quad 2\cdot\frac{2(2p - \delta)}{(2p + \delta)^3}\cdot\text{Cov}(B,C) \approx \num{2.3e-3}
  \]
-
+\newpage
 This allows us to express \( \mu_{\text{diff}}^{\text{obs}} \) as follows:
 
 \begin{equation}

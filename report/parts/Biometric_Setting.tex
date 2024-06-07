@@ -20,7 +20,7 @@ Each of the \(n\) bits of the biometric capture is designated as \(X_1, \ldots, 
     \end{aligned}
 \end{equation}
 
-The experimental results for the mean (\(p\)), along with the variance (\(\sigma_{p}²\))\footnote{The notation, \( \sigma_{p}^{\text{obs}} \) denotes the observed standard deviation, and \( (\sigma_{p}^{\text{obs}})^2 \) represents the observed variance of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\). Here $p$ refers to the mean of this random variable. These notations will be used consistently throughout our report.} and standard deviation (\(\sigma_p\)) of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) across all images will be detailed in Section~\ref{sec:p}, and are quantified as follows:
+The experimental results for the mean (\(p\)), along with the standard deviation (\(\sigma_p\))\footnote{The notation, \( \sigma_{p}\) denotes the theoretical standard deviation, and \(\sigma^2_p \) represents the theoretical variance of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\). Here $p$ refers to the mean of this random variable. These notations will be used consistently throughout our report.} and variance (\(\sigma_{p}²\)) of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) across all images will be detailed in Section~\ref{sec:p}, and are quantified as follows:
 
 \begin{equation} \label{eq:proba1}
     p^{\text{obs}} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right) = 3.51\%
@@ -55,7 +55,8 @@ Once the optimal offsets, \(d_X\) and \(d_Y\), are determined, they are applied 
 \[\bar{X} = d_X \cdot X\]
 \[\bar{Y} = d_Y \cdot Y\]\\
 
-The probability of the \(i\)-th pixel of two captures not being the same after applying the optimal offset translations depends on the distribution of \((\bar{X}, \bar{Y})\), and is denoted as \(\delta\). We define the random variable \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\) as the normalized Hamming distance between two feature vectors. The parameter \(\delta\) is defined as the mean of this random variable, and we additionally define the standard deviation and the variance of this random variable, as shown in the following figures (where \(i\) is a uniformly distributed random index).
+\newpage
+The probability of the \(i\)-th pixel of two captures not being the same after applying the optimal offset translations depends on the distribution of \((\bar{X}, \bar{Y})\), and is denoted as \(\delta\). We define the random variable \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\) as the normalized Hamming distance between two feature vectors. The parameter \(\delta\) is defined as the mean of this random variable, and we additionally define the standard deviation (\(\sigma_{\delta}\))\footnote{The notation, \(\sigma_{\delta}\) denotes the theoretical standard deviation, and \(\sigma^2_p \) represents the theoretical variance of the random variable \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\). Here $\delta$ refers to the mean of this random variable. These notations will be used consistently throughout our report.} and the variance (\(\sigma^2_{\delta}\)) of this random variable, as shown in the following figures (where \(i\) is a uniformly distributed random index).
 
 
 \begin{equation} \label{eq:delta}
@@ -74,7 +75,7 @@ The probability of the \(i\)-th pixel of two captures not being the same after a
     \begin{aligned}
         (\sigma_{\delta})² = \mathbb{V}\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)
     \end{aligned}
-\end{equation}
+\end{equation}\\
 
 
 Distinguishing between the types of distributions associated with the two captures is crucial. When both captures originate from the same biometric subject, it is referred to as \(\delta_{\text{same}}\). Conversely, if the captures are from different subjects, it is labeled as \(\delta_{\text{diff}}\). Additionally, when \(\bar{X}\) and \(\bar{Y}\) consist of \(2n\) independent random bits with an expected value of \(p\) and no optimal offset is applied, it is classified as \(\delta_{\text{indep}}\). In this scenario, \(\delta_{\text{indep}}^{\text{obs}} = 2p^{\text{obs}}(1-p^{\text{obs}}) = 6.78\%\). As will be detailed in Section~\ref{sec:delta}, the experimental results produce the following figures:
@@ -91,10 +92,10 @@ Distinguishing between the types of distributions associated with the two captur
         \text{Different Biometric Subjects} & 5.99\% & \(4.58 \times 10^{-5}\) & \(6.76 \times 10^{-3}\) \\
         \hline
     \end{tabular}
-    \caption{Comparison of Distributions: Mean, Variance, and Standard Deviation of the random variable \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\) when both captures originate from the same and from different biometric subjects}
+    \caption{Comparison of Distributions: Mean, Standard Deviation, and Variance of the random variable \(\left( \frac{d_H(\bar{X}, \bar{Y})}{n} \right)\) when both captures originate from the same and from different biometric subjects}
 \end{table}
 
-
+\newpage
 Utilizing the formulas for \(p\) (\ref{eq:p}) and $\delta$ (\ref{eq:delta}), the joint distribution for (\(\bar{X}_j\), \(\bar{Y}_j\)) across \(j\) random instances is derived:
 
 \begin{table}[H]
@@ -121,7 +122,7 @@ In order to derive the probability that a distributed random pixel is a vein (\(
 
 In order to derive the mean of \(\left( \frac{HW(X)}{n} \right)\), i.e. \(p\), we have implemented an algorithm which processes the dataset's feature vectors, performing two main functions:
 \begin{enumerate}
-    \item For each pixel position, it updates an \textit{veins[i]} array, which accumulates detections of veins across all images for each camera \(i={1,2}\).
+    \item For each pixel position, it updates a \textit{veins[i]} array, which accumulates detections of veins across all images for each camera \(i={1,2}\).
     \item It maintains a count of the number of images analyzed per camera \(i={1,2}\) in an \textit{image\_count[i]} array.
 \end{enumerate}
 
@@ -160,11 +161,11 @@ Concluding the analysis of the vein pixel distribution across different camera c
 
 The findings from this analysis revealed the following probabilities:
 \begin{enumerate}
-    \item For camera 1, the probability \(p^{\text{obs}} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) was calculated to be \(0.03658\), indicating a \(3.66\)\% chance that any given pixel in images from Camera 1 represents a vein.
+    \item For camera 1, the probability \(p^{\text{obs}} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) was calculated to be \(0.03658\), indicating an approximate \(3.66\)\% chance that any given pixel in images from Camera 1 represents a vein.
 
-    \item For camera 2, the probability \(p^{\text{obs}} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) was slightly lower at \(0.03369\), translating to a \(3.37\)\% chance for vein representation in its images.
+    \item For camera 2, the probability \(p^{\text{obs}} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) was slightly lower at \(0.03369\), translating to an approximate \(3.37\)\% chance for vein representation in its images.
 
-    \item When considering the datasets from both cameras combined, the probability \(p^{\text{obs}} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) averaged out to \(0.03514\), suggesting a \(3.51\)\% likelihood of a pixel depicting a vein across the entire dataset. Moreover, the variance (\((\sigma^{\text{obs}}_p)²\)) and the standard deviation (\( \sigma^{\text{obs}}_p \)) of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) provide insights into the the random variable's spread and consistency. The observed variance is low, at approximately \( 2.52 \times 10^{-5} \), indicating minimal fluctuation in the random variables' values among different feature vectors. This suggests that the feature extraction method is highly reliable and consistent across different images. Furthermore, the standard deviation, calculated as approximately \( 5.02 \times 10^{-3} \), reinforces the idea of minimal dispersion around the mean probability (\(p\)) of detecting a vein. 
+    \item When considering the datasets from both cameras combined, the probability \(p^{\text{obs}} = \mathbb{E}\left( \frac{\text{HW}(X)}{n} \right)\) averaged out to \(0.03514\), suggesting an approximate \(3.51\)\% likelihood of a pixel depicting a vein across the entire dataset. Moreover, the standard deviation (\( \sigma^{\text{obs}}_p \)) and the variance (\((\sigma^{\text{obs}}_p)²\)) of the random variable \(\left( \frac{\text{HW}(X)}{n} \right)\) provide insights into the the random variable's spread and consistency. The observed variance is low, at approximately \( 2.52 \times 10^{-5} \), indicating minimal fluctuation in the random variables' values among different feature vectors. This suggests that the feature extraction method is highly reliable and consistent across different images. Furthermore, the standard deviation, calculated as approximately \( 5.02 \times 10^{-3} \), reinforces the idea of minimal dispersion around the mean probability (\(p\)) of detecting a vein. 
     
 \end{enumerate}
 
@@ -187,6 +188,7 @@ To accurately evaluate \( \delta_{\text{same}} \) and \( \delta_{\text{diff}} \)
 
 \begin{enumerate}
     \item \textbf{Pairwise Comparison}: For each individual, we compared every biometric capture to every other capture within the dataset, applying the Hamming distance metric to compute the normalized distances.
+    \newpage
     \item \textbf{Statistical Analysis}: We organized the resulting distances into two distinct categories:
     \begin{itemize}
         \item Intra-individual distances, where captures from the same individual (same finger images) were compared, forming the first group.

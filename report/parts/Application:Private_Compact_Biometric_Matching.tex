@@ -57,8 +57,8 @@ The FNR is the probability that the Hamming distance $H$ exceeds $l - t$ in case
         FNR &= Pr[l - H < t] = Pr[H > l - t] \\
         &= Pr\left[\frac{H - \mu_{\text{H, same}}}{\sigma_{\text{H, same}}} > \frac{l - t - \mu_{\text{H, same}}}{\sigma_{\text{H, same}}}\right] \\
         &= \Phi \left( - \frac{l - t - \mu_{\text{H, same}}}{\sigma_{\text{H, same}}}\right) \\
-        &= \Phi \left(\frac{t - l\mu_{\text{same}}}{\sqrt{l \cdot (1 - \mu_{\text{same}}^m) \cdot \mu_{\text{same}}^m}}\right) \\
-        &\approx \Phi \left(\frac{t - l\mu_{\text{same}}}{\sqrt{l\mu_{\text{same}}^m}}\right) \\
+        &= \Phi \left(\frac{t - l\cdot\mu_{\text{same}}^m}{\sqrt{l \cdot (1 - \mu_{\text{same}}^m) \cdot \mu_{\text{same}}^m}}\right) \\
+        &\approx \Phi \left(\frac{t - l\cdot\mu_{\text{same}}^m}{\sqrt{l\cdot\mu_{\text{same}}^m}}\right) \\
     \end{aligned}        
 \end{equation}
 where the last equality is obtained because $l\cdot(\mu_{\text{same}}^m)^2$ is negligeable. 
@@ -79,7 +79,7 @@ For a large \( l \), the Hamming distance \( H \) can again be approximated by a
 
 Therefore, \( H \) can be approximated by:
 \[
-H \sim \mathcal{N}(\mu_{H, \text{diff}}, \sigma_{H, \text{diff}}^2)
+H \sim \mathcal{N}(\mu_{\text{H, diff}}, \sigma_{\text{H, diff}}^2)
 \]
 \newpage
 The FPR is the probability that the Hamming distance \( H \) is less than the threshold \( l - t \) in cases where the samples should not match. This is given by:
@@ -87,10 +87,10 @@ The FPR is the probability that the Hamming distance \( H \) is less than the th
 \begin{aligned}
     \label{eq:fpr}
     \text{FPR} &= Pr[H \leq l - t] \\
-    &= Pr\left[\frac{H - \mu_{H, \text{diff}}}{\sigma_{H, \text{diff}}} \leq \frac{l - t - \mu_{H, \text{diff}}}{\sigma_{H, \text{diff}}}\right] \\
-    &= \Phi\left(\frac{l - t - \mu_{H, \text{diff}}}{\sigma_{H, \text{diff}}}\right) \\
-    &= \Phi\left(-\frac{t - l\mu_{\text{diff}}^m}{\sqrt{l \cdot (1 - \mu_{\text{diff}}^m) \cdot \mu_{\text{diff}}^m}}\right)\\
-    &\approx\Phi\left(-\frac{t - l\mu_{\text{diff}}^m}{\sqrt{l\cdot \mu_{\text{diff}}^m}}\right)
+    &= Pr\left[\frac{H - \mu_{\text{H, diff}}}{\sigma_{\text{H, diff}}} \leq \frac{l - t - \mu_{\text{H, diff}}}{\sigma_{\text{H, diff}}}\right] \\
+    &= \Phi\left(\frac{l - t - \mu_{\text{H, diff}}}{\sigma_{\text{H, diff}}}\right) \\
+    &= \Phi\left(-\frac{t - l\cdot\mu_{\text{diff}}^m}{\sqrt{l \cdot (1 - \mu_{\text{diff}}^m) \cdot \mu_{\text{diff}}^m}}\right)\\
+    &\approx\Phi\left(-\frac{t - l\cdot\mu_{\text{diff}}^m}{\sqrt{l\cdot \mu_{\text{diff}}^m}}\right)
 \end{aligned}
 \end{equation}
 
@@ -122,7 +122,7 @@ Using compression techniques implemented through postHash, specifically compress
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|c|}
         \hline
-        \textit{m} & \textit{d} & \textit{l} & \textit{t} & \textit{l}\(q_{\text{same}}^m\) & \textit{l}\(q_{\text{diff}}^m\) & \textit{FNR} & \textit{FPR} \\
+        \textit{m} & \textit{d} & \textit{l} & \textit{t} & \textit{l}\(q_{\text{same}}\) & \textit{l}\(q_{\text{diff}}\) & \textit{FNR} & \textit{FPR} \\
         \hline
         1 & 4 & 1107 & 258 & 298 & 145.3 & 1.0\% & \(2^{-67}\) \\
         1 & 4 & 347 & 71 & 93.4 & 45.6 & \(\leq\)1.0\% & \(2^{-13}\)\\
